@@ -1,0 +1,141 @@
+---
+title: 'Tutorial: Web Scraping of Multipe Pages using R'
+author: Shrishti Vaish
+date: '2020-07-11'
+slug: tutorial-web-scraping-of-multipe-pages-using-r
+categories:
+  - Web Scraping
+tags:
+  - rvest
+  - xml2
+  - R
+cover: "/img/contentImg.jpg"
+---
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.</p>
+<p>So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.</p>
+<p>All the data is available on the Internet today. But, how to scrape data that might be useful to you? Well, you have got it all sorted out. With all the advanced tools and programming languages, scraping data out from the web is just one cushy job.</p>
+<p>Let’s dive straight to the point.</p>
+</div>
+<div id="web-scraping" class="section level1">
+<h1>Web Scraping?</h1>
+<p>Web Scraping is just a technique to convert unorganized data that is usually available on the internet to an organized format so that it can be useful to us.</p>
+<p>The very basic idea of scraping data is the old school method of COPY AND PASTE . Well, to be honest, this method might sound easy-peasy but is taxing, monotonous, time-dependent and not at all fascinating.</p>
+<p>But with a few lines of code it is utterly possible. So, let’s see how can we scrape data.</p>
+</div>
+<div id="web-scraping-using-r" class="section level1">
+<h1>Web Scraping using R</h1>
+<p>Expecting that you all will be having a basic knowledge about how R works and its syntax, lets get straight to this short <strong>tutorial</strong> where I’ll show you <em>How To Scrape Data using R from multiple pages at once.</em></p>
+<p><em>For general text data scraping: you can visit:</em>
+<a href="https://github.com/shrish83/Web-Scraping-in-R">Basic Web Scraping</a></p>
+<div id="about-the-data" class="section level3">
+<h3>About the Data</h3>
+<p>From <a href="https://www.the-numbers.com/movie/budgets">The Numbers</a>, here lies the complete list of movies with their release dates, production budget and gross revenue information. The profit and loss figures are very rough estimates based on domestic and international box office earnings and domestic video sales, extrapolated to estimate worldwide income to the studio, after deducting retail costs.</p>
+<p><em>Note: The movies’ data is in the tabular format.</em></p>
+</div>
+<div id="following-are-the-steps-you-need-to-follow" class="section level2">
+<h2>Following are the steps you need to follow:</h2>
+<ul>
+<li>Open R Studio. Then in a new file:</li>
+</ul>
+<div id="package-installation" class="section level3">
+<h3>Package Installation</h3>
+<p>Install the required packages.<br/></p>
+<ul>
+<li><p>xml2: <code>Xml2</code> is a wrapper around the comprehensive libxml2 C library that makes it easier to work with XML and HTML in R<br/></p></li>
+<li><p>rvest: <code>rvest</code> helps you scrape information from web. pages.<br/></p></li>
+<li><p>tibble: The <code>tibble</code> package provides utilities for handling tibbles, where “tibble” is a colloquial term for the S3 tbl_df class. The tbl_df class is a special case of the base <code>data.frame</code>.<br/></p></li>
+</ul>
+<pre class="r"><code>library(xml2)
+library(rvest)   ##very important
+library(tibble)</code></pre>
+<p><br/></p>
+<ul>
+<li>Storing the <code>url</code> of the first page of the table with data of about 100 movies in <code>base_url</code>:</li>
+</ul>
+<pre class="r"><code>base_url &lt;- &quot;https://www.the-numbers.com/movie/budgets/all&quot;</code></pre>
+<p><br/></p>
+<ul>
+<li>Scraping <em>html</em> content from the stored url:</li>
+</ul>
+<pre class="r"><code>base_webpage &lt;- read_html(base_url)</code></pre>
+<p><br/></p>
+<ul>
+<li>Now, as you can see <a href="https://www.the-numbers.com/movie/budgets/all/101">here</a>, after <strong>all/101</strong> is present. Similarly, there are many more pages with 100 movies each in the table all with different urls. <br/></li>
+</ul>
+<p><strong>So, should we store 100 urls for 100 pages for 10,000 movies?</strong>
+Ofcourse not! We have certain string formatting styles. You can visit the documentation <a href="https://www.gastonsanchez.com/r4strings/c-style-formatting.html">here</a>.</p>
+<p>Hence, for strings, we use <code>%s</code>.</p>
+<pre class="r"><code>new_urls&lt;- &quot;https://www.the-numbers.com/movie/budgets/all/%s&quot;</code></pre>
+<p><br/></p>
+<ul>
+<li>Creating dataframe of the first 100 movies:
+<ul>
+<li><code>html_table()</code>: converts html tables into dataframes.</li>
+</ul></li>
+</ul>
+<pre class="r"><code>table_base &lt;- rvest::html_table(base_webpage)[[1]] %&gt;% 
+  tibble::as_tibble(.name_repair = &quot;unique&quot;) # repair the repeated columns</code></pre>
+<p><br/></p>
+<ul>
+<li>Creating dataframe of the next set of movies:</li>
+</ul>
+<pre class="r"><code>#creating two empty dataframes
+table_new &lt;-data.frame()
+df &lt;- data.frame()
+
+#iterator
+i&lt;-101
+
+#it loops through 5501 times so as to extract and then store and then combine about 5000 movies so far extracted.
+while (i&lt;5502) {
+  new_webpage&lt;- read_html(sprintf(new_urls,i))
+  table_new &lt;- rvest::html_table(new_webpage)[[1]] %&gt;% 
+    tibble::as_tibble(.name_repair = &quot;unique&quot;) # repair the repeated columns
+  df&lt;- rbind(df,table_new)
+  i=i+100
+}</code></pre>
+<p><br/></p>
+<ul>
+<li>Merge the <code>table_base</code> and <code>df</code>:</li>
+</ul>
+<pre class="r"><code>df_movies &lt;- merge(table_base,df, all = T)</code></pre>
+<p><br/></p>
+<ul>
+<li>Let us see how are dataframe looks exactly:</li>
+</ul>
+<pre class="r"><code>head(df_movies)</code></pre>
+<pre><code>##    ...1  ReleaseDate                              Movie ProductionBudget
+## 1     1 Apr 23, 2019                  Avengers: Endgame     $400,000,000
+## 2 1,000 Apr 28, 2000 The Flintstones in Viva Rock Vegas      $58,000,000
+## 3 1,001  Apr 4, 2008                       Leatherheads      $58,000,000
+## 4 1,002 Mar 22, 2017                               Life      $58,000,000
+## 5 1,003 Dec 18, 2009    Did You Hear About the Morgans?      $58,000,000
+## 6 1,004 Dec 12, 2008         Che, Part 1: The Argentine      $58,000,000
+##   DomesticGross WorldwideGross
+## 1  $858,373,000 $2,797,800,564
+## 2   $35,231,365    $59,431,365
+## 3   $31,373,938    $41,348,628
+## 4   $30,234,022   $100,929,666
+## 5   $29,580,087    $80,480,566
+## 6    $1,802,521    $31,627,370</code></pre>
+<p><br/></p>
+<p><em>Viola! We have accomplished our task.</em></p>
+<p><br/> <br/></p>
+<ul>
+<li>Now if you want, you can create a <code>csv</code> file of this dataframe for physically storing it in your system using:</li>
+</ul>
+<pre class="r"><code>write.csv(df_movies,&quot;moviesData_tutorial.csv&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>See, here it is done. With a few lines of code, we were able to extract data from multiple pages using one single loop. This tutorial basically hints on using <em>string formatting style.</em></p>
+<p>Stay tuned for more tutorials!<br/>
+Thank You!</p>
+</div>

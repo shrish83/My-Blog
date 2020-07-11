@@ -1,0 +1,40 @@
+theme = "hugo-theme-dream"
+baseurl = "https://shrishtivaish-rblogs.netlify.app/"
+languageCode = "en-us"
+DefaultContentLanguage = "en"
+title = "R Blogs"
+
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+enableRobotsTXT = true
+canonifyURLs = true
+
+#[permalinks]
+  #  post = "/:year/:month/:day/:slug"
+    
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    style = "friendly"
+    
+   
+
+[params]
+backgroundImage = "/img/cover.png"
+author = "Shrishti Vaish"
+
+
+email = "shivi.shrishti5@gmail.com"
+twitter = "ShrishtiVaish"
+github = "shrish83"
+linkedin = "shrishti-vaish"
+
+siteStartYear = 2020
+
+favicon = "/fav.ico"
+
+#options
+showSummaryCoverInPost = true

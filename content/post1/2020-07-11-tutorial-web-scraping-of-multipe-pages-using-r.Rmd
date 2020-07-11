@@ -1,0 +1,176 @@
+---
+title: 'Tutorial: Web Scraping of Multipe Pages using R'
+author: Shrishti Vaish
+date: '2020-07-11'
+slug: tutorial-web-scraping-of-multipe-pages-using-r
+categories:
+  - Web Scraping
+tags:
+  - rvest
+  - xml2
+  - R
+cover: "/img/contentImg.jpg"
+---
+
+
+# Introduction
+
+In today's world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
+
+So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.
+
+All the data is available on the Internet today. But, how to scrape data that might be useful to you? Well, you have got it all sorted out. With all the advanced tools and programming languages, scraping data out from the web is just one cushy job.
+
+Let's dive straight to the point.
+
+
+# Web Scraping?
+
+Web Scraping is just a technique to convert unorganized data that is usually available on the internet to an organized format so that it can be useful to us. 
+
+The very basic idea of scraping data is the old school method of COPY AND PASTE .  Well, to be honest, this method might sound easy-peasy but is taxing, monotonous, time-dependent and not at all fascinating.
+
+But with a few lines of code it is utterly possible.  So, let's see how can we scrape data.
+
+
+# Web Scraping using R 
+
+Expecting that you all will be having a basic knowledge about how R works and its syntax, lets get straight to this short **tutorial** where I'll show you *How To Scrape Data using R from multiple pages at once.*
+
+*For general text data scraping: you can visit:*
+[Basic Web Scraping](https://github.com/shrish83/Web-Scraping-in-R)
+
+
+### About the Data
+From [The Numbers](https://www.the-numbers.com/movie/budgets), here lies the complete list of movies with their release dates, production budget and gross revenue information. The profit and loss figures are very rough estimates based on domestic and international box office earnings and domestic video sales, extrapolated to estimate worldwide income to the studio, after deducting retail costs. 
+
+_Note: The movies' data is in the tabular format._
+
+## Following are the steps you need to follow:
+
+* Open R Studio. Then in a new file:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Package Installation
+
+
+Install the required packages.<br/>
+
+* xml2: `Xml2` is a wrapper around the comprehensive libxml2 C library that makes it easier to work with XML and HTML in R<br/>
+
+* rvest: `rvest` helps you scrape information from web. pages.<br/>
+
+* tibble: The `tibble` package provides utilities for handling tibbles, where "tibble" is a colloquial term for the S3 tbl_df class. The tbl_df class is a special case of the base `data.frame`.<br/>
+
+
+```{r message=FALSE, results='hide', warning=FALSE}
+library(xml2)
+library(rvest)   ##very important
+library(tibble)
+
+```
+
+<br/>
+
+
+* Storing the `url` of the first page of the table with data of about 100 movies in `base_url`:
+
+
+
+```{r}
+
+base_url <- "https://www.the-numbers.com/movie/budgets/all"
+```
+<br/>
+
+* Scraping _html_ content from the stored url:
+
+
+```{r}
+base_webpage <- read_html(base_url)
+
+```
+<br/>
+
+* Now, as you can see [here](https://www.the-numbers.com/movie/budgets/all/101), after **all/101** is present. Similarly, there are many more pages with 100 movies each in the table all with different urls. <br/>
+
+**So, should we store 100 urls for 100 pages for 10,000 movies?**
+Ofcourse not! We have certain string formatting styles. You can visit the documentation [here](https://www.gastonsanchez.com/r4strings/c-style-formatting.html).
+
+Hence, for strings, we use `%s`.
+
+
+```{r}
+new_urls<- "https://www.the-numbers.com/movie/budgets/all/%s"
+```
+<br/>
+
+* Creating dataframe of the first 100 movies:
+    + `html_table()`: converts html tables into dataframes.
+    
+ 
+```{r message=FALSE, results='hide'}
+
+table_base <- rvest::html_table(base_webpage)[[1]] %>% 
+  tibble::as_tibble(.name_repair = "unique") # repair the repeated columns
+```
+<br/>
+
+* Creating dataframe of the next set of movies:
+
+
+```{r message=FALSE, results='hide'}
+#creating two empty dataframes
+table_new <-data.frame()
+df <- data.frame()
+
+#iterator
+i<-101
+
+#it loops through 5501 times so as to extract and then store and then combine about 5000 movies so far extracted.
+while (i<5502) {
+  new_webpage<- read_html(sprintf(new_urls,i))
+  table_new <- rvest::html_table(new_webpage)[[1]] %>% 
+    tibble::as_tibble(.name_repair = "unique") # repair the repeated columns
+  df<- rbind(df,table_new)
+  i=i+100
+}
+```
+<br/>
+
+* Merge the `table_base` and `df`:
+
+```{r}
+df_movies <- merge(table_base,df, all = T)
+```
+<br/>
+
+* Let us see how are dataframe looks exactly:
+
+```{r}
+head(df_movies)
+```
+<br/>
+
+_Viola! We have accomplished our task._
+
+<br/> <br/>
+
+
+* Now if you want, you can create a `csv` file of this dataframe for physically storing it in your system using:
+
+```{r}
+write.csv(df_movies,"moviesData_tutorial.csv")
+```
+
+
+# Conclusion
+
+See, here it is done. With a few lines of code, we were able to extract data from multiple pages using one single loop. This tutorial basically hints on using _string formatting style._ 
+
+Stay tuned for more tutorials!<br/>
+Thank You!
+
