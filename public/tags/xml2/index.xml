@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>xml2 on R Blogs</title>
     <link>/tags/xml2/</link>
@@ -7,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href= "/index.xml" rel="self" type="/tags/xml2/index.xml" />%!(EXTRA media.Type=application/rss+xml)
+	<atom:link href="/tags/xml2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -16,135 +17,8 @@
       <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/tutorial-web-scraping-of-multipe-pages-using-r/</guid>
-      <description>
-
-
-&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Introduction&lt;/h1&gt;
-&lt;p&gt;In today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.&lt;/p&gt;
-&lt;p&gt;So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.&lt;/p&gt;
-&lt;p&gt;All the data is available on the Internet today. But, how to scrape data that might be useful to you? Well, you have got it all sorted out. With all the advanced tools and programming languages, scraping data out from the web is just one cushy job.&lt;/p&gt;
-&lt;p&gt;Let’s dive straight to the point.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;web-scraping&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Web Scraping?&lt;/h1&gt;
-&lt;p&gt;Web Scraping is just a technique to convert unorganized data that is usually available on the internet to an organized format so that it can be useful to us.&lt;/p&gt;
-&lt;p&gt;The very basic idea of scraping data is the old school method of COPY AND PASTE . Well, to be honest, this method might sound easy-peasy but is taxing, monotonous, time-dependent and not at all fascinating.&lt;/p&gt;
-&lt;p&gt;But with a few lines of code it is utterly possible. So, let’s see how can we scrape data.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;web-scraping-using-r&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Web Scraping using R&lt;/h1&gt;
-&lt;p&gt;Expecting that you all will be having a basic knowledge about how R works and its syntax, lets get straight to this short &lt;strong&gt;tutorial&lt;/strong&gt; where I’ll show you &lt;em&gt;How To Scrape Data using R from multiple pages at once.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;For general text data scraping: you can visit:&lt;/em&gt;
-&lt;a href=&#34;https://github.com/shrish83/Web-Scraping-in-R&#34;&gt;Basic Web Scraping&lt;/a&gt;&lt;/p&gt;
-&lt;div id=&#34;about-the-data&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;About the Data&lt;/h3&gt;
-&lt;p&gt;From &lt;a href=&#34;https://www.the-numbers.com/movie/budgets&#34;&gt;The Numbers&lt;/a&gt;, here lies the complete list of movies with their release dates, production budget and gross revenue information. The profit and loss figures are very rough estimates based on domestic and international box office earnings and domestic video sales, extrapolated to estimate worldwide income to the studio, after deducting retail costs.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Note: The movies’ data is in the tabular format.&lt;/em&gt;&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;following-are-the-steps-you-need-to-follow&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Following are the steps you need to follow:&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Open R Studio. Then in a new file:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div id=&#34;package-installation&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Package Installation&lt;/h3&gt;
-&lt;p&gt;Install the required packages.&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;xml2: &lt;code&gt;Xml2&lt;/code&gt; is a wrapper around the comprehensive libxml2 C library that makes it easier to work with XML and HTML in R&lt;br/&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;rvest: &lt;code&gt;rvest&lt;/code&gt; helps you scrape information from web. pages.&lt;br/&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;tibble: The &lt;code&gt;tibble&lt;/code&gt; package provides utilities for handling tibbles, where “tibble” is a colloquial term for the S3 tbl_df class. The tbl_df class is a special case of the base &lt;code&gt;data.frame&lt;/code&gt;.&lt;br/&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(xml2)
-library(rvest)   ##very important
-library(tibble)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Storing the &lt;code&gt;url&lt;/code&gt; of the first page of the table with data of about 100 movies in &lt;code&gt;base_url&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;base_url &amp;lt;- &amp;quot;https://www.the-numbers.com/movie/budgets/all&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Scraping &lt;em&gt;html&lt;/em&gt; content from the stored url:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;base_webpage &amp;lt;- read_html(base_url)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Now, as you can see &lt;a href=&#34;https://www.the-numbers.com/movie/budgets/all/101&#34;&gt;here&lt;/a&gt;, after &lt;strong&gt;all/101&lt;/strong&gt; is present. Similarly, there are many more pages with 100 movies each in the table all with different urls. &lt;br/&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;So, should we store 100 urls for 100 pages for 10,000 movies?&lt;/strong&gt;
-Ofcourse not! We have certain string formatting styles. You can visit the documentation &lt;a href=&#34;https://www.gastonsanchez.com/r4strings/c-style-formatting.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Hence, for strings, we use &lt;code&gt;%s&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;new_urls&amp;lt;- &amp;quot;https://www.the-numbers.com/movie/budgets/all/%s&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Creating dataframe of the first 100 movies:
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;html_table()&lt;/code&gt;: converts html tables into dataframes.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table_base &amp;lt;- rvest::html_table(base_webpage)[[1]] %&amp;gt;% 
-  tibble::as_tibble(.name_repair = &amp;quot;unique&amp;quot;) # repair the repeated columns&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Creating dataframe of the next set of movies:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#creating two empty dataframes
-table_new &amp;lt;-data.frame()
-df &amp;lt;- data.frame()
-
-#iterator
-i&amp;lt;-101
-
-#it loops through 5501 times so as to extract and then store and then combine about 5000 movies so far extracted.
-while (i&amp;lt;5502) {
-  new_webpage&amp;lt;- read_html(sprintf(new_urls,i))
-  table_new &amp;lt;- rvest::html_table(new_webpage)[[1]] %&amp;gt;% 
-    tibble::as_tibble(.name_repair = &amp;quot;unique&amp;quot;) # repair the repeated columns
-  df&amp;lt;- rbind(df,table_new)
-  i=i+100
-}&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Merge the &lt;code&gt;table_base&lt;/code&gt; and &lt;code&gt;df&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_movies &amp;lt;- merge(table_base,df, all = T)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Let us see how are dataframe looks exactly:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(df_movies)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##    ...1  ReleaseDate                              Movie ProductionBudget
-## 1     1 Apr 23, 2019                  Avengers: Endgame     $400,000,000
-## 2 1,000 Apr 28, 2000 The Flintstones in Viva Rock Vegas      $58,000,000
-## 3 1,001  Apr 4, 2008                       Leatherheads      $58,000,000
-## 4 1,002 Mar 22, 2017                               Life      $58,000,000
-## 5 1,003 Dec 18, 2009    Did You Hear About the Morgans?      $58,000,000
-## 6 1,004 Dec 12, 2008         Che, Part 1: The Argentine      $58,000,000
-##   DomesticGross WorldwideGross
-## 1  $858,373,000 $2,797,800,564
-## 2   $35,231,365    $59,431,365
-## 3   $31,373,938    $41,348,628
-## 4   $30,234,022   $100,929,666
-## 5   $29,580,087    $80,480,566
-## 6    $1,802,521    $31,627,370&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Viola! We have accomplished our task.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;br/&gt; &lt;br/&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Now if you want, you can create a &lt;code&gt;csv&lt;/code&gt; file of this dataframe for physically storing it in your system using:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;write.csv(df_movies,&amp;quot;moviesData_tutorial.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;See, here it is done. With a few lines of code, we were able to extract data from multiple pages using one single loop. This tutorial basically hints on using &lt;em&gt;string formatting style.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Stay tuned for more tutorials!&lt;br/&gt;
-Thank You!&lt;/p&gt;
-&lt;/div&gt;
-</description>
+      <description>IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
+So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.</description>
     </item>
     
   </channel>
