@@ -27,7 +27,7 @@ backgroundImage = "/img/cover.png"
 author = "Shrishti Vaish"
 
 rss = true
-rssLimit = 2000000
+RSSLimit = 2000000
 
 email = "shivi.shrishti5@gmail.com"
 twitter = "ShrishtiVaish"
