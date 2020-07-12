@@ -20,14 +20,14 @@ canonifyURLs = true
     codeFences = true
     style = "friendly"
     
-   
+[RSS]
+   rssLimit = 2000000
 
 [params]
 backgroundImage = "/img/cover.png"
 author = "Shrishti Vaish"
 
 rss = true
-RSSLimit = 2000000
 
 email = "shivi.shrishti5@gmail.com"
 twitter = "ShrishtiVaish"
