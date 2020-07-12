@@ -1,7 +1,7 @@
 theme = "hugo-theme-dream"
 baseurl = "https://shrishtivaish-rblogs.netlify.app/"
 languageCode = "en-us"
-DefaultContentLanguage = "en"
+defaultContentLanguage = "en"
 title = "R Blogs"
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]

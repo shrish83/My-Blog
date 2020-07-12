@@ -6,27 +6,17 @@
     <description>Recent content on R Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Jul 2020 17:50:21 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>About Me</title>
-      <link>/about/</link>
-      <pubDate>Sat, 11 Jul 2020 17:50:21 +0530</pubDate>
-      
-      <guid>/about/</guid>
-      <description>Hey Folks! I&amp;rsquo;m Shrishti Vaish and I&amp;rsquo;m delighted that you visited my page. Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.
-No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</description>
-    </item>
-    
-    <item>
       <title>Tutorial: Web Scraping of Multipe Pages using R</title>
-      <link>/post1/tutorial-web-scraping-of-multipe-pages-using-r/</link>
+      <link>/posts/tutorial-web-scraping-of-multipe-pages-using-r/</link>
       <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post1/tutorial-web-scraping-of-multipe-pages-using-r/</guid>
+      <guid>/posts/tutorial-web-scraping-of-multipe-pages-using-r/</guid>
       <description>IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
 So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.</description>
     </item>
