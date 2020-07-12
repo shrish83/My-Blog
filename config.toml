@@ -26,6 +26,7 @@ canonifyURLs = true
 backgroundImage = "/img/cover.png"
 author = "Shrishti Vaish"
 
+rss = true
 
 email = "shivi.shrishti5@gmail.com"
 twitter = "ShrishtiVaish"
