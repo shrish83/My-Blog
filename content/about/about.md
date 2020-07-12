@@ -1,7 +1,6 @@
 ---
 title: "About Me"
 date: 2020-07-11T17:50:21+05:30
-draft: true
 categories: ["About me"]
 cover: "/img/default4.jpg"
 ---
