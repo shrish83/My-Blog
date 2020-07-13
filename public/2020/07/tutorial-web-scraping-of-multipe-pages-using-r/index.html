@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+Tutorial: Web Scraping of Multiple Pages using R
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
+So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist." />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" />
+
+
+<meta property="og:title" content="Tutorial: Web Scraping of Multiple Pages using R" />
+<meta property="og:description" content="IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
+So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" />
+<meta property="article:published_time" content="2020-07-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-11T00:00:00+00:00" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tutorial: Web Scraping of Multiple Pages using R"/>
+<meta name="twitter:description" content="IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
+So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist."/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          Tutorial: Web Scraping of Multiple Pages using R
+          <div class="sub header">@ Shrishti Vaish · Saturday, Jul 11, 2020 · 4 minute read · Update at Jul 11, 2020</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="/img/contentImg.jpg" />
+      
+
+      <article style="margin-top: 2rem;">
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.</p>
+<p>So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.</p>
+<p>All the data is available on the Internet today. But, how to scrape data that might be useful to you? Well, you have got it all sorted out. With all the advanced tools and programming languages, scraping data out from the web is just one cushy job.</p>
+<p>Let’s dive straight to the point.</p>
+</div>
+<div id="web-scraping" class="section level1">
+<h1>Web Scraping?</h1>
+<p>Web Scraping is just a technique to convert unorganized data that is usually available on the internet to an organized format so that it can be useful to us.</p>
+<p>The very basic idea of scraping data is the old school method of COPY AND PASTE . Well, to be honest, this method might sound easy-peasy but is taxing, monotonous, time-dependent and not at all fascinating.</p>
+<p>But with a few lines of code it is utterly possible. So, let’s see how can we scrape data.</p>
+</div>
+<div id="web-scraping-using-r" class="section level1">
+<h1>Web Scraping using R</h1>
+<p>Expecting that you all will be having a basic knowledge about how R works and its syntax, lets get straight to this short <strong>tutorial</strong> where I’ll show you <em>How To Scrape Data using R from multiple pages at once.</em></p>
+<p><em>For general text data scraping: you can visit:</em>
+<a href="https://github.com/shrish83/Web-Scraping-in-R">Basic Web Scraping</a></p>
+<div id="about-the-data" class="section level3">
+<h3>About the Data</h3>
+<p>From <a href="https://www.the-numbers.com/movie/budgets">The Numbers</a>, here lies the complete list of movies with their release dates, production budget and gross revenue information. The profit and loss figures are very rough estimates based on domestic and international box office earnings and domestic video sales, extrapolated to estimate worldwide income to the studio, after deducting retail costs.</p>
+<p><em>Note: The movies’ data is in the tabular format.</em></p>
+</div>
+<div id="following-are-the-steps-you-need-to-follow" class="section level2">
+<h2>Following are the steps you need to follow:</h2>
+<ul>
+<li>Open R Studio. Then in a new file:</li>
+</ul>
+<div id="package-installation" class="section level3">
+<h3>Package Installation</h3>
+<p>Install the required packages.<br/></p>
+<ul>
+<li><p>xml2: <code>Xml2</code> is a wrapper around the comprehensive libxml2 C library that makes it easier to work with XML and HTML in R<br/></p></li>
+<li><p>rvest: <code>rvest</code> helps you scrape information from web. pages.<br/></p></li>
+<li><p>tibble: The <code>tibble</code> package provides utilities for handling tibbles, where “tibble” is a colloquial term for the S3 tbl_df class. The tbl_df class is a special case of the base <code>data.frame</code>.<br/></p></li>
+</ul>
+<pre class="r"><code>library(xml2)
+library(rvest)   ##very important
+library(tibble)</code></pre>
+<p><br/></p>
+<ul>
+<li>Storing the <code>url</code> of the first page of the table with data of about 100 movies in <code>base_url</code>:</li>
+</ul>
+<pre class="r"><code>base_url &lt;- &quot;https://www.the-numbers.com/movie/budgets/all&quot;</code></pre>
+<p><br/></p>
+<ul>
+<li>Scraping <em>html</em> content from the stored url:</li>
+</ul>
+<pre class="r"><code>base_webpage &lt;- read_html(base_url)</code></pre>
+<p><br/></p>
+<ul>
+<li>Now, as you can see <a href="https://www.the-numbers.com/movie/budgets/all/101">here</a>, after <strong>all/101</strong> is present. Similarly, there are many more pages with 100 movies each in the table all with different urls. <br/></li>
+</ul>
+<p><strong>So, should we store 100 urls for 100 pages for 10,000 movies?</strong>
+Ofcourse not! We have certain string formatting styles. You can visit the documentation <a href="https://www.gastonsanchez.com/r4strings/c-style-formatting.html">here</a>.</p>
+<p>Hence, for strings, we use <code>%s</code>.</p>
+<pre class="r"><code>new_urls&lt;- &quot;https://www.the-numbers.com/movie/budgets/all/%s&quot;</code></pre>
+<p><br/></p>
+<ul>
+<li>Creating dataframe of the first 100 movies:
+<ul>
+<li><code>html_table()</code>: converts html tables into dataframes.</li>
+</ul></li>
+</ul>
+<pre class="r"><code>table_base &lt;- rvest::html_table(base_webpage)[[1]] %&gt;% 
+  tibble::as_tibble(.name_repair = &quot;unique&quot;) # repair the repeated columns</code></pre>
+<p><br/></p>
+<ul>
+<li>Creating dataframe of the next set of movies:</li>
+</ul>
+<pre class="r"><code>#creating two empty dataframes
+table_new &lt;-data.frame()
+df &lt;- data.frame()
+
+#iterator
+i&lt;-101
+
+#it loops through 5501 times so as to extract and then store and then combine about 5000 movies so far extracted.
+while (i&lt;5502) {
+  new_webpage&lt;- read_html(sprintf(new_urls,i))
+  table_new &lt;- rvest::html_table(new_webpage)[[1]] %&gt;% 
+    tibble::as_tibble(.name_repair = &quot;unique&quot;) # repair the repeated columns
+  df&lt;- rbind(df,table_new)
+  i=i+100
+}</code></pre>
+<p><br/></p>
+<ul>
+<li>Merge the <code>table_base</code> and <code>df</code>:</li>
+</ul>
+<pre class="r"><code>df_movies &lt;- merge(table_base,df, all = T)</code></pre>
+<p><br/></p>
+<ul>
+<li>Let us see how are dataframe looks exactly:</li>
+</ul>
+<pre class="r"><code>head(df_movies)</code></pre>
+<pre><code>##    ...1  ReleaseDate                              Movie ProductionBudget
+## 1     1 Apr 23, 2019                  Avengers: Endgame     $400,000,000
+## 2 1,000 Apr 28, 2000 The Flintstones in Viva Rock Vegas      $58,000,000
+## 3 1,001  Apr 4, 2008                       Leatherheads      $58,000,000
+## 4 1,002 Mar 22, 2017                               Life      $58,000,000
+## 5 1,003 Dec 18, 2009    Did You Hear About the Morgans?      $58,000,000
+## 6 1,004 Dec 12, 2008         Che, Part 1: The Argentine      $58,000,000
+##   DomesticGross WorldwideGross
+## 1  $858,373,000 $2,797,800,564
+## 2   $35,231,365    $59,431,365
+## 3   $31,373,938    $41,348,628
+## 4   $30,234,022   $100,929,666
+## 5   $29,580,087    $80,480,566
+## 6    $1,802,521    $31,627,370</code></pre>
+<p><br/></p>
+<p><em>Viola! We have accomplished our task.</em></p>
+<p><br/> <br/></p>
+<ul>
+<li>Now if you want, you can create a <code>csv</code> file of this dataframe for physically storing it in your system using:</li>
+</ul>
+<pre class="r"><code>write.csv(df_movies,&quot;moviesData_tutorial.csv&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>See, here it is done. With a few lines of code, we were able to extract data from multiple pages using one single loop. This tutorial basically hints on using <em>string formatting style.</em></p>
+<p>Stay tuned for more tutorials!<br/>
+Thank You!</p>
+</div>
+</article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+        
+          <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+        
+          <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+        
+          <a class="ui label" href="/tags/r" title="R">R</a>
+        
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+  </body>
+</html>

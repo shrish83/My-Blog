@@ -13,10 +13,10 @@
     
     <item>
       <title>Tutorial: Web Scraping of Multiple Pages using R</title>
-      <link>/posts/tutorial-web-scraping-of-multipe-pages-using-r/</link>
+      <link>/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/</link>
       <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>/posts/tutorial-web-scraping-of-multipe-pages-using-r/</guid>
+      <guid>/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/</guid>
       <description>IntroductionIn today’s world, data is being generated at an exponential rate. This massive amount of data and information is essential for many individuals and tech giants in various useful ways.
 So, having access to precise data in abundance will serve you just right in any field in gaining insights and performing further analysis. Therefore, Web Scraping has become a must have skill especially if you are a data scientist.</description>
     </item>
