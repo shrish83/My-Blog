@@ -1,0 +1,258 @@
+---
+title: Tidyverse Series - dplyr - Episode 1
+author: Shrishti Vaish
+date: '2020-07-20'
+slug: tidyverse-series-dplyr-episode-1
+categories:
+  - Data Manipulation
+tags:
+  - tidyverse
+  - dplyr
+  - wrangling
+  - manipulation
+cover: "/img/tidy.png"
+---
+
+
+# Introduction
+
+In this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.
+
+So, **Data Manipulation** is the key. We transform our data according to our needs which is significant for robust analysis. We _manipulate_ data for further easy processing.
+
+R has many built-in libraries and functions for our desired task.
+
+In this episode, we start with the widely used **tidyverse** which _is an opinionated collection of R packages designed for data science._
+
+
+
+# tidyverse
+
+The _tidyverse_ is an umbrella term comprising  many packages for data interaction. Let's learn its installation process which similar to any other installation.
+
+Also load it into your R session.
+
+```{r message=FALSE,results='hide',warning=FALSE}
+#install.packages("tidyverse")
+
+library(tidyverse)
+```
+
+
+There are four main packages for _Data wrangling and Transformation:_
+* dplyr
+* tidyr
+* stringr
+* forcats
+
+We are going to learn about the __dplyr__ package in depth in this episode.
+
+
+
+# dplyr
+
+dplyr is a _grammer of data manipulation providing a consistent set of verbs that solve the most common data manipulation challenges._
+
+```{r message=FALSE,results='hide',warning=FALSE}
+#install.packages("dplyr")
+
+library(dplyr)
+```
+
+
+**Single Table Verbs**
+This tutorial guides you through dplyr's basic set of tools.
+
+
+#### Choosing dataset
+
+Using `data()` to reveal in-built datasets. 
+In this tutorial, we are going to use the `Titanic` dataset.
+
+```{r}
+#data()
+
+#Loading the dataset
+
+data("Titanic")
+
+
+```
+
+
+#### Viewing the  description of the dataset
+
+```{r}
+str(Titanic)
+```
+
+
+#### Creating a local dataset for easier working
+
+```{r}
+df_titanic <- as.data.frame(Titanic)
+```
+
+**Observations x Features**
+```{r}
+dim(df_titanic)
+```
+
+
+
+# The `pipe` Function - a better alternative
+
+All the functions take the dataset as the first argument. Using the `%>%` operator that is the `pipe` operator makes our working easier. For instance, an argument or the dataset `x` in some `function(x,y)` becomes `x %>% function(y)` which means that results from previous steps can be piped into another or the next steps.
+
+
+
+# Single Table Verbs
+
+
+* Functions manipulating the dataset with _rows_
+
+##### 1. `filter()`: subsetting our observations/rows based on filtered colums/features
+   
+**How many children survived in the tragedy?**
+```{r}
+df_titanic %>% filter(Age == "Child")
+```
+
+
+**How many adult females from the 3rd class survived the tragedy?**
+```{r}
+df_titanic %>% filter(Sex=="Female",Age == "Adult",Class=="3rd")
+```
+
+
+##### 2. `arrange()` : subsetting our observations/rows based on arranging colums/features in unique or different order
+
+**Arranging rows according to the increasing order of number of people who survived:**
+```{r}
+df_titanic %>% arrange(Freq)
+
+#in the descending order
+df_titanic %>% arrange(desc(Freq))
+```
+
+
+##### 3. `slice()` : indexing rows/observations using their integer locations
+
+```{r}
+#rows between 6 to 27
+df_titanic %>% slice(6:27)
+
+#first 3 rows
+df_titanic %>% slice_head(n=3)
+
+#for selecting observation at random
+df_titanic %>% slice_sample(n=6)
+
+#rows with top five values of Freq
+df_titanic %>% slice_max(Freq,n=5)
+```
+
+
+
+* Functions manipulating the dataset with _columns_
+
+##### 1. `select()` : selecting or choosing a few columns while discarding others that are of no use thereby reducing our valuable time
+
+**How many males and females survived the tragedy?**
+```{r}
+
+#shows only two columns
+df_titanic %>% select(Sex,Survived)
+```
+
+**But,**
+```{r}
+#shows all the columns from 'sex' through to 'survived'(inclusive)
+df_titanic %>% select(Sex:Survived)
+```
+
+**And this code below deselects the mentioned columns as arguments:**
+```{r}
+
+df_titanic %>% select(-c(Sex,Age))
+```
+
+
+
+_Let us learn some of the `helper functions` that are used alomg with the `select()` function:_
+
+* starts_with()
+* ends_with()
+* matches()
+* contains()
+
+_For instance:_
+
+```{r}
+df_titanic %>% select(starts_with("S"))
+```
+
+
+
+##### 2. `rename()` : Using this function is recommended in place of `select()`
+
+```{r}
+###rename
+df_titanic %>% rename(Cl_ass = Class)
+
+###select
+df_titanic %>% select(S_ex = Sex)
+```
+
+
+**Note: Return back to original data frame.**
+```{r}
+df_titanic <- as.data.frame(Titanic)
+```
+
+
+
+##### 2. `mutate()` : It is basically used to add new columns which are created using the existing columns as the new columns that are to be added i.e mutated are functions of the existng columns
+
+_Suppose there were about a thousand people on board, then what percenatge of people survived? _
+```{r}
+
+#Assume total = 1000 thus 100/1000 for percentage i.e 0.1
+df_titanic %>% mutate(Freq_per =  Freq * 0.1)
+
+```
+
+
+
+
+##### 3. `relocate()` : basically relocating or moving columns
+
+**In the code below, the columns between 'sex' and 'Age' (both inclusive) are placed before the column 'Class' using the `.before` attribute.**
+```{r}
+df_titanic %>% relocate(Sex:Age, .before = Class)
+```
+
+
+
+
+* Functions manipulating the dataset with _group of data_
+
+##### 1. `summarise()` : _collapses a data frame to a single row_
+
+**Using mean of the `Freq` column and removing any NA values that exist **
+```{r}
+df_titanic %>% summarise(Freq = mean(Freq, na.rm = T))
+```
+
+**Note: The similarities in all of the above functions is their syntax like the dataset as their first argument which can be piped as well and the next set of arguments as to what action has to be performed on the dataset, etc.**
+
+So, this is it. We chose a simple, small dataset to start with and learnt how to manipulate data using a few simple functions.
+
+You can chose any other dataset from the in-built ones or from many websites offering datasets for free. Here are some of the sites that I recommend:
+[Gapminder](https://www.gapminder.org/data/)
+[Data.gov](https://catalog.data.gov/dataset)
+[Data.world](https://data.world/datasets/free)
+
+
+Stay tuned for more tutorials!<br/>
+Thank You!

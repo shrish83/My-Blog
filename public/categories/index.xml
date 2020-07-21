@@ -6,7 +6,7 @@
     <description>Recent content in Categories on R Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,565 @@
     <item>
       <title>Posts</title>
       <link>/posts/</link>
-      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/</guid>
       <description></description> 
+    </item>
+    
+    <item>
+      <title>Tidyverse Series - dplyr - Episode 1</title>
+      <link>/2020/07/tidyverse-series-dplyr-episode-1/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/07/tidyverse-series-dplyr-episode-1/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;In this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.&lt;/p&gt;
+&lt;p&gt;So, &lt;strong&gt;Data Manipulation&lt;/strong&gt; is the key. We transform our data according to our needs which is significant for robust analysis. We &lt;em&gt;manipulate&lt;/em&gt; data for further easy processing.&lt;/p&gt;
+&lt;p&gt;R has many built-in libraries and functions for our desired task.&lt;/p&gt;
+&lt;p&gt;In this episode, we start with the widely used &lt;strong&gt;tidyverse&lt;/strong&gt; which &lt;em&gt;is an opinionated collection of R packages designed for data science.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;tidyverse&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;tidyverse&lt;/h1&gt;
+&lt;p&gt;The &lt;em&gt;tidyverse&lt;/em&gt; is an umbrella term comprising many packages for data interaction. Let’s learn its installation process which similar to any other installation.&lt;/p&gt;
+&lt;p&gt;Also load it into your R session.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#install.packages(&amp;quot;tidyverse&amp;quot;)
+
+library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are four main packages for &lt;em&gt;Data wrangling and Transformation:&lt;/em&gt;
+* dplyr
+* tidyr
+* stringr
+* forcats&lt;/p&gt;
+&lt;p&gt;We are going to learn about the &lt;strong&gt;dplyr&lt;/strong&gt; package in depth in this episode.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;dplyr&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;dplyr&lt;/h1&gt;
+&lt;p&gt;dplyr is a &lt;em&gt;grammer of data manipulation providing a consistent set of verbs that solve the most common data manipulation challenges.&lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#install.packages(&amp;quot;dplyr&amp;quot;)
+
+library(dplyr)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Single Table Verbs&lt;/strong&gt;
+This tutorial guides you through dplyr’s basic set of tools.&lt;/p&gt;
+&lt;div id=&#34;choosing-dataset&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Choosing dataset&lt;/h4&gt;
+&lt;p&gt;Using &lt;code&gt;data()&lt;/code&gt; to reveal in-built datasets.
+In this tutorial, we are going to use the &lt;code&gt;Titanic&lt;/code&gt; dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#data()
+
+#Loading the dataset
+
+data(&amp;quot;Titanic&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;viewing-the-description-of-the-dataset&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Viewing the description of the dataset&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;str(Titanic)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  &amp;#39;table&amp;#39; num [1:4, 1:2, 1:2, 1:2] 0 0 35 0 0 0 17 0 118 154 ...
+##  - attr(*, &amp;quot;dimnames&amp;quot;)=List of 4
+##   ..$ Class   : chr [1:4] &amp;quot;1st&amp;quot; &amp;quot;2nd&amp;quot; &amp;quot;3rd&amp;quot; &amp;quot;Crew&amp;quot;
+##   ..$ Sex     : chr [1:2] &amp;quot;Male&amp;quot; &amp;quot;Female&amp;quot;
+##   ..$ Age     : chr [1:2] &amp;quot;Child&amp;quot; &amp;quot;Adult&amp;quot;
+##   ..$ Survived: chr [1:2] &amp;quot;No&amp;quot; &amp;quot;Yes&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;creating-a-local-dataset-for-easier-working&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Creating a local dataset for easier working&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic &amp;lt;- as.data.frame(Titanic)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Observations x Features&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dim(df_titanic)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 32  5&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-pipe-function---a-better-alternative&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;The &lt;code&gt;pipe&lt;/code&gt; Function - a better alternative&lt;/h1&gt;
+&lt;p&gt;All the functions take the dataset as the first argument. Using the &lt;code&gt;%&amp;gt;%&lt;/code&gt; operator that is the &lt;code&gt;pipe&lt;/code&gt; operator makes our working easier. For instance, an argument or the dataset &lt;code&gt;x&lt;/code&gt; in some &lt;code&gt;function(x,y)&lt;/code&gt; becomes &lt;code&gt;x %&amp;gt;% function(y)&lt;/code&gt; which means that results from previous steps can be piped into another or the next steps.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;single-table-verbs&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Single Table Verbs&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Functions manipulating the dataset with &lt;em&gt;rows&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;filter-subsetting-our-observationsrows-based-on-filtered-columsfeatures&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;1. &lt;code&gt;filter()&lt;/code&gt;: subsetting our observations/rows based on filtered colums/features&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;How many children survived in the tragedy?&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% filter(Age == &amp;quot;Child&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class    Sex   Age Survived Freq
+## 1    1st   Male Child       No    0
+## 2    2nd   Male Child       No    0
+## 3    3rd   Male Child       No   35
+## 4   Crew   Male Child       No    0
+## 5    1st Female Child       No    0
+## 6    2nd Female Child       No    0
+## 7    3rd Female Child       No   17
+## 8   Crew Female Child       No    0
+## 9    1st   Male Child      Yes    5
+## 10   2nd   Male Child      Yes   11
+## 11   3rd   Male Child      Yes   13
+## 12  Crew   Male Child      Yes    0
+## 13   1st Female Child      Yes    1
+## 14   2nd Female Child      Yes   13
+## 15   3rd Female Child      Yes   14
+## 16  Crew Female Child      Yes    0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;How many adult females from the 3rd class survived the tragedy?&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% filter(Sex==&amp;quot;Female&amp;quot;,Age == &amp;quot;Adult&amp;quot;,Class==&amp;quot;3rd&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Class    Sex   Age Survived Freq
+## 1   3rd Female Adult       No   89
+## 2   3rd Female Adult      Yes   76&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;arrange-subsetting-our-observationsrows-based-on-arranging-columsfeatures-in-unique-or-different-order&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2. &lt;code&gt;arrange()&lt;/code&gt; : subsetting our observations/rows based on arranging colums/features in unique or different order&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;Arranging rows according to the increasing order of number of people who survived:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% arrange(Freq)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class    Sex   Age Survived Freq
+## 1    1st   Male Child       No    0
+## 2    2nd   Male Child       No    0
+## 3   Crew   Male Child       No    0
+## 4    1st Female Child       No    0
+## 5    2nd Female Child       No    0
+## 6   Crew Female Child       No    0
+## 7   Crew   Male Child      Yes    0
+## 8   Crew Female Child      Yes    0
+## 9    1st Female Child      Yes    1
+## 10  Crew Female Adult       No    3
+## 11   1st Female Adult       No    4
+## 12   1st   Male Child      Yes    5
+## 13   2nd   Male Child      Yes   11
+## 14   2nd Female Adult       No   13
+## 15   3rd   Male Child      Yes   13
+## 16   2nd Female Child      Yes   13
+## 17   3rd Female Child      Yes   14
+## 18   2nd   Male Adult      Yes   14
+## 19   3rd Female Child       No   17
+## 20  Crew Female Adult      Yes   20
+## 21   3rd   Male Child       No   35
+## 22   1st   Male Adult      Yes   57
+## 23   3rd   Male Adult      Yes   75
+## 24   3rd Female Adult      Yes   76
+## 25   2nd Female Adult      Yes   80
+## 26   3rd Female Adult       No   89
+## 27   1st   Male Adult       No  118
+## 28   1st Female Adult      Yes  140
+## 29   2nd   Male Adult       No  154
+## 30  Crew   Male Adult      Yes  192
+## 31   3rd   Male Adult       No  387
+## 32  Crew   Male Adult       No  670&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#in the descending order
+df_titanic %&amp;gt;% arrange(desc(Freq))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class    Sex   Age Survived Freq
+## 1   Crew   Male Adult       No  670
+## 2    3rd   Male Adult       No  387
+## 3   Crew   Male Adult      Yes  192
+## 4    2nd   Male Adult       No  154
+## 5    1st Female Adult      Yes  140
+## 6    1st   Male Adult       No  118
+## 7    3rd Female Adult       No   89
+## 8    2nd Female Adult      Yes   80
+## 9    3rd Female Adult      Yes   76
+## 10   3rd   Male Adult      Yes   75
+## 11   1st   Male Adult      Yes   57
+## 12   3rd   Male Child       No   35
+## 13  Crew Female Adult      Yes   20
+## 14   3rd Female Child       No   17
+## 15   3rd Female Child      Yes   14
+## 16   2nd   Male Adult      Yes   14
+## 17   2nd Female Adult       No   13
+## 18   3rd   Male Child      Yes   13
+## 19   2nd Female Child      Yes   13
+## 20   2nd   Male Child      Yes   11
+## 21   1st   Male Child      Yes    5
+## 22   1st Female Adult       No    4
+## 23  Crew Female Adult       No    3
+## 24   1st Female Child      Yes    1
+## 25   1st   Male Child       No    0
+## 26   2nd   Male Child       No    0
+## 27  Crew   Male Child       No    0
+## 28   1st Female Child       No    0
+## 29   2nd Female Child       No    0
+## 30  Crew Female Child       No    0
+## 31  Crew   Male Child      Yes    0
+## 32  Crew Female Child      Yes    0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slice-indexing-rowsobservations-using-their-integer-locations&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;3. &lt;code&gt;slice()&lt;/code&gt; : indexing rows/observations using their integer locations&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#rows between 6 to 27
+df_titanic %&amp;gt;% slice(6:27)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class    Sex   Age Survived Freq
+## 1    2nd Female Child       No    0
+## 2    3rd Female Child       No   17
+## 3   Crew Female Child       No    0
+## 4    1st   Male Adult       No  118
+## 5    2nd   Male Adult       No  154
+## 6    3rd   Male Adult       No  387
+## 7   Crew   Male Adult       No  670
+## 8    1st Female Adult       No    4
+## 9    2nd Female Adult       No   13
+## 10   3rd Female Adult       No   89
+## 11  Crew Female Adult       No    3
+## 12   1st   Male Child      Yes    5
+## 13   2nd   Male Child      Yes   11
+## 14   3rd   Male Child      Yes   13
+## 15  Crew   Male Child      Yes    0
+## 16   1st Female Child      Yes    1
+## 17   2nd Female Child      Yes   13
+## 18   3rd Female Child      Yes   14
+## 19  Crew Female Child      Yes    0
+## 20   1st   Male Adult      Yes   57
+## 21   2nd   Male Adult      Yes   14
+## 22   3rd   Male Adult      Yes   75&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#first 3 rows
+df_titanic %&amp;gt;% slice_head(n=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Class  Sex   Age Survived Freq
+## 1   1st Male Child       No    0
+## 2   2nd Male Child       No    0
+## 3   3rd Male Child       No   35&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#for selecting observation at random
+df_titanic %&amp;gt;% slice_sample(n=6)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Class    Sex   Age Survived Freq
+## 1   2nd   Male Child       No    0
+## 2   3rd Female Adult      Yes   76
+## 3   2nd Female Adult       No   13
+## 4   2nd Female Adult      Yes   80
+## 5   1st   Male Child       No    0
+## 6   1st   Male Adult      Yes   57&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#rows with top five values of Freq
+df_titanic %&amp;gt;% slice_max(Freq,n=5)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   Class    Sex   Age Survived Freq
+## 1  Crew   Male Adult       No  670
+## 2   3rd   Male Adult       No  387
+## 3  Crew   Male Adult      Yes  192
+## 4   2nd   Male Adult       No  154
+## 5   1st Female Adult      Yes  140&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Functions manipulating the dataset with &lt;em&gt;columns&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;select-selecting-or-choosing-a-few-columns-while-discarding-others-that-are-of-no-use-thereby-reducing-our-valuable-time&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;1. &lt;code&gt;select()&lt;/code&gt; : selecting or choosing a few columns while discarding others that are of no use thereby reducing our valuable time&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;How many males and females survived the tragedy?&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#shows only two columns
+df_titanic %&amp;gt;% select(Sex,Survived)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       Sex Survived
+## 1    Male       No
+## 2    Male       No
+## 3    Male       No
+## 4    Male       No
+## 5  Female       No
+## 6  Female       No
+## 7  Female       No
+## 8  Female       No
+## 9    Male       No
+## 10   Male       No
+## 11   Male       No
+## 12   Male       No
+## 13 Female       No
+## 14 Female       No
+## 15 Female       No
+## 16 Female       No
+## 17   Male      Yes
+## 18   Male      Yes
+## 19   Male      Yes
+## 20   Male      Yes
+## 21 Female      Yes
+## 22 Female      Yes
+## 23 Female      Yes
+## 24 Female      Yes
+## 25   Male      Yes
+## 26   Male      Yes
+## 27   Male      Yes
+## 28   Male      Yes
+## 29 Female      Yes
+## 30 Female      Yes
+## 31 Female      Yes
+## 32 Female      Yes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;But,&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#shows all the columns from &amp;#39;sex&amp;#39; through to &amp;#39;survived&amp;#39;(inclusive)
+df_titanic %&amp;gt;% select(Sex:Survived)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       Sex   Age Survived
+## 1    Male Child       No
+## 2    Male Child       No
+## 3    Male Child       No
+## 4    Male Child       No
+## 5  Female Child       No
+## 6  Female Child       No
+## 7  Female Child       No
+## 8  Female Child       No
+## 9    Male Adult       No
+## 10   Male Adult       No
+## 11   Male Adult       No
+## 12   Male Adult       No
+## 13 Female Adult       No
+## 14 Female Adult       No
+## 15 Female Adult       No
+## 16 Female Adult       No
+## 17   Male Child      Yes
+## 18   Male Child      Yes
+## 19   Male Child      Yes
+## 20   Male Child      Yes
+## 21 Female Child      Yes
+## 22 Female Child      Yes
+## 23 Female Child      Yes
+## 24 Female Child      Yes
+## 25   Male Adult      Yes
+## 26   Male Adult      Yes
+## 27   Male Adult      Yes
+## 28   Male Adult      Yes
+## 29 Female Adult      Yes
+## 30 Female Adult      Yes
+## 31 Female Adult      Yes
+## 32 Female Adult      Yes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;And this code below deselects the mentioned columns as arguments:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% select(-c(Sex,Age))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class Survived Freq
+## 1    1st       No    0
+## 2    2nd       No    0
+## 3    3rd       No   35
+## 4   Crew       No    0
+## 5    1st       No    0
+## 6    2nd       No    0
+## 7    3rd       No   17
+## 8   Crew       No    0
+## 9    1st       No  118
+## 10   2nd       No  154
+## 11   3rd       No  387
+## 12  Crew       No  670
+## 13   1st       No    4
+## 14   2nd       No   13
+## 15   3rd       No   89
+## 16  Crew       No    3
+## 17   1st      Yes    5
+## 18   2nd      Yes   11
+## 19   3rd      Yes   13
+## 20  Crew      Yes    0
+## 21   1st      Yes    1
+## 22   2nd      Yes   13
+## 23   3rd      Yes   14
+## 24  Crew      Yes    0
+## 25   1st      Yes   57
+## 26   2nd      Yes   14
+## 27   3rd      Yes   75
+## 28  Crew      Yes  192
+## 29   1st      Yes  140
+## 30   2nd      Yes   80
+## 31   3rd      Yes   76
+## 32  Crew      Yes   20&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Let us learn some of the &lt;code&gt;helper functions&lt;/code&gt; that are used alomg with the &lt;code&gt;select()&lt;/code&gt; function:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;starts_with()&lt;/li&gt;
+&lt;li&gt;ends_with()&lt;/li&gt;
+&lt;li&gt;matches()&lt;/li&gt;
+&lt;li&gt;contains()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;For instance:&lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% select(starts_with(&amp;quot;S&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       Sex Survived
+## 1    Male       No
+## 2    Male       No
+## 3    Male       No
+## 4    Male       No
+## 5  Female       No
+## 6  Female       No
+## 7  Female       No
+## 8  Female       No
+## 9    Male       No
+## 10   Male       No
+## 11   Male       No
+## 12   Male       No
+## 13 Female       No
+## 14 Female       No
+## 15 Female       No
+## 16 Female       No
+## 17   Male      Yes
+## 18   Male      Yes
+## 19   Male      Yes
+## 20   Male      Yes
+## 21 Female      Yes
+## 22 Female      Yes
+## 23 Female      Yes
+## 24 Female      Yes
+## 25   Male      Yes
+## 26   Male      Yes
+## 27   Male      Yes
+## 28   Male      Yes
+## 29 Female      Yes
+## 30 Female      Yes
+## 31 Female      Yes
+## 32 Female      Yes&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;rename-using-this-function-is-recommended-in-place-of-select&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2. &lt;code&gt;rename()&lt;/code&gt; : Using this function is recommended in place of &lt;code&gt;select()&lt;/code&gt;&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;###rename
+df_titanic %&amp;gt;% rename(Cl_ass = Class)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Cl_ass    Sex   Age Survived Freq
+## 1     1st   Male Child       No    0
+## 2     2nd   Male Child       No    0
+## 3     3rd   Male Child       No   35
+## 4    Crew   Male Child       No    0
+## 5     1st Female Child       No    0
+## 6     2nd Female Child       No    0
+## 7     3rd Female Child       No   17
+## 8    Crew Female Child       No    0
+## 9     1st   Male Adult       No  118
+## 10    2nd   Male Adult       No  154
+## 11    3rd   Male Adult       No  387
+## 12   Crew   Male Adult       No  670
+## 13    1st Female Adult       No    4
+## 14    2nd Female Adult       No   13
+## 15    3rd Female Adult       No   89
+## 16   Crew Female Adult       No    3
+## 17    1st   Male Child      Yes    5
+## 18    2nd   Male Child      Yes   11
+## 19    3rd   Male Child      Yes   13
+## 20   Crew   Male Child      Yes    0
+## 21    1st Female Child      Yes    1
+## 22    2nd Female Child      Yes   13
+## 23    3rd Female Child      Yes   14
+## 24   Crew Female Child      Yes    0
+## 25    1st   Male Adult      Yes   57
+## 26    2nd   Male Adult      Yes   14
+## 27    3rd   Male Adult      Yes   75
+## 28   Crew   Male Adult      Yes  192
+## 29    1st Female Adult      Yes  140
+## 30    2nd Female Adult      Yes   80
+## 31    3rd Female Adult      Yes   76
+## 32   Crew Female Adult      Yes   20&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;###select
+df_titanic %&amp;gt;% select(S_ex = Sex)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      S_ex
+## 1    Male
+## 2    Male
+## 3    Male
+## 4    Male
+## 5  Female
+## 6  Female
+## 7  Female
+## 8  Female
+## 9    Male
+## 10   Male
+## 11   Male
+## 12   Male
+## 13 Female
+## 14 Female
+## 15 Female
+## 16 Female
+## 17   Male
+## 18   Male
+## 19   Male
+## 20   Male
+## 21 Female
+## 22 Female
+## 23 Female
+## 24 Female
+## 25   Male
+## 26   Male
+## 27   Male
+## 28   Male
+## 29 Female
+## 30 Female
+## 31 Female
+## 32 Female&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Note: Return back to original data frame.&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic &amp;lt;- as.data.frame(Titanic)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mutate-it-is-basically-used-to-add-new-columns-which-are-created-using-the-existing-columns-as-the-new-columns-that-are-to-be-added-i.e-mutated-are-functions-of-the-existng-columns&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;2. &lt;code&gt;mutate()&lt;/code&gt; : It is basically used to add new columns which are created using the existing columns as the new columns that are to be added i.e mutated are functions of the existng columns&lt;/h5&gt;
+&lt;p&gt;&lt;em&gt;Suppose there were about a thousand people on board, then what percenatge of people survived? &lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Assume total = 1000 thus 100/1000 for percentage i.e 0.1
+df_titanic %&amp;gt;% mutate(Freq_per =  Freq * 0.1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    Class    Sex   Age Survived Freq Freq_per
+## 1    1st   Male Child       No    0      0.0
+## 2    2nd   Male Child       No    0      0.0
+## 3    3rd   Male Child       No   35      3.5
+## 4   Crew   Male Child       No    0      0.0
+## 5    1st Female Child       No    0      0.0
+## 6    2nd Female Child       No    0      0.0
+## 7    3rd Female Child       No   17      1.7
+## 8   Crew Female Child       No    0      0.0
+## 9    1st   Male Adult       No  118     11.8
+## 10   2nd   Male Adult       No  154     15.4
+## 11   3rd   Male Adult       No  387     38.7
+## 12  Crew   Male Adult       No  670     67.0
+## 13   1st Female Adult       No    4      0.4
+## 14   2nd Female Adult       No   13      1.3
+## 15   3rd Female Adult       No   89      8.9
+## 16  Crew Female Adult       No    3      0.3
+## 17   1st   Male Child      Yes    5      0.5
+## 18   2nd   Male Child      Yes   11      1.1
+## 19   3rd   Male Child      Yes   13      1.3
+## 20  Crew   Male Child      Yes    0      0.0
+## 21   1st Female Child      Yes    1      0.1
+## 22   2nd Female Child      Yes   13      1.3
+## 23   3rd Female Child      Yes   14      1.4
+## 24  Crew Female Child      Yes    0      0.0
+## 25   1st   Male Adult      Yes   57      5.7
+## 26   2nd   Male Adult      Yes   14      1.4
+## 27   3rd   Male Adult      Yes   75      7.5
+## 28  Crew   Male Adult      Yes  192     19.2
+## 29   1st Female Adult      Yes  140     14.0
+## 30   2nd Female Adult      Yes   80      8.0
+## 31   3rd Female Adult      Yes   76      7.6
+## 32  Crew Female Adult      Yes   20      2.0&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;relocate-basically-relocating-or-moving-columns&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;3. &lt;code&gt;relocate()&lt;/code&gt; : basically relocating or moving columns&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;In the code below, the columns between ‘sex’ and ‘Age’ (both inclusive) are placed before the column ‘Class’ using the &lt;code&gt;.before&lt;/code&gt; attribute.&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% relocate(Sex:Age, .before = Class)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       Sex   Age Class Survived Freq
+## 1    Male Child   1st       No    0
+## 2    Male Child   2nd       No    0
+## 3    Male Child   3rd       No   35
+## 4    Male Child  Crew       No    0
+## 5  Female Child   1st       No    0
+## 6  Female Child   2nd       No    0
+## 7  Female Child   3rd       No   17
+## 8  Female Child  Crew       No    0
+## 9    Male Adult   1st       No  118
+## 10   Male Adult   2nd       No  154
+## 11   Male Adult   3rd       No  387
+## 12   Male Adult  Crew       No  670
+## 13 Female Adult   1st       No    4
+## 14 Female Adult   2nd       No   13
+## 15 Female Adult   3rd       No   89
+## 16 Female Adult  Crew       No    3
+## 17   Male Child   1st      Yes    5
+## 18   Male Child   2nd      Yes   11
+## 19   Male Child   3rd      Yes   13
+## 20   Male Child  Crew      Yes    0
+## 21 Female Child   1st      Yes    1
+## 22 Female Child   2nd      Yes   13
+## 23 Female Child   3rd      Yes   14
+## 24 Female Child  Crew      Yes    0
+## 25   Male Adult   1st      Yes   57
+## 26   Male Adult   2nd      Yes   14
+## 27   Male Adult   3rd      Yes   75
+## 28   Male Adult  Crew      Yes  192
+## 29 Female Adult   1st      Yes  140
+## 30 Female Adult   2nd      Yes   80
+## 31 Female Adult   3rd      Yes   76
+## 32 Female Adult  Crew      Yes   20&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Functions manipulating the dataset with &lt;em&gt;group of data&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;summarise-collapses-a-data-frame-to-a-single-row&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;1. &lt;code&gt;summarise()&lt;/code&gt; : &lt;em&gt;collapses a data frame to a single row&lt;/em&gt;&lt;/h5&gt;
+&lt;p&gt;&lt;strong&gt;Using mean of the &lt;code&gt;Freq&lt;/code&gt; column and removing any NA values that exist &lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_titanic %&amp;gt;% summarise(Freq = mean(Freq, na.rm = T))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       Freq
+## 1 68.78125&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Note: The similarities in all of the above functions is their syntax like the dataset as their first argument which can be piped as well and the next set of arguments as to what action has to be performed on the dataset, etc.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So, this is it. We chose a simple, small dataset to start with and learnt how to manipulate data using a few simple functions.&lt;/p&gt;
+&lt;p&gt;You can chose any other dataset from the in-built ones or from many websites offering datasets for free. Here are some of the sites that I recommend:
+&lt;a href=&#34;https://www.gapminder.org/data/&#34;&gt;Gapminder&lt;/a&gt;
+&lt;a href=&#34;https://catalog.data.gov/dataset&#34;&gt;Data.gov&lt;/a&gt;
+&lt;a href=&#34;https://data.world/datasets/free&#34;&gt;Data.world&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Stay tuned for more tutorials!&lt;br/&gt;
+Thank You!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description> 
     </item>
     
     <item>

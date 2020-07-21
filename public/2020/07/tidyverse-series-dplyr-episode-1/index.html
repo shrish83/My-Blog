@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+Tidyverse Series - dplyr - Episode 1
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="IntroductionIn this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.
+So, Data Manipulation is the key. We transform our data according to our needs which is significant for robust analysis. We manipulate data for further easy processing." />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/2020/07/tidyverse-series-dplyr-episode-1/" />
+
+
+<meta property="og:title" content="Tidyverse Series - dplyr - Episode 1" />
+<meta property="og:description" content="IntroductionIn this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.
+So, Data Manipulation is the key. We transform our data according to our needs which is significant for robust analysis. We manipulate data for further easy processing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/07/tidyverse-series-dplyr-episode-1/" />
+<meta property="article:published_time" content="2020-07-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-20T00:00:00+00:00" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tidyverse Series - dplyr - Episode 1"/>
+<meta name="twitter:description" content="IntroductionIn this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.
+So, Data Manipulation is the key. We transform our data according to our needs which is significant for robust analysis. We manipulate data for further easy processing."/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          Tidyverse Series - dplyr - Episode 1
+          <div class="sub header">@ Shrishti Vaish · Monday, Jul 20, 2020 · 15 minute read · Update at Jul 20, 2020</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="/img/tidy.png" />
+      
+
+      <article style="margin-top: 2rem;">
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this series, we are going to talk about data manipulation in R. The data we obtain or collect from various sources is usually unstructured or comprises information that is futile for our purpose. Therefore, spending time on the entire dataset is needless and inessential.</p>
+<p>So, <strong>Data Manipulation</strong> is the key. We transform our data according to our needs which is significant for robust analysis. We <em>manipulate</em> data for further easy processing.</p>
+<p>R has many built-in libraries and functions for our desired task.</p>
+<p>In this episode, we start with the widely used <strong>tidyverse</strong> which <em>is an opinionated collection of R packages designed for data science.</em></p>
+</div>
+<div id="tidyverse" class="section level1">
+<h1>tidyverse</h1>
+<p>The <em>tidyverse</em> is an umbrella term comprising many packages for data interaction. Let’s learn its installation process which similar to any other installation.</p>
+<p>Also load it into your R session.</p>
+<pre class="r"><code>#install.packages(&quot;tidyverse&quot;)
+
+library(tidyverse)</code></pre>
+<p>There are four main packages for <em>Data wrangling and Transformation:</em>
+* dplyr
+* tidyr
+* stringr
+* forcats</p>
+<p>We are going to learn about the <strong>dplyr</strong> package in depth in this episode.</p>
+</div>
+<div id="dplyr" class="section level1">
+<h1>dplyr</h1>
+<p>dplyr is a <em>grammer of data manipulation providing a consistent set of verbs that solve the most common data manipulation challenges.</em></p>
+<pre class="r"><code>#install.packages(&quot;dplyr&quot;)
+
+library(dplyr)</code></pre>
+<p><strong>Single Table Verbs</strong>
+This tutorial guides you through dplyr’s basic set of tools.</p>
+<div id="choosing-dataset" class="section level4">
+<h4>Choosing dataset</h4>
+<p>Using <code>data()</code> to reveal in-built datasets.
+In this tutorial, we are going to use the <code>Titanic</code> dataset.</p>
+<pre class="r"><code>#data()
+
+#Loading the dataset
+
+data(&quot;Titanic&quot;)</code></pre>
+</div>
+<div id="viewing-the-description-of-the-dataset" class="section level4">
+<h4>Viewing the description of the dataset</h4>
+<pre class="r"><code>str(Titanic)</code></pre>
+<pre><code>##  &#39;table&#39; num [1:4, 1:2, 1:2, 1:2] 0 0 35 0 0 0 17 0 118 154 ...
+##  - attr(*, &quot;dimnames&quot;)=List of 4
+##   ..$ Class   : chr [1:4] &quot;1st&quot; &quot;2nd&quot; &quot;3rd&quot; &quot;Crew&quot;
+##   ..$ Sex     : chr [1:2] &quot;Male&quot; &quot;Female&quot;
+##   ..$ Age     : chr [1:2] &quot;Child&quot; &quot;Adult&quot;
+##   ..$ Survived: chr [1:2] &quot;No&quot; &quot;Yes&quot;</code></pre>
+</div>
+<div id="creating-a-local-dataset-for-easier-working" class="section level4">
+<h4>Creating a local dataset for easier working</h4>
+<pre class="r"><code>df_titanic &lt;- as.data.frame(Titanic)</code></pre>
+<p><strong>Observations x Features</strong></p>
+<pre class="r"><code>dim(df_titanic)</code></pre>
+<pre><code>## [1] 32  5</code></pre>
+</div>
+</div>
+<div id="the-pipe-function---a-better-alternative" class="section level1">
+<h1>The <code>pipe</code> Function - a better alternative</h1>
+<p>All the functions take the dataset as the first argument. Using the <code>%&gt;%</code> operator that is the <code>pipe</code> operator makes our working easier. For instance, an argument or the dataset <code>x</code> in some <code>function(x,y)</code> becomes <code>x %&gt;% function(y)</code> which means that results from previous steps can be piped into another or the next steps.</p>
+</div>
+<div id="single-table-verbs" class="section level1">
+<h1>Single Table Verbs</h1>
+<ul>
+<li>Functions manipulating the dataset with <em>rows</em></li>
+</ul>
+<div id="filter-subsetting-our-observationsrows-based-on-filtered-columsfeatures" class="section level5">
+<h5>1. <code>filter()</code>: subsetting our observations/rows based on filtered colums/features</h5>
+<p><strong>How many children survived in the tragedy?</strong></p>
+<pre class="r"><code>df_titanic %&gt;% filter(Age == &quot;Child&quot;)</code></pre>
+<pre><code>##    Class    Sex   Age Survived Freq
+## 1    1st   Male Child       No    0
+## 2    2nd   Male Child       No    0
+## 3    3rd   Male Child       No   35
+## 4   Crew   Male Child       No    0
+## 5    1st Female Child       No    0
+## 6    2nd Female Child       No    0
+## 7    3rd Female Child       No   17
+## 8   Crew Female Child       No    0
+## 9    1st   Male Child      Yes    5
+## 10   2nd   Male Child      Yes   11
+## 11   3rd   Male Child      Yes   13
+## 12  Crew   Male Child      Yes    0
+## 13   1st Female Child      Yes    1
+## 14   2nd Female Child      Yes   13
+## 15   3rd Female Child      Yes   14
+## 16  Crew Female Child      Yes    0</code></pre>
+<p><strong>How many adult females from the 3rd class survived the tragedy?</strong></p>
+<pre class="r"><code>df_titanic %&gt;% filter(Sex==&quot;Female&quot;,Age == &quot;Adult&quot;,Class==&quot;3rd&quot;)</code></pre>
+<pre><code>##   Class    Sex   Age Survived Freq
+## 1   3rd Female Adult       No   89
+## 2   3rd Female Adult      Yes   76</code></pre>
+</div>
+<div id="arrange-subsetting-our-observationsrows-based-on-arranging-columsfeatures-in-unique-or-different-order" class="section level5">
+<h5>2. <code>arrange()</code> : subsetting our observations/rows based on arranging colums/features in unique or different order</h5>
+<p><strong>Arranging rows according to the increasing order of number of people who survived:</strong></p>
+<pre class="r"><code>df_titanic %&gt;% arrange(Freq)</code></pre>
+<pre><code>##    Class    Sex   Age Survived Freq
+## 1    1st   Male Child       No    0
+## 2    2nd   Male Child       No    0
+## 3   Crew   Male Child       No    0
+## 4    1st Female Child       No    0
+## 5    2nd Female Child       No    0
+## 6   Crew Female Child       No    0
+## 7   Crew   Male Child      Yes    0
+## 8   Crew Female Child      Yes    0
+## 9    1st Female Child      Yes    1
+## 10  Crew Female Adult       No    3
+## 11   1st Female Adult       No    4
+## 12   1st   Male Child      Yes    5
+## 13   2nd   Male Child      Yes   11
+## 14   2nd Female Adult       No   13
+## 15   3rd   Male Child      Yes   13
+## 16   2nd Female Child      Yes   13
+## 17   3rd Female Child      Yes   14
+## 18   2nd   Male Adult      Yes   14
+## 19   3rd Female Child       No   17
+## 20  Crew Female Adult      Yes   20
+## 21   3rd   Male Child       No   35
+## 22   1st   Male Adult      Yes   57
+## 23   3rd   Male Adult      Yes   75
+## 24   3rd Female Adult      Yes   76
+## 25   2nd Female Adult      Yes   80
+## 26   3rd Female Adult       No   89
+## 27   1st   Male Adult       No  118
+## 28   1st Female Adult      Yes  140
+## 29   2nd   Male Adult       No  154
+## 30  Crew   Male Adult      Yes  192
+## 31   3rd   Male Adult       No  387
+## 32  Crew   Male Adult       No  670</code></pre>
+<pre class="r"><code>#in the descending order
+df_titanic %&gt;% arrange(desc(Freq))</code></pre>
+<pre><code>##    Class    Sex   Age Survived Freq
+## 1   Crew   Male Adult       No  670
+## 2    3rd   Male Adult       No  387
+## 3   Crew   Male Adult      Yes  192
+## 4    2nd   Male Adult       No  154
+## 5    1st Female Adult      Yes  140
+## 6    1st   Male Adult       No  118
+## 7    3rd Female Adult       No   89
+## 8    2nd Female Adult      Yes   80
+## 9    3rd Female Adult      Yes   76
+## 10   3rd   Male Adult      Yes   75
+## 11   1st   Male Adult      Yes   57
+## 12   3rd   Male Child       No   35
+## 13  Crew Female Adult      Yes   20
+## 14   3rd Female Child       No   17
+## 15   3rd Female Child      Yes   14
+## 16   2nd   Male Adult      Yes   14
+## 17   2nd Female Adult       No   13
+## 18   3rd   Male Child      Yes   13
+## 19   2nd Female Child      Yes   13
+## 20   2nd   Male Child      Yes   11
+## 21   1st   Male Child      Yes    5
+## 22   1st Female Adult       No    4
+## 23  Crew Female Adult       No    3
+## 24   1st Female Child      Yes    1
+## 25   1st   Male Child       No    0
+## 26   2nd   Male Child       No    0
+## 27  Crew   Male Child       No    0
+## 28   1st Female Child       No    0
+## 29   2nd Female Child       No    0
+## 30  Crew Female Child       No    0
+## 31  Crew   Male Child      Yes    0
+## 32  Crew Female Child      Yes    0</code></pre>
+</div>
+<div id="slice-indexing-rowsobservations-using-their-integer-locations" class="section level5">
+<h5>3. <code>slice()</code> : indexing rows/observations using their integer locations</h5>
+<pre class="r"><code>#rows between 6 to 27
+df_titanic %&gt;% slice(6:27)</code></pre>
+<pre><code>##    Class    Sex   Age Survived Freq
+## 1    2nd Female Child       No    0
+## 2    3rd Female Child       No   17
+## 3   Crew Female Child       No    0
+## 4    1st   Male Adult       No  118
+## 5    2nd   Male Adult       No  154
+## 6    3rd   Male Adult       No  387
+## 7   Crew   Male Adult       No  670
+## 8    1st Female Adult       No    4
+## 9    2nd Female Adult       No   13
+## 10   3rd Female Adult       No   89
+## 11  Crew Female Adult       No    3
+## 12   1st   Male Child      Yes    5
+## 13   2nd   Male Child      Yes   11
+## 14   3rd   Male Child      Yes   13
+## 15  Crew   Male Child      Yes    0
+## 16   1st Female Child      Yes    1
+## 17   2nd Female Child      Yes   13
+## 18   3rd Female Child      Yes   14
+## 19  Crew Female Child      Yes    0
+## 20   1st   Male Adult      Yes   57
+## 21   2nd   Male Adult      Yes   14
+## 22   3rd   Male Adult      Yes   75</code></pre>
+<pre class="r"><code>#first 3 rows
+df_titanic %&gt;% slice_head(n=3)</code></pre>
+<pre><code>##   Class  Sex   Age Survived Freq
+## 1   1st Male Child       No    0
+## 2   2nd Male Child       No    0
+## 3   3rd Male Child       No   35</code></pre>
+<pre class="r"><code>#for selecting observation at random
+df_titanic %&gt;% slice_sample(n=6)</code></pre>
+<pre><code>##   Class    Sex   Age Survived Freq
+## 1   2nd   Male Child       No    0
+## 2   3rd Female Adult      Yes   76
+## 3   2nd Female Adult       No   13
+## 4   2nd Female Adult      Yes   80
+## 5   1st   Male Child       No    0
+## 6   1st   Male Adult      Yes   57</code></pre>
+<pre class="r"><code>#rows with top five values of Freq
+df_titanic %&gt;% slice_max(Freq,n=5)</code></pre>
+<pre><code>##   Class    Sex   Age Survived Freq
+## 1  Crew   Male Adult       No  670
+## 2   3rd   Male Adult       No  387
+## 3  Crew   Male Adult      Yes  192
+## 4   2nd   Male Adult       No  154
+## 5   1st Female Adult      Yes  140</code></pre>
+<ul>
+<li>Functions manipulating the dataset with <em>columns</em></li>
+</ul>
+</div>
+<div id="select-selecting-or-choosing-a-few-columns-while-discarding-others-that-are-of-no-use-thereby-reducing-our-valuable-time" class="section level5">
+<h5>1. <code>select()</code> : selecting or choosing a few columns while discarding others that are of no use thereby reducing our valuable time</h5>
+<p><strong>How many males and females survived the tragedy?</strong></p>
+<pre class="r"><code>#shows only two columns
+df_titanic %&gt;% select(Sex,Survived)</code></pre>
+<pre><code>##       Sex Survived
+## 1    Male       No
+## 2    Male       No
+## 3    Male       No
+## 4    Male       No
+## 5  Female       No
+## 6  Female       No
+## 7  Female       No
+## 8  Female       No
+## 9    Male       No
+## 10   Male       No
+## 11   Male       No
+## 12   Male       No
+## 13 Female       No
+## 14 Female       No
+## 15 Female       No
+## 16 Female       No
+## 17   Male      Yes
+## 18   Male      Yes
+## 19   Male      Yes
+## 20   Male      Yes
+## 21 Female      Yes
+## 22 Female      Yes
+## 23 Female      Yes
+## 24 Female      Yes
+## 25   Male      Yes
+## 26   Male      Yes
+## 27   Male      Yes
+## 28   Male      Yes
+## 29 Female      Yes
+## 30 Female      Yes
+## 31 Female      Yes
+## 32 Female      Yes</code></pre>
+<p><strong>But,</strong></p>
+<pre class="r"><code>#shows all the columns from &#39;sex&#39; through to &#39;survived&#39;(inclusive)
+df_titanic %&gt;% select(Sex:Survived)</code></pre>
+<pre><code>##       Sex   Age Survived
+## 1    Male Child       No
+## 2    Male Child       No
+## 3    Male Child       No
+## 4    Male Child       No
+## 5  Female Child       No
+## 6  Female Child       No
+## 7  Female Child       No
+## 8  Female Child       No
+## 9    Male Adult       No
+## 10   Male Adult       No
+## 11   Male Adult       No
+## 12   Male Adult       No
+## 13 Female Adult       No
+## 14 Female Adult       No
+## 15 Female Adult       No
+## 16 Female Adult       No
+## 17   Male Child      Yes
+## 18   Male Child      Yes
+## 19   Male Child      Yes
+## 20   Male Child      Yes
+## 21 Female Child      Yes
+## 22 Female Child      Yes
+## 23 Female Child      Yes
+## 24 Female Child      Yes
+## 25   Male Adult      Yes
+## 26   Male Adult      Yes
+## 27   Male Adult      Yes
+## 28   Male Adult      Yes
+## 29 Female Adult      Yes
+## 30 Female Adult      Yes
+## 31 Female Adult      Yes
+## 32 Female Adult      Yes</code></pre>
+<p><strong>And this code below deselects the mentioned columns as arguments:</strong></p>
+<pre class="r"><code>df_titanic %&gt;% select(-c(Sex,Age))</code></pre>
+<pre><code>##    Class Survived Freq
+## 1    1st       No    0
+## 2    2nd       No    0
+## 3    3rd       No   35
+## 4   Crew       No    0
+## 5    1st       No    0
+## 6    2nd       No    0
+## 7    3rd       No   17
+## 8   Crew       No    0
+## 9    1st       No  118
+## 10   2nd       No  154
+## 11   3rd       No  387
+## 12  Crew       No  670
+## 13   1st       No    4
+## 14   2nd       No   13
+## 15   3rd       No   89
+## 16  Crew       No    3
+## 17   1st      Yes    5
+## 18   2nd      Yes   11
+## 19   3rd      Yes   13
+## 20  Crew      Yes    0
+## 21   1st      Yes    1
+## 22   2nd      Yes   13
+## 23   3rd      Yes   14
+## 24  Crew      Yes    0
+## 25   1st      Yes   57
+## 26   2nd      Yes   14
+## 27   3rd      Yes   75
+## 28  Crew      Yes  192
+## 29   1st      Yes  140
+## 30   2nd      Yes   80
+## 31   3rd      Yes   76
+## 32  Crew      Yes   20</code></pre>
+<p><em>Let us learn some of the <code>helper functions</code> that are used alomg with the <code>select()</code> function:</em></p>
+<ul>
+<li>starts_with()</li>
+<li>ends_with()</li>
+<li>matches()</li>
+<li>contains()</li>
+</ul>
+<p><em>For instance:</em></p>
+<pre class="r"><code>df_titanic %&gt;% select(starts_with(&quot;S&quot;))</code></pre>
+<pre><code>##       Sex Survived
+## 1    Male       No
+## 2    Male       No
+## 3    Male       No
+## 4    Male       No
+## 5  Female       No
+## 6  Female       No
+## 7  Female       No
+## 8  Female       No
+## 9    Male       No
+## 10   Male       No
+## 11   Male       No
+## 12   Male       No
+## 13 Female       No
+## 14 Female       No
+## 15 Female       No
+## 16 Female       No
+## 17   Male      Yes
+## 18   Male      Yes
+## 19   Male      Yes
+## 20   Male      Yes
+## 21 Female      Yes
+## 22 Female      Yes
+## 23 Female      Yes
+## 24 Female      Yes
+## 25   Male      Yes
+## 26   Male      Yes
+## 27   Male      Yes
+## 28   Male      Yes
+## 29 Female      Yes
+## 30 Female      Yes
+## 31 Female      Yes
+## 32 Female      Yes</code></pre>
+</div>
+<div id="rename-using-this-function-is-recommended-in-place-of-select" class="section level5">
+<h5>2. <code>rename()</code> : Using this function is recommended in place of <code>select()</code></h5>
+<pre class="r"><code>###rename
+df_titanic %&gt;% rename(Cl_ass = Class)</code></pre>
+<pre><code>##    Cl_ass    Sex   Age Survived Freq
+## 1     1st   Male Child       No    0
+## 2     2nd   Male Child       No    0
+## 3     3rd   Male Child       No   35
+## 4    Crew   Male Child       No    0
+## 5     1st Female Child       No    0
+## 6     2nd Female Child       No    0
+## 7     3rd Female Child       No   17
+## 8    Crew Female Child       No    0
+## 9     1st   Male Adult       No  118
+## 10    2nd   Male Adult       No  154
+## 11    3rd   Male Adult       No  387
+## 12   Crew   Male Adult       No  670
+## 13    1st Female Adult       No    4
+## 14    2nd Female Adult       No   13
+## 15    3rd Female Adult       No   89
+## 16   Crew Female Adult       No    3
+## 17    1st   Male Child      Yes    5
+## 18    2nd   Male Child      Yes   11
+## 19    3rd   Male Child      Yes   13
+## 20   Crew   Male Child      Yes    0
+## 21    1st Female Child      Yes    1
+## 22    2nd Female Child      Yes   13
+## 23    3rd Female Child      Yes   14
+## 24   Crew Female Child      Yes    0
+## 25    1st   Male Adult      Yes   57
+## 26    2nd   Male Adult      Yes   14
+## 27    3rd   Male Adult      Yes   75
+## 28   Crew   Male Adult      Yes  192
+## 29    1st Female Adult      Yes  140
+## 30    2nd Female Adult      Yes   80
+## 31    3rd Female Adult      Yes   76
+## 32   Crew Female Adult      Yes   20</code></pre>
+<pre class="r"><code>###select
+df_titanic %&gt;% select(S_ex = Sex)</code></pre>
+<pre><code>##      S_ex
+## 1    Male
+## 2    Male
+## 3    Male
+## 4    Male
+## 5  Female
+## 6  Female
+## 7  Female
+## 8  Female
+## 9    Male
+## 10   Male
+## 11   Male
+## 12   Male
+## 13 Female
+## 14 Female
+## 15 Female
+## 16 Female
+## 17   Male
+## 18   Male
+## 19   Male
+## 20   Male
+## 21 Female
+## 22 Female
+## 23 Female
+## 24 Female
+## 25   Male
+## 26   Male
+## 27   Male
+## 28   Male
+## 29 Female
+## 30 Female
+## 31 Female
+## 32 Female</code></pre>
+<p><strong>Note: Return back to original data frame.</strong></p>
+<pre class="r"><code>df_titanic &lt;- as.data.frame(Titanic)</code></pre>
+</div>
+<div id="mutate-it-is-basically-used-to-add-new-columns-which-are-created-using-the-existing-columns-as-the-new-columns-that-are-to-be-added-i.e-mutated-are-functions-of-the-existng-columns" class="section level5">
+<h5>2. <code>mutate()</code> : It is basically used to add new columns which are created using the existing columns as the new columns that are to be added i.e mutated are functions of the existng columns</h5>
+<p><em>Suppose there were about a thousand people on board, then what percenatge of people survived? </em></p>
+<pre class="r"><code>#Assume total = 1000 thus 100/1000 for percentage i.e 0.1
+df_titanic %&gt;% mutate(Freq_per =  Freq * 0.1)</code></pre>
+<pre><code>##    Class    Sex   Age Survived Freq Freq_per
+## 1    1st   Male Child       No    0      0.0
+## 2    2nd   Male Child       No    0      0.0
+## 3    3rd   Male Child       No   35      3.5
+## 4   Crew   Male Child       No    0      0.0
+## 5    1st Female Child       No    0      0.0
+## 6    2nd Female Child       No    0      0.0
+## 7    3rd Female Child       No   17      1.7
+## 8   Crew Female Child       No    0      0.0
+## 9    1st   Male Adult       No  118     11.8
+## 10   2nd   Male Adult       No  154     15.4
+## 11   3rd   Male Adult       No  387     38.7
+## 12  Crew   Male Adult       No  670     67.0
+## 13   1st Female Adult       No    4      0.4
+## 14   2nd Female Adult       No   13      1.3
+## 15   3rd Female Adult       No   89      8.9
+## 16  Crew Female Adult       No    3      0.3
+## 17   1st   Male Child      Yes    5      0.5
+## 18   2nd   Male Child      Yes   11      1.1
+## 19   3rd   Male Child      Yes   13      1.3
+## 20  Crew   Male Child      Yes    0      0.0
+## 21   1st Female Child      Yes    1      0.1
+## 22   2nd Female Child      Yes   13      1.3
+## 23   3rd Female Child      Yes   14      1.4
+## 24  Crew Female Child      Yes    0      0.0
+## 25   1st   Male Adult      Yes   57      5.7
+## 26   2nd   Male Adult      Yes   14      1.4
+## 27   3rd   Male Adult      Yes   75      7.5
+## 28  Crew   Male Adult      Yes  192     19.2
+## 29   1st Female Adult      Yes  140     14.0
+## 30   2nd Female Adult      Yes   80      8.0
+## 31   3rd Female Adult      Yes   76      7.6
+## 32  Crew Female Adult      Yes   20      2.0</code></pre>
+</div>
+<div id="relocate-basically-relocating-or-moving-columns" class="section level5">
+<h5>3. <code>relocate()</code> : basically relocating or moving columns</h5>
+<p><strong>In the code below, the columns between ‘sex’ and ‘Age’ (both inclusive) are placed before the column ‘Class’ using the <code>.before</code> attribute.</strong></p>
+<pre class="r"><code>df_titanic %&gt;% relocate(Sex:Age, .before = Class)</code></pre>
+<pre><code>##       Sex   Age Class Survived Freq
+## 1    Male Child   1st       No    0
+## 2    Male Child   2nd       No    0
+## 3    Male Child   3rd       No   35
+## 4    Male Child  Crew       No    0
+## 5  Female Child   1st       No    0
+## 6  Female Child   2nd       No    0
+## 7  Female Child   3rd       No   17
+## 8  Female Child  Crew       No    0
+## 9    Male Adult   1st       No  118
+## 10   Male Adult   2nd       No  154
+## 11   Male Adult   3rd       No  387
+## 12   Male Adult  Crew       No  670
+## 13 Female Adult   1st       No    4
+## 14 Female Adult   2nd       No   13
+## 15 Female Adult   3rd       No   89
+## 16 Female Adult  Crew       No    3
+## 17   Male Child   1st      Yes    5
+## 18   Male Child   2nd      Yes   11
+## 19   Male Child   3rd      Yes   13
+## 20   Male Child  Crew      Yes    0
+## 21 Female Child   1st      Yes    1
+## 22 Female Child   2nd      Yes   13
+## 23 Female Child   3rd      Yes   14
+## 24 Female Child  Crew      Yes    0
+## 25   Male Adult   1st      Yes   57
+## 26   Male Adult   2nd      Yes   14
+## 27   Male Adult   3rd      Yes   75
+## 28   Male Adult  Crew      Yes  192
+## 29 Female Adult   1st      Yes  140
+## 30 Female Adult   2nd      Yes   80
+## 31 Female Adult   3rd      Yes   76
+## 32 Female Adult  Crew      Yes   20</code></pre>
+<ul>
+<li>Functions manipulating the dataset with <em>group of data</em></li>
+</ul>
+</div>
+<div id="summarise-collapses-a-data-frame-to-a-single-row" class="section level5">
+<h5>1. <code>summarise()</code> : <em>collapses a data frame to a single row</em></h5>
+<p><strong>Using mean of the <code>Freq</code> column and removing any NA values that exist </strong></p>
+<pre class="r"><code>df_titanic %&gt;% summarise(Freq = mean(Freq, na.rm = T))</code></pre>
+<pre><code>##       Freq
+## 1 68.78125</code></pre>
+<p><strong>Note: The similarities in all of the above functions is their syntax like the dataset as their first argument which can be piped as well and the next set of arguments as to what action has to be performed on the dataset, etc.</strong></p>
+<p>So, this is it. We chose a simple, small dataset to start with and learnt how to manipulate data using a few simple functions.</p>
+<p>You can chose any other dataset from the in-built ones or from many websites offering datasets for free. Here are some of the sites that I recommend:
+<a href="https://www.gapminder.org/data/">Gapminder</a>
+<a href="https://catalog.data.gov/dataset">Data.gov</a>
+<a href="https://data.world/datasets/free">Data.world</a></p>
+<p>Stay tuned for more tutorials!<br/>
+Thank You!</p>
+</div>
+</div>
+</article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+        
+          <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+        
+          <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+        
+          <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+        
+          <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+        
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+    
+      <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+    
+      <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/data-manipulation" class="item">data-manipulation</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class=" instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class="large instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-172540293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    
+  </body>
+</html>
