@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+Task 1 - Retail Strategy and Analytics
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="IntroductionHello Everyone! It’s been long since I posted something new.I completed this Virtual Experience Program a month back and thought I could write about the solutions of all the 3 tasks for anyone who might be seeking for the same.
+This post is specifically about Task 1 - Data Preparation and Customer Analytics
+You are provided initially with the solution modules but still some parts and codes are a bit tough to crack." />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/2020/08/task-1-retail-strategy-and-analytics/" />
+
+
+<meta property="og:title" content="Task 1 - Retail Strategy and Analytics" />
+<meta property="og:description" content="IntroductionHello Everyone! It’s been long since I posted something new.I completed this Virtual Experience Program a month back and thought I could write about the solutions of all the 3 tasks for anyone who might be seeking for the same.
+This post is specifically about Task 1 - Data Preparation and Customer Analytics
+You are provided initially with the solution modules but still some parts and codes are a bit tough to crack." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/08/task-1-retail-strategy-and-analytics/" />
+<meta property="article:published_time" content="2020-08-31T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-08-31T00:00:00+00:00" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Task 1 - Retail Strategy and Analytics"/>
+<meta name="twitter:description" content="IntroductionHello Everyone! It’s been long since I posted something new.I completed this Virtual Experience Program a month back and thought I could write about the solutions of all the 3 tasks for anyone who might be seeking for the same.
+This post is specifically about Task 1 - Data Preparation and Customer Analytics
+You are provided initially with the solution modules but still some parts and codes are a bit tough to crack."/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          Task 1 - Retail Strategy and Analytics
+          <div class="sub header">@ Shrishti Vaish · Monday, Aug 31, 2020 · 23 minute read · Update at Aug 31, 2020</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="/img/Screenshot%20%28226%29.png" />
+      
+
+      <article style="margin-top: 2rem;">
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Hello Everyone! It’s been long since I posted something new.
+I completed this Virtual Experience Program a month back and thought I could write about the solutions of all the 3 tasks for anyone who might be seeking for the same.</p>
+<p>This post is specifically about <strong>Task 1 - Data Preparation and Customer Analytics</strong></p>
+<p>You are provided initially with the solution modules but still some parts and codes are a bit tough to crack. I did it my way but surely there could be various other solutions to the same problem.</p>
+<p>So, lets dive straight to the solutions.</p>
+<div id="load-the-required-libraries" class="section level3">
+<h3>Load the required libraries</h3>
+<pre class="r"><code>library(data.table)
+library(ggplot2)
+library(ggmosaic)
+library(readr)</code></pre>
+</div>
+<div id="examine-transaction-data" class="section level2">
+<h2>Examine transaction data</h2>
+<p><em>Creating local dataset</em></p>
+<p>To inspect if certain columns are in their specified format for eg. date column is in date format etc.</p>
+<p><strong>Also, looking at the description of both the datasets</strong></p>
+<pre class="r"><code>purchase_beahviour &lt;- as.data.table( read.csv(&quot;QVI_purchase_behaviour.csv&quot;))
+transaction_data &lt;- as.data.table(readxl::read_xlsx(&quot;QVI_transaction_data.xlsx&quot;))
+
+str(purchase_beahviour)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   72637 obs. of  3 variables:
+##  $ LYLTY_CARD_NBR  : int  1000 1002 1003 1004 1005 1007 1009 1010 1011 1012 ...
+##  $ LIFESTAGE       : Factor w/ 7 levels &quot;MIDAGE SINGLES/COUPLES&quot;,..: 7 7 6 4 1 7 2 7 4 3 ...
+##  $ PREMIUM_CUSTOMER: Factor w/ 3 levels &quot;Budget&quot;,&quot;Mainstream&quot;,..: 3 2 1 2 2 1 3 2 2 2 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>str(transaction_data)</code></pre>
+<pre><code>## Classes &#39;data.table&#39; and &#39;data.frame&#39;:   264836 obs. of  8 variables:
+##  $ DATE          : num  43390 43599 43605 43329 43330 ...
+##  $ STORE_NBR     : num  1 1 1 2 2 4 4 4 5 7 ...
+##  $ LYLTY_CARD_NBR: num  1000 1307 1343 2373 2426 ...
+##  $ TXN_ID        : num  1 348 383 974 1038 ...
+##  $ PROD_NBR      : num  5 66 61 69 108 57 16 24 42 52 ...
+##  $ PROD_NAME     : chr  &quot;Natural Chip        Compny SeaSalt175g&quot; &quot;CCs Nacho Cheese    175g&quot; &quot;Smiths Crinkle Cut  Chips Chicken 170g&quot; &quot;Smiths Chip Thinly  S/Cream&amp;Onion 175g&quot; ...
+##  $ PROD_QTY      : num  2 3 2 5 3 1 1 1 1 2 ...
+##  $ TOT_SALES     : num  6 6.3 2.9 15 13.8 5.1 5.7 3.6 3.9 7.2 ...
+##  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;</code></pre>
+<p><em>EDA (done alreasy using str())</em></p>
+<p><em>changes!</em>
+<strong>We saw that the date format is in <em>numeric</em> format which is wrong so we convert it to the <code>date</code> format as shown below</strong></p>
+<pre class="r"><code>transaction_data$DATE &lt;- as.Date(transaction_data$DATE,origin = &quot;1899-12-30&quot;)</code></pre>
+<p><em>Now dates are in the right format</em></p>
+<div id="examine-prod_name" class="section level3">
+<h3>Examine PROD_NAME</h3>
+<p><strong>Generating summary of the PROD_NAME column</strong></p>
+<pre class="r"><code>#head(transaction_data$PROD_NAME)
+transaction_data[, .N, PROD_NAME]</code></pre>
+<pre><code>##                                     PROD_NAME    N
+##   1:   Natural Chip        Compny SeaSalt175g 1468
+##   2:                 CCs Nacho Cheese    175g 1498
+##   3:   Smiths Crinkle Cut  Chips Chicken 170g 1484
+##   4:   Smiths Chip Thinly  S/Cream&amp;Onion 175g 1473
+##   5: Kettle Tortilla ChpsHny&amp;Jlpno Chili 150g 3296
+##  ---                                              
+## 110:    Red Rock Deli Chikn&amp;Garlic Aioli 150g 1434
+## 111:      RRD SR Slow Rst     Pork Belly 150g 1526
+## 112:                 RRD Pc Sea Salt     165g 1431
+## 113:       Smith Crinkle Cut   Bolognese 150g 1451
+## 114:                 Doritos Salsa Mild  300g 1472</code></pre>
+<p><em>Warning~</em>
+Most of the products in PROD_NAME are chips but others may or may not exist.</p>
+<p><em>changes!</em>
+Looks like we are definitely looking at potato chips but how can we check that these are all chips? We can do some basic text analysis by summarising the individual words in the product name.</p>
+<pre class="r"><code>#### Examine the words in PROD_NAME to see if there are any incorrect entries
+#### such as products that are not chips
+productWords &lt;- data.table(unlist(strsplit(unique(transaction_data[, PROD_NAME]), &quot;
+&quot;)))
+setnames(productWords, &#39;words&#39;)</code></pre>
+<p><em>As we are only interested in words that will tell us if the product is chips or not, let’s remove all words with digits and special characters such as ‘&amp;’ from our set of product words. We can do this using <code>grepl()</code>.</em></p>
+<pre class="r"><code>library(stringr)
+library(stringi)
+
+#### Removing special characters
+productWords$words &lt;- str_replace_all(productWords$words,&quot;[[:punct:]]&quot;,&quot; &quot;)
+
+
+#### Removing digits
+productWords$words &lt;- str_replace_all(productWords$words,&quot;[0-9]&quot;,&quot; &quot;)
+productWords$words &lt;- str_replace_all(productWords$words,&quot;[gG]&quot;,&quot; &quot;)
+
+#### Let&#39;s look at the most common words by counting the number of times a word appears and
+wordsSep &lt;- strsplit(productWords$words,&quot; &quot;)
+words.freq&lt;-table(unlist(wordsSep))
+
+#### sorting them by this frequency in order of highest to lowest frequency
+words.freq &lt;-  as.data.frame(words.freq)
+words.freq &lt;- words.freq[order(words.freq$Freq, decreasing = T),]
+
+words.freq</code></pre>
+<pre><code>##                Var1 Freq
+## 1                    732
+## 37            Chips   21
+## 164          Smiths   16
+## 55          Crinkle   14
+## 62              Cut   14
+## 92           Kettle   13
+## 26           Cheese   12
+## 152            Salt   12
+## 122             Ori   11
+## 85             inal   10
+## 34             Chip    9
+## 68          Doritos    9
+## 151           Salsa    9
+## 29          Chicken    8
+## 52             Corn    8
+## 54            Cream    8
+## 93              les    8
+## 135            Prin    8
+## 147             RRD    8
+## 32           Chilli    7
+## 204            Vine    7
+## 209              WW    7
+## 4                ar    6
+## 156             Sea    6
+## 168            Sour    6
+## 57           Crisps    5
+## 192          Thinly    5
+## 193           Thins    5
+## 38           Chives    4
+## 65             Deli    4
+## 86        Infuzions    4
+## 95             Lime    4
+## 110         Natural    4
+## 139             Red    4
+## 146            Rock    4
+## 185         Supreme    4
+## 186           Sweet    4
+## 13              BBQ    3
+## 22              CCs    3
+## 49             Cobs    3
+## 66              Dip    3
+## 69               El    3
+## 94               Li    3
+## 103            Mild    3
+## 116             Old    3
+## 118           Onion    3
+## 124            Paso    3
+## 129            Popd    3
+## 159      Sensations    3
+## 171             Soy    3
+## 188             Swt    3
+## 196          Tomato    3
+## 197        Tortilla    3
+## 198        Tostitos    3
+## 200        Twisties    3
+## 208      Woolworths    3
+## 3               And    2
+## 6             arlic    2
+## 19              Bur    2
+## 27          Cheetos    2
+## 28         Cheezels    2
+## 35           ChipCo    2
+## 46              Chs    2
+## 70               er    2
+## 74           French    2
+## 78            Honey    2
+## 84             htly    2
+## 100          Medium    2
+## 109           Nacho    2
+## 132          Potato    2
+## 137               r    2
+## 138            rain    2
+## 142             Rin    2
+## 143              rn    2
+## 149               s    2
+## 150               S    2
+## 154          Salted    2
+## 163           Smith    2
+## 169       SourCream    2
+## 178              SR    2
+## 189             Tan    2
+## 191            Thai    2
+## 201        Tyrrells    2
+## 205           Waves    2
+## 210               y    2
+## 2             Aioli    1
+## 5             arden    1
+## 7                Ba    1
+## 8             Bacon    1
+## 9             Balls    1
+## 10         Barbecue    1
+## 11         Barbeque    1
+## 12            Basil    1
+## 14            Belly    1
+## 15               Bi    1
+## 16             Bolo    1
+## 17              Box    1
+## 18           Btroot    1
+## 20        Camembert    1
+## 21           camole    1
+## 23            Chckn    1
+## 24             Ched    1
+## 25           Cheddr    1
+## 30            Chikn    1
+## 31            Chili    1
+## 33      Chimuchurri    1
+## 36         Chipotle    1
+## 39             Chli    1
+## 40            Chlli    1
+## 41            Chnky    1
+## 42              Chp    1
+## 43       ChpsBtroot    1
+## 44         ChpsFeta    1
+## 45          ChpsHny    1
+## 47           Chutny    1
+## 48               Co    1
+## 50          Coconut    1
+## 51           Compny    1
+## 53         Crackers    1
+## 56            Crips    1
+## 58              Crm    1
+## 59              Crn    1
+## 60         Crnchers    1
+## 61           Crnkle    1
+## 63          CutSalt    1
+## 64                D    1
+## 67           Dorito    1
+## 71               Fi    1
+## 72          Flavour    1
+## 73             Frch    1
+## 75     FriedChicken    1
+## 76            Fries    1
+## 77            Herbs    1
+## 79             Hony    1
+## 80              Hot    1
+## 81              Hrb    1
+## 82               ht    1
+## 83               Ht    1
+## 87           Infzns    1
+## 88              inl    1
+## 89         Jalapeno    1
+## 90              Jam    1
+## 91            Jlpno    1
+## 96              Mac    1
+## 97              Man    1
+## 98            Maple    1
+## 99              Med    1
+## 101         Mexican    1
+## 102        Mexicana    1
+## 104      Mozzarella    1
+## 105           Mstrd    1
+## 106         Mystery    1
+## 107         Mzzrlla    1
+## 108               N    1
+## 111             NCC    1
+## 112            nese    1
+## 113              nl    1
+## 114               o    1
+## 115              Of    1
+## 117            Onin    1
+## 119        OnionDip    1
+## 120    OnionStacked    1
+## 121              Or    1
+## 123        Papadums    1
+## 125              Pc    1
+## 126          Pepper    1
+## 127           Pesto    1
+## 128            Plus    1
+## 130            Pork    1
+## 131             Pot    1
+## 133       PotatoMix    1
+## 134           Prawn    1
+## 136           Puffs    1
+## 140             Rib    1
+## 141         Ricotta    1
+## 144          rnWves    1
+## 145           Roast    1
+## 148             Rst    1
+## 153           saltd    1
+## 155           Sauce    1
+## 157         SeaSalt    1
+## 158 Seasonedchicken    1
+## 160         Siracha    1
+## 161            Slow    1
+## 162             Slt    1
+## 165          Smoked    1
+## 166             Sna    1
+## 167           Snbts    1
+## 170        Southern    1
+## 172              Sp    1
+## 173            Spce    1
+## 174            Spcy    1
+## 175           Spicy    1
+## 176          Splash    1
+## 177              Sr    1
+## 179         Stacked    1
+## 180           Steak    1
+## 181           Sthrn    1
+## 182           Strws    1
+## 183           Style    1
+## 184        Sunbites    1
+## 187      SweetChili    1
+## 190           Tasty    1
+## 194           Tmato    1
+## 195             Tom    1
+## 199         Truffle    1
+## 202              Ve    1
+## 203             Vin    1
+## 206             Whl    1
+## 207            Whle    1</code></pre>
+<p>We saw that we have <em>whitespace</em> maximum number of times and the second most occuring word is <em>chips</em></p>
+<div id="remove-salsa-products" class="section level4">
+<h4>Remove salsa products</h4>
+<p><em>changes!</em>
+There are salsa products in the dataset but we are only interested in the chips
+category, so let’s remove these.</p>
+<pre class="r"><code>transaction_data[, SALSA := grepl(&quot;salsa&quot;, tolower(PROD_NAME))]
+transaction_data &lt;- transaction_data[SALSA == FALSE, ][, SALSA := NULL]</code></pre>
+<p>Next, we can use <code>summary()</code> to check summary statistics such as mean, min and max
+values for each feature to see if there are any obvious outliers in the data and if
+there are any nulls in any of the columns (<code>NA's : number of nulls</code> will appear in
+the output if there are any nulls).</p>
+<pre class="r"><code>summary(transaction_data)</code></pre>
+<pre><code>##       DATE              STORE_NBR     LYLTY_CARD_NBR        TXN_ID       
+##  Min.   :2018-07-01   Min.   :  1.0   Min.   :   1000   Min.   :      1  
+##  1st Qu.:2018-09-30   1st Qu.: 70.0   1st Qu.:  70015   1st Qu.:  67569  
+##  Median :2018-12-30   Median :130.0   Median : 130367   Median : 135183  
+##  Mean   :2018-12-30   Mean   :135.1   Mean   : 135531   Mean   : 135131  
+##  3rd Qu.:2019-03-31   3rd Qu.:203.0   3rd Qu.: 203084   3rd Qu.: 202654  
+##  Max.   :2019-06-30   Max.   :272.0   Max.   :2373711   Max.   :2415841  
+##     PROD_NBR       PROD_NAME            PROD_QTY         TOT_SALES      
+##  Min.   :  1.00   Length:246742      Min.   :  1.000   Min.   :  1.700  
+##  1st Qu.: 26.00   Class :character   1st Qu.:  2.000   1st Qu.:  5.800  
+##  Median : 53.00   Mode  :character   Median :  2.000   Median :  7.400  
+##  Mean   : 56.35                      Mean   :  1.908   Mean   :  7.321  
+##  3rd Qu.: 87.00                      3rd Qu.:  2.000   3rd Qu.:  8.800  
+##  Max.   :114.00                      Max.   :200.000   Max.   :650.000</code></pre>
+<p>There are no nulls in the columns but product quantity appears to have an outlier
+which we should investigate further. Let’s investigate further the case where 200
+packets of chips are bought in one transaction.</p>
+<pre class="r"><code>library(tidyverse)
+library(dplyr)
+
+prod_qty_200 &lt;- transaction_data %&gt;% filter(PROD_QTY==200)</code></pre>
+<p>There are two transactions where 200 packets of chips are bought in one transaction
+and both of these transactions were by the same customer.</p>
+</div>
+<div id="lets-see-if-the-customer-has-had-other-transactions" class="section level4">
+<h4>Let’s see if the customer has had other transactions</h4>
+<pre class="r"><code>is_it_same_customer &lt;- transaction_data %&gt;% filter(LYLTY_CARD_NBR == 226000) </code></pre>
+<p>It looks like this customer has only had the two transactions over the year and is
+not an ordinary retail customer. The customer might be buying chips for commercial purposes instead. We’ll remove this loyalty card number from further analysis.</p>
+</div>
+<div id="removing-this-customer-from-the-list" class="section level4">
+<h4>Removing this customer from the list</h4>
+<pre class="r"><code>transaction_data &lt;- transaction_data[!(transaction_data$LYLTY_CARD_NBR == 226000)]</code></pre>
+</div>
+<div id="re-examine-transaction-data" class="section level4">
+<h4>Re-examine transaction data</h4>
+<pre class="r"><code>summary(transaction_data)</code></pre>
+<pre><code>##       DATE              STORE_NBR     LYLTY_CARD_NBR        TXN_ID       
+##  Min.   :2018-07-01   Min.   :  1.0   Min.   :   1000   Min.   :      1  
+##  1st Qu.:2018-09-30   1st Qu.: 70.0   1st Qu.:  70015   1st Qu.:  67569  
+##  Median :2018-12-30   Median :130.0   Median : 130367   Median : 135182  
+##  Mean   :2018-12-30   Mean   :135.1   Mean   : 135530   Mean   : 135130  
+##  3rd Qu.:2019-03-31   3rd Qu.:203.0   3rd Qu.: 203083   3rd Qu.: 202652  
+##  Max.   :2019-06-30   Max.   :272.0   Max.   :2373711   Max.   :2415841  
+##     PROD_NBR       PROD_NAME            PROD_QTY       TOT_SALES     
+##  Min.   :  1.00   Length:246740      Min.   :1.000   Min.   : 1.700  
+##  1st Qu.: 26.00   Class :character   1st Qu.:2.000   1st Qu.: 5.800  
+##  Median : 53.00   Mode  :character   Median :2.000   Median : 7.400  
+##  Mean   : 56.35                      Mean   :1.906   Mean   : 7.316  
+##  3rd Qu.: 87.00                      3rd Qu.:2.000   3rd Qu.: 8.800  
+##  Max.   :114.00                      Max.   :5.000   Max.   :29.500</code></pre>
+<p>That’s better. Now, let’s look at the number of transaction lines over time to see
+if there are any obvious data issues such as missing data.</p>
+</div>
+<div id="count-the-number-of-transactions-by-date" class="section level4">
+<h4>Count the number of transactions by date</h4>
+<pre class="r"><code>countByDate &lt;- count(transaction_data, transaction_data$DATE)
+countByDate</code></pre>
+<pre><code>##      transaction_data$DATE   n
+##   1:            2018-07-01 663
+##   2:            2018-07-02 650
+##   3:            2018-07-03 674
+##   4:            2018-07-04 669
+##   5:            2018-07-05 660
+##  ---                          
+## 360:            2019-06-26 657
+## 361:            2019-06-27 669
+## 362:            2019-06-28 673
+## 363:            2019-06-29 703
+## 364:            2019-06-30 704</code></pre>
+<pre class="r"><code>nrow(countByDate)</code></pre>
+<pre><code>## [1] 364</code></pre>
+<pre class="r"><code>summary(countByDate)</code></pre>
+<pre><code>##  transaction_data$DATE       n        
+##  Min.   :2018-07-01    Min.   :607.0  
+##  1st Qu.:2018-09-29    1st Qu.:658.0  
+##  Median :2018-12-30    Median :674.0  
+##  Mean   :2018-12-30    Mean   :677.9  
+##  3rd Qu.:2019-03-31    3rd Qu.:694.2  
+##  Max.   :2019-06-30    Max.   :865.0</code></pre>
+<p>There’s only 364 rows, meaning only 364 dates which indicates a missing date. Let’s
+create a sequence of dates from 1 Jul 2018 to 30 Jun 2019 and use this to create a
+chart of number of transactions over time to find the missing date.</p>
+</div>
+<div id="create-a-sequence-of-dates-and-join-this-the-count-of-transactions-by-date" class="section level4">
+<h4>Create a sequence of dates and join this the count of transactions by date</h4>
+<pre class="r"><code>transaction_by_day &lt;- transaction_data[order(DATE),]</code></pre>
+</div>
+<div id="setting-plot-themes-to-format-graphs" class="section level4">
+<h4>Setting plot themes to format graphs</h4>
+<pre class="r"><code>theme_set(theme_bw())
+theme_update(plot.title = element_text(hjust = 0.5))</code></pre>
+</div>
+<div id="plot-transactions-over-time" class="section level4">
+<h4>Plot transactions over time</h4>
+<pre class="r"><code>transOverTime &lt;-ggplot(countByDate, aes(x = countByDate$`transaction_data$DATE`, y = countByDate$n)) +
+ geom_line() +
+ labs(x = &quot;Day&quot;, y = &quot;Number of transactions&quot;, title = &quot;Transactions over time&quot;) +
+ scale_x_date(breaks = &quot;1 month&quot;) +
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+transOverTime</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>We can see that there is an increase in purchases in December and a break in late
+December. Let’s zoom in on this.</p>
+</div>
+<div id="filter-to-december-and-look-at-individual-days" class="section level4">
+<h4>Filter to December and look at individual days</h4>
+<pre class="r"><code>filterData &lt;- countByDate[countByDate$`transaction_data$DATE` &gt;= &quot;2018-12-01&quot; &amp; countByDate$`transaction_data$DATE` &lt;= &quot;2018-12-31&quot;]
+
+ggplot(filterData, aes(x = filterData$`transaction_data$DATE`, y = filterData$n)) +
+ geom_line() +
+ labs(x = &quot;Day&quot;, y = &quot;Number of transactions&quot;, title = &quot;Transactions in December&quot;) +
+ scale_x_date(breaks = &quot;1 day&quot;) +
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5))</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>We can see that the increase in sales occurs in the lead-up to Christmas and that
+there are zero sales on Christmas day itself. This is due to shops being closed on
+Christmas day.</p>
+<p>Now that we are satisfied that the data no longer has outliers, we can move on to
+creating other features such as brand of chips or pack size from PROD_NAME. We will
+start with pack size.</p>
+</div>
+<div id="pack-size" class="section level4">
+<h4>Pack size</h4>
+<p>A new column <em>PACK SIZE</em> added to the data frame <em>transaction_data</em></p>
+<pre class="r"><code>#### We can work this out by taking the digits that are in PROD_NAME
+transaction_data[, PACK_SIZE := parse_number(PROD_NAME)]
+
+#### Let&#39;s check if the pack sizes look sensible 
+df_packSizeVsTransactions &lt;- transaction_data[, .N, PACK_SIZE][order(PACK_SIZE)]
+
+df_packSizeVsTransactions</code></pre>
+<pre><code>##     PACK_SIZE     N
+##  1:        70  1507
+##  2:        90  3008
+##  3:       110 22387
+##  4:       125  1454
+##  5:       134 25102
+##  6:       135  3257
+##  7:       150 40203
+##  8:       160  2970
+##  9:       165 15297
+## 10:       170 19983
+## 11:       175 66390
+## 12:       180  1468
+## 13:       190  2995
+## 14:       200  4473
+## 15:       210  6272
+## 16:       220  1564
+## 17:       250  3169
+## 18:       270  6285
+## 19:       330 12540
+## 20:       380  6416</code></pre>
+<p>The largest size is 380g and the smallest size is 70g - seems sensible!</p>
+</div>
+<div id="lets-plot-a-histogram-of-pack_size-since-we-know-that-it-is-a-categorical-variable-and-not-a-continuous-variable-even-though-it-is-numeric." class="section level4">
+<h4>Let’s plot a histogram of PACK_SIZE since we know that it is a categorical variable and not a continuous variable even though it is numeric.</h4>
+<pre class="r"><code>#ggplot(df_packSizeVsTransactions, aes(x = df_packSizeVsTransactions$PACK_SIZE, y = df_packSizeVsTransactions$N)) +
+# geom_line() +
+ #labs(x = &quot;Pack Sizes&quot;, y = &quot;Number of transactions&quot;, title = &quot;Transactions #over time&quot;) + scale_x_continuous(breaks = seq(70,390,20)) +
+ #theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+hist(transaction_data[, PACK_SIZE])</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Pack sizes created look reasonable.</p>
+</div>
+<div id="brands" class="section level4">
+<h4>Brands</h4>
+<p>Now to create brands, we can use the first word in PROD_NAME to work out the brand
+name…</p>
+<pre class="r"><code>#Create a column which contains the brand of the product, by extracting it from the product name.
+
+
+transaction_data$BRAND &lt;- gsub(&quot;([A-Za-z]+).*&quot;, &quot;\\1&quot;, transaction_data$PROD_NAME)
+
+transaction_data[, .N, by = BRAND][order(‐N)]</code></pre>
+<pre><code>##          BRAND     N
+##  1:     Kettle 41288
+##  2:     Smiths 27390
+##  3:   Pringles 25102
+##  4:    Doritos 22041
+##  5:      Thins 14075
+##  6:        RRD 11894
+##  7:  Infuzions 11057
+##  8:         WW 10320
+##  9:       Cobs  9693
+## 10:   Tostitos  9471
+## 11:   Twisties  9454
+## 12:   Tyrrells  6442
+## 13:      Grain  6272
+## 14:    Natural  6050
+## 15:   Cheezels  4603
+## 16:        CCs  4551
+## 17:        Red  4427
+## 18:     Dorito  3183
+## 19:     Infzns  3144
+## 20:      Smith  2963
+## 21:    Cheetos  2927
+## 22:      Snbts  1576
+## 23:     Burger  1564
+## 24: Woolworths  1516
+## 25:    GrnWves  1468
+## 26:   Sunbites  1432
+## 27:        NCC  1419
+## 28:     French  1418
+##          BRAND     N</code></pre>
+<p>Some of the brand names look like they are of the same brands - such as RED and
+RRD, which are both Red Rock Deli chips. Let’s combine these together.</p>
+</div>
+<div id="clean-brand-names" class="section level4">
+<h4>Clean brand names</h4>
+<pre class="r"><code>transaction_data[BRAND == &quot;RED&quot;, BRAND := &quot;RRD&quot;]
+transaction_data[BRAND == &quot;SNBTS&quot;, BRAND := &quot;SUNBITES&quot;]
+transaction_data[BRAND == &quot;INFZNS&quot;, BRAND := &quot;INFUZIONS&quot;]
+transaction_data[BRAND == &quot;WW&quot;, BRAND := &quot;WOOLWORTHS&quot;]
+transaction_data[BRAND == &quot;SMITH&quot;, BRAND := &quot;SMITHS&quot;]
+transaction_data[BRAND == &quot;NCC&quot;, BRAND := &quot;NATURAL&quot;]
+transaction_data[BRAND == &quot;DORITO&quot;, BRAND := &quot;DORITOS&quot;]
+transaction_data[BRAND == &quot;GRAIN&quot;, BRAND := &quot;GRNWVES&quot;]
+
+
+###Check again
+transaction_data[, .N, by = BRAND][order(BRAND)]</code></pre>
+<pre><code>##          BRAND     N
+##  1:     Burger  1564
+##  2:        CCs  4551
+##  3:    Cheetos  2927
+##  4:   Cheezels  4603
+##  5:       Cobs  9693
+##  6:     Dorito  3183
+##  7:    Doritos 22041
+##  8:     French  1418
+##  9:      Grain  6272
+## 10:    GrnWves  1468
+## 11:  Infuzions 11057
+## 12:     Infzns  3144
+## 13:     Kettle 41288
+## 14:    NATURAL  1419
+## 15:    Natural  6050
+## 16:   Pringles 25102
+## 17:        RRD 11894
+## 18:        Red  4427
+## 19:      Smith  2963
+## 20:     Smiths 27390
+## 21:      Snbts  1576
+## 22:   Sunbites  1432
+## 23:      Thins 14075
+## 24:   Tostitos  9471
+## 25:   Twisties  9454
+## 26:   Tyrrells  6442
+## 27: WOOLWORTHS 10320
+## 28: Woolworths  1516
+##          BRAND     N</code></pre>
+</div>
+</div>
+</div>
+<div id="examining-customer-data" class="section level2">
+<h2>Examining customer data</h2>
+<p>Now that we are happy with the transaction dataset, let’s have a look at the
+customer dataset.</p>
+<pre class="r"><code>summary(purchase_beahviour)</code></pre>
+<pre><code>##  LYLTY_CARD_NBR                     LIFESTAGE       PREMIUM_CUSTOMER
+##  Min.   :   1000   MIDAGE SINGLES/COUPLES: 7275   Budget    :24470  
+##  1st Qu.:  66202   NEW FAMILIES          : 2549   Mainstream:29245  
+##  Median : 134040   OLDER FAMILIES        : 9780   Premium   :18922  
+##  Mean   : 136186   OLDER SINGLES/COUPLES :14609                     
+##  3rd Qu.: 203375   RETIREES              :14805                     
+##  Max.   :2373711   YOUNG FAMILIES        : 9178                     
+##                    YOUNG SINGLES/COUPLES :14441</code></pre>
+<p>Let’s have a closer look at the LIFESTAGE and PREMIUM_CUSTOMER columns.</p>
+<pre class="r"><code>#### Examining the values of lifestage and premium_customer
+purchase_beahviour[, .N, by = LIFESTAGE][order(‐N)]</code></pre>
+<pre><code>##                 LIFESTAGE     N
+## 1:               RETIREES 14805
+## 2:  OLDER SINGLES/COUPLES 14609
+## 3:  YOUNG SINGLES/COUPLES 14441
+## 4:         OLDER FAMILIES  9780
+## 5:         YOUNG FAMILIES  9178
+## 6: MIDAGE SINGLES/COUPLES  7275
+## 7:           NEW FAMILIES  2549</code></pre>
+<pre class="r"><code>purchase_beahviour[, .N, by = PREMIUM_CUSTOMER][order(‐N)]</code></pre>
+<pre><code>##    PREMIUM_CUSTOMER     N
+## 1:       Mainstream 29245
+## 2:           Budget 24470
+## 3:          Premium 18922</code></pre>
+<div id="merge-transaction-data-to-customer-data" class="section level4">
+<h4>Merge transaction data to customer data</h4>
+<pre class="r"><code>data &lt;- merge(transaction_data, purchase_beahviour, all.x = TRUE)</code></pre>
+<p>As the number of rows in <code>data</code> is the same as that of <code>transactionData</code>, we can be
+sure that no duplicates were created. This is because we created <code>data</code> by setting
+<code>all.x = TRUE</code> (in other words, a left join) which means take all the rows in
+<code>transactionData</code> and find rows with matching values in shared columns and then
+joining the details in these rows to the <code>x</code> or the first mentioned table.</p>
+</div>
+<div id="lets-also-check-if-some-customers-were-not-matched-on-by-checking-for-nulls." class="section level4">
+<h4>Let’s also check if some customers were not matched on by checking for nulls.</h4>
+<pre class="r"><code>apply(data, 2, function(x) any(is.na(x)))</code></pre>
+<pre><code>##   LYLTY_CARD_NBR             DATE        STORE_NBR           TXN_ID 
+##            FALSE            FALSE            FALSE            FALSE 
+##         PROD_NBR        PROD_NAME         PROD_QTY        TOT_SALES 
+##            FALSE            FALSE            FALSE            FALSE 
+##        PACK_SIZE            BRAND        LIFESTAGE PREMIUM_CUSTOMER 
+##            FALSE            FALSE            FALSE            FALSE</code></pre>
+<p>Great, there are no nulls! So all our customers in the transaction data has been
+accounted for in the customer dataset.</p>
+</div>
+<div id="for-task-2-we-write-this-dataset-into-a-csv-file" class="section level4">
+<h4>For Task 2, we write this dataset into a csv file</h4>
+<pre class="r"><code>write.csv(data,&quot;QVI_data.csv&quot;)</code></pre>
+<p>** Data exploration is now complete! **</p>
+</div>
+</div>
+</div>
+<div id="data-analysis-on-customer-segments" class="section level1">
+<h1>Data analysis on customer segments</h1>
+<p>Now that the data is ready for analysis, we can define some metrics of interest to
+the client:
+- Who spends the most on chips (total sales), describing customers by lifestage and
+how premium their general purchasing behaviour is
+- How many customers are in each segment
+- How many chips are bought per customer by segment
+- What’s the average chip price by customer segment
+We could also ask our data team for more information. Examples are:
+- The customer’s total spend over the period and total spend for each transaction
+to understand what proportion of their grocery spend is on chips
+- Proportion of customers in each customer segment overall to compare against the
+mix of customers who purchase chips
+Let’s start with calculating total sales by LIFESTAGE and PREMIUM_CUSTOMER and
+plotting the split by</p>
+<div id="total-sales-by-lifestage-and-premium_customer" class="section level4">
+<h4>Total sales by LIFESTAGE and PREMIUM_CUSTOMER</h4>
+<pre class="r"><code>total_sales &lt;- data %&gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+pf.total_sales &lt;- summarise(total_sales,sales_count=sum(TOT_SALES))
+
+summary(pf.total_sales)
+
+#### Create plot
+p &lt;- ggplot(pf.total_sales) + geom_mosaic(aes(weight = sales_count, x = product(PREMIUM_CUSTOMER, LIFESTAGE),fill = PREMIUM_CUSTOMER)) + labs(x = &quot;Lifestage&quot;, y = &quot;Premium customer flag&quot;, title = &quot;Proportion of sales&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) 
+
+p +geom_text(data = ggplot_build(p)$data[[1]], aes(x = (xmin + xmax)/2 , y = (ymin + ymax)/2, label = as.character(paste(round(.wt/sum(.wt),3)*100, &#39;%&#39;))), inherit.aes = F)</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>Sales are coming mainly from Budget - older families, Mainstream - young
+singles/couples, and Mainstream - retirees</p>
+</div>
+<div id="number-of-customers-by-lifestage-and-premium_customer" class="section level4">
+<h4>Number of customers by LIFESTAGE and PREMIUM_CUSTOMER</h4>
+<p>Let’s see if the higher sales are due to there being more customers who buy chips.</p>
+<pre class="r"><code>total_sales &lt;- data %&gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+no_of_customers &lt;- summarise(total_sales,customer_count = length(unique(LYLTY_CARD_NBR))) 
+  
+summary(no_of_customers)
+
+#### Create plot
+p &lt;- ggplot(data = no_of_customers) + geom_mosaic(aes(weight = customer_count, x = product(PREMIUM_CUSTOMER, LIFESTAGE), fill = PREMIUM_CUSTOMER)) + labs(x = &quot;Lifestage&quot;, y = &quot;Premium customer flag&quot;, title = &quot;Proportion of customers&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))+ geom_text(data = ggplot_build(p)$data[[1]], aes(x = (xmin + xmax)/2 , y = (ymin + ymax)/2, label = as.character(paste(round(.wt/sum(.wt),3)*100, &#39;%&#39;))))
+
+
+p</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>There are more Mainstream - young singles/couples and Mainstream - retirees who buy chips. This contributes to there being more sales to these customer segments but this is not a major driver for the Budget - Older families segment.</p>
+<p>Higher sales may also be driven by more units of chips being bought per customer.</p>
+<p>Let’s have a look at this next.</p>
+</div>
+<div id="average-number-of-units-per-customer-by-lifestage-and-premium_customer" class="section level4">
+<h4>Average number of units per customer by LIFESTAGE and PREMIUM_CUSTOMER</h4>
+<pre class="r"><code>total_sales_1 &lt;-data %&gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+units &lt;-  summarise(total_sales_1, units_count = (sum(PROD_QTY)/uniqueN(LYLTY_CARD_NBR)))
+
+summary(units)
+
+###create plot
+ggplot(data = units, aes(weight = units_count, x = LIFESTAGE, fill = PREMIUM_CUSTOMER)) + geom_bar(position = position_dodge()) +
+labs(x = &quot;Lifestage&quot;, y = &quot;Avg units per transaction&quot;, title = &quot;Units per customer&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>check &lt;- units[order(units$units_count, decreasing = T),]</code></pre>
+<p>Older families and young families in general buy more chips per customer</p>
+</div>
+<div id="average-price-per-unit-by-lifestage-and-premium_customer" class="section level4">
+<h4>Average price per unit by LIFESTAGE and PREMIUM_CUSTOMER</h4>
+<p>Let’s also investigate the average price per unit chips bought for each customer segment as this is also a driver of total sales.</p>
+<pre class="r"><code>total_sales_2 &lt;-data %&gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+pricePerUnit &lt;-  summarise(total_sales_2, price_per_unit = (sum(TOT_SALES)/sum(PROD_QTY)))
+
+####plot
+ggplot(data=pricePerUnit, aes(weight = price_per_unit,x = LIFESTAGE, fill = PREMIUM_CUSTOMER)) + geom_bar(position = position_dodge()) + labs(x = &quot;Lifestage&quot;, y = &quot;Avg price per unit&quot;, title = &quot;Price per unit&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Mainstream midage and young singles and couples are more willing to pay more per packet of chips compared to their budget and premium counterparts. This may be due to premium shoppers being more likely to buy healthy snacks and when they buy chips, this is mainly for entertainment purposes rather than their own consumption. This is also supported by there being fewer premium midage and young singles and couples buying chips compared to their mainstream counterparts.</p>
+<p>As the difference in average price per unit isn’t large, we can check if this difference is statistically different.</p>
+</div>
+<div id="perform-an-independent-t-test-between-mainstream-vs-premium-and-budget-midage-and-young-singles-and-couples" class="section level4">
+<h4>Perform an independent t-test between mainstream vs premium and budget midage and young singles and couples</h4>
+<pre class="r"><code># If this p-value is above .05, then there is not a significant difference in test scores.
+
+pricePerUnit &lt;‐ data[, price := TOT_SALES/PROD_QTY]
+
+t.test(data[LIFESTAGE %in% c(&quot;YOUNG SINGLES/COUPLES&quot;, &quot;MIDAGE SINGLES/COUPLES&quot;) &amp; PREMIUM_CUSTOMER == &quot;Mainstream&quot;, price],data[LIFESTAGE %in% c(&quot;YOUNG SINGLES/COUPLES&quot;, &quot;MIDAGE SINGLES/COUPLES&quot;) &amp; PREMIUM_CUSTOMER != &quot;Mainstream&quot;, price], alternative = &quot;greater&quot;)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  data[LIFESTAGE %in% c(&quot;YOUNG SINGLES/COUPLES&quot;, &quot;MIDAGE SINGLES/COUPLES&quot;) &amp;  and data[LIFESTAGE %in% c(&quot;YOUNG SINGLES/COUPLES&quot;, &quot;MIDAGE SINGLES/COUPLES&quot;) &amp;     PREMIUM_CUSTOMER == &quot;Mainstream&quot;, price] and     PREMIUM_CUSTOMER != &quot;Mainstream&quot;, price]
+## t = 37.624, df = 54791, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.3187234       Inf
+## sample estimates:
+## mean of x mean of y 
+##  4.039786  3.706491</code></pre>
+<p>The t-test results in a p-value &lt; 2.2e-16, i.e. the unit price for mainstream, young and mid-age singles and couples ARE significantly higher than that of budget or premium, young and midage singles and couples.</p>
+</div>
+<div id="deep-dive-into-specific-customer-segments-for-insights" class="section level2">
+<h2>Deep dive into specific customer segments for insights</h2>
+<p>We have found quite a few interesting insights that we can dive deeper into.
+We might want to target customer segments that contribute the most to sales to retain them or further increase sales. Let’s look at Mainstream - young singles/couples. For instance, let’s find out if they tend to buy a particular brand of chips.</p>
+<div id="deep-dive-into-mainstream-young-singlescouples" class="section level4">
+<h4>Deep dive into Mainstream, young singles/couples</h4>
+<pre class="r"><code>#### Deep dive into Mainstream, young singles/couples
+segment1 &lt;- data[LIFESTAGE == &quot;YOUNG SINGLES/COUPLES&quot; &amp; PREMIUM_CUSTOMER == &quot;Mainstream&quot;,]
+other &lt;- data[!(LIFESTAGE == &quot;YOUNG SINGLES/COUPLES&quot; &amp; PREMIUM_CUSTOMER ==&quot;Mainstream&quot;),]
+
+#### Brand affinity compared to the rest of the population
+quantity_segment1 &lt;- segment1[, sum(PROD_QTY)]
+
+quantity_other &lt;- other[, sum(PROD_QTY)]
+
+quantity_segment1_by_brand &lt;- segment1[, .(targetSegment = sum(PROD_QTY)/quantity_segment1), by = BRAND]
+
+quantity_other_by_brand &lt;- other[, .(other = sum(PROD_QTY)/quantity_other), by = BRAND]
+
+brand_proportions &lt;- merge(quantity_segment1_by_brand, quantity_other_by_brand)[, affinityToBrand := targetSegment/other]
+
+brand_proportions[order(‐affinityToBrand)]
+
+ggplot(brand_proportions, aes(brand_proportions$BRAND,brand_proportions$affinityToBrand)) + geom_bar(stat = &quot;identity&quot;,fill = &quot;yellow&quot;) + labs(x = &quot;Brand&quot;, y = &quot;Customers Affinity to Brand&quot;, title = &quot;Favorite brands of Customers&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))</code></pre>
+<p><img src="/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>We can see that:</p>
+<p>• Mainstream young singles/couples are 23% more likely to purchase Tyrrells chips compared to the
+rest of the population
+• Mainstream young singles/couples are 56% less likely to purchase Burger Rings compared to the rest
+of the population</p>
+<p>[INSIGHTS]
+Let’s also find out if our target segment tends to buy larger packs of chips.</p>
+</div>
+<div id="preferred-pack-size-compared-to-the-rest-of-the-population" class="section level4">
+<h4>Preferred pack size compared to the rest of the population</h4>
+<pre class="r"><code>quantity_segment1_by_pack &lt;- segment1[, .(targetSegment = sum(PROD_QTY)/quantity_segment1), by = PACK_SIZE]
+
+quantity_other_by_pack &lt;- other[, .(other = sum(PROD_QTY)/quantity_other), by = PACK_SIZE]
+
+pack_proportions &lt;- merge(quantity_segment1_by_pack, quantity_other_by_pack)[, affinityToPack := targetSegment/other]
+
+pack_proportions[order(‐affinityToPack)]</code></pre>
+<p>We can see that the preferred <code>PACK_SIZE</code> is 270g.</p>
+<pre class="r"><code>data[PACK_SIZE == 270, unique(PROD_NAME)]</code></pre>
+<pre><code>## [1] &quot;Twisties Cheese     270g&quot; &quot;Twisties Chicken270g&quot;</code></pre>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>Let’s recap what we’ve found!
+Sales have mainly been due to Budget - older families, Mainstream young singles/couples, and Mainstream - retirees shoppers. We found that the high spend in chips for mainstream young singles/couples and retirees is due to there being more of them than other buyers. Mainstream, midage and young singles and couples are also more likely to pay more per packet of chips. This is indicative of impulse buying behaviour.</p>
+<p>We’ve also found that Mainstream young singles and couples are 23% more likely to purchase Tyrrells chips compared to the rest of the population. The Category Manager may want to increase the category’s performance by off-locating some Tyrrells and smaller packs of chips in discretionary space near segments where young singles and couples frequent more often to increase visibilty and impulse behaviour.</p>
+<p>Quantium can help the Category Manager with recommendations of where these segments are and further help them with measuring the impact of the changed placement. We’ll work on measuring the impact of trials in the next task and putting all these together in the third task.</p>
+</div>
+<div id="outro" class="section level1">
+<h1>Outro</h1>
+<p>Task 1 was basic but crucial. All the basic analysis and visualizations were made here. The general patterns and trends among customers’ choices were explored through visualizations.</p>
+<p>The solutions to the other tasks will be uploaded soon. Till then, any feedbacks, queries or recommendations are appreciated on any of my <strong>social media handles</strong>.</p>
+<p><strong>Refer to my <a href="https://github.com/shrish83/VirtualInternships_InsideSherpa/blob/master/VP1_QuantiumDataAnalytics/task1.Rmd">Github Profile</a></strong></p>
+<p>Stay tuned for more tutorials!<br/>
+Thank You!</p>
+</div>
+</article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+        
+          <a class="ui label" href="/tags/data-analytics" title="Data Analytics">Data Analytics</a>
+        
+          <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+        
+          <a class="ui label" href="/tags/data.table" title="data.table">data.table</a>
+        
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/data-analytics" title="data-analytics">data-analytics</a>
+    
+      <a class="ui label" href="/tags/data.table" title="data.table">data.table</a>
+    
+      <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+    
+      <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+    
+      <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+    
+      <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/data-manipulation" class="item">data-manipulation</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/virtual-experience-program-at-quantium" class="item">virtual-experience-program-at-quantium</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/08/task-1-retail-strategy-and-analytics/" class="item">Task 1 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class=" instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shivi.shrishti5@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class="large instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-172540293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    
+  </body>
+</html>

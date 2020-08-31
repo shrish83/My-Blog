@@ -6,7 +6,7 @@
     <description>Recent content in Categories on R Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,813 @@
     <item>
       <title>Posts</title>
       <link>/posts/</link>
-      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/</guid>
       <description></description> 
+    </item>
+    
+    <item>
+      <title>Task 1 - Retail Strategy and Analytics</title>
+      <link>/2020/08/task-1-retail-strategy-and-analytics/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/08/task-1-retail-strategy-and-analytics/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;Hello Everyone! It’s been long since I posted something new.
+I completed this Virtual Experience Program a month back and thought I could write about the solutions of all the 3 tasks for anyone who might be seeking for the same.&lt;/p&gt;
+&lt;p&gt;This post is specifically about &lt;strong&gt;Task 1 - Data Preparation and Customer Analytics&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You are provided initially with the solution modules but still some parts and codes are a bit tough to crack. I did it my way but surely there could be various other solutions to the same problem.&lt;/p&gt;
+&lt;p&gt;So, lets dive straight to the solutions.&lt;/p&gt;
+&lt;div id=&#34;load-the-required-libraries&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Load the required libraries&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(data.table)
+library(ggplot2)
+library(ggmosaic)
+library(readr)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;examine-transaction-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Examine transaction data&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Creating local dataset&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;To inspect if certain columns are in their specified format for eg. date column is in date format etc.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Also, looking at the description of both the datasets&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;purchase_beahviour &amp;lt;- as.data.table( read.csv(&amp;quot;QVI_purchase_behaviour.csv&amp;quot;))
+transaction_data &amp;lt;- as.data.table(readxl::read_xlsx(&amp;quot;QVI_transaction_data.xlsx&amp;quot;))
+
+str(purchase_beahviour)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Classes &amp;#39;data.table&amp;#39; and &amp;#39;data.frame&amp;#39;:   72637 obs. of  3 variables:
+##  $ LYLTY_CARD_NBR  : int  1000 1002 1003 1004 1005 1007 1009 1010 1011 1012 ...
+##  $ LIFESTAGE       : Factor w/ 7 levels &amp;quot;MIDAGE SINGLES/COUPLES&amp;quot;,..: 7 7 6 4 1 7 2 7 4 3 ...
+##  $ PREMIUM_CUSTOMER: Factor w/ 3 levels &amp;quot;Budget&amp;quot;,&amp;quot;Mainstream&amp;quot;,..: 3 2 1 2 2 1 3 2 2 2 ...
+##  - attr(*, &amp;quot;.internal.selfref&amp;quot;)=&amp;lt;externalptr&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;str(transaction_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Classes &amp;#39;data.table&amp;#39; and &amp;#39;data.frame&amp;#39;:   264836 obs. of  8 variables:
+##  $ DATE          : num  43390 43599 43605 43329 43330 ...
+##  $ STORE_NBR     : num  1 1 1 2 2 4 4 4 5 7 ...
+##  $ LYLTY_CARD_NBR: num  1000 1307 1343 2373 2426 ...
+##  $ TXN_ID        : num  1 348 383 974 1038 ...
+##  $ PROD_NBR      : num  5 66 61 69 108 57 16 24 42 52 ...
+##  $ PROD_NAME     : chr  &amp;quot;Natural Chip        Compny SeaSalt175g&amp;quot; &amp;quot;CCs Nacho Cheese    175g&amp;quot; &amp;quot;Smiths Crinkle Cut  Chips Chicken 170g&amp;quot; &amp;quot;Smiths Chip Thinly  S/Cream&amp;amp;Onion 175g&amp;quot; ...
+##  $ PROD_QTY      : num  2 3 2 5 3 1 1 1 1 2 ...
+##  $ TOT_SALES     : num  6 6.3 2.9 15 13.8 5.1 5.7 3.6 3.9 7.2 ...
+##  - attr(*, &amp;quot;.internal.selfref&amp;quot;)=&amp;lt;externalptr&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;EDA (done alreasy using str())&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;changes!&lt;/em&gt;
+&lt;strong&gt;We saw that the date format is in &lt;em&gt;numeric&lt;/em&gt; format which is wrong so we convert it to the &lt;code&gt;date&lt;/code&gt; format as shown below&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transaction_data$DATE &amp;lt;- as.Date(transaction_data$DATE,origin = &amp;quot;1899-12-30&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Now dates are in the right format&lt;/em&gt;&lt;/p&gt;
+&lt;div id=&#34;examine-prod_name&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Examine PROD_NAME&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Generating summary of the PROD_NAME column&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#head(transaction_data$PROD_NAME)
+transaction_data[, .N, PROD_NAME]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                                     PROD_NAME    N
+##   1:   Natural Chip        Compny SeaSalt175g 1468
+##   2:                 CCs Nacho Cheese    175g 1498
+##   3:   Smiths Crinkle Cut  Chips Chicken 170g 1484
+##   4:   Smiths Chip Thinly  S/Cream&amp;amp;Onion 175g 1473
+##   5: Kettle Tortilla ChpsHny&amp;amp;Jlpno Chili 150g 3296
+##  ---                                              
+## 110:    Red Rock Deli Chikn&amp;amp;Garlic Aioli 150g 1434
+## 111:      RRD SR Slow Rst     Pork Belly 150g 1526
+## 112:                 RRD Pc Sea Salt     165g 1431
+## 113:       Smith Crinkle Cut   Bolognese 150g 1451
+## 114:                 Doritos Salsa Mild  300g 1472&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;Warning~&lt;/em&gt;
+Most of the products in PROD_NAME are chips but others may or may not exist.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;changes!&lt;/em&gt;
+Looks like we are definitely looking at potato chips but how can we check that these are all chips? We can do some basic text analysis by summarising the individual words in the product name.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### Examine the words in PROD_NAME to see if there are any incorrect entries
+#### such as products that are not chips
+productWords &amp;lt;- data.table(unlist(strsplit(unique(transaction_data[, PROD_NAME]), &amp;quot;
+&amp;quot;)))
+setnames(productWords, &amp;#39;words&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;As we are only interested in words that will tell us if the product is chips or not, let’s remove all words with digits and special characters such as ‘&amp;amp;’ from our set of product words. We can do this using &lt;code&gt;grepl()&lt;/code&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(stringr)
+library(stringi)
+
+#### Removing special characters
+productWords$words &amp;lt;- str_replace_all(productWords$words,&amp;quot;[[:punct:]]&amp;quot;,&amp;quot; &amp;quot;)
+
+
+#### Removing digits
+productWords$words &amp;lt;- str_replace_all(productWords$words,&amp;quot;[0-9]&amp;quot;,&amp;quot; &amp;quot;)
+productWords$words &amp;lt;- str_replace_all(productWords$words,&amp;quot;[gG]&amp;quot;,&amp;quot; &amp;quot;)
+
+#### Let&amp;#39;s look at the most common words by counting the number of times a word appears and
+wordsSep &amp;lt;- strsplit(productWords$words,&amp;quot; &amp;quot;)
+words.freq&amp;lt;-table(unlist(wordsSep))
+
+#### sorting them by this frequency in order of highest to lowest frequency
+words.freq &amp;lt;-  as.data.frame(words.freq)
+words.freq &amp;lt;- words.freq[order(words.freq$Freq, decreasing = T),]
+
+words.freq&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                Var1 Freq
+## 1                    732
+## 37            Chips   21
+## 164          Smiths   16
+## 55          Crinkle   14
+## 62              Cut   14
+## 92           Kettle   13
+## 26           Cheese   12
+## 152            Salt   12
+## 122             Ori   11
+## 85             inal   10
+## 34             Chip    9
+## 68          Doritos    9
+## 151           Salsa    9
+## 29          Chicken    8
+## 52             Corn    8
+## 54            Cream    8
+## 93              les    8
+## 135            Prin    8
+## 147             RRD    8
+## 32           Chilli    7
+## 204            Vine    7
+## 209              WW    7
+## 4                ar    6
+## 156             Sea    6
+## 168            Sour    6
+## 57           Crisps    5
+## 192          Thinly    5
+## 193           Thins    5
+## 38           Chives    4
+## 65             Deli    4
+## 86        Infuzions    4
+## 95             Lime    4
+## 110         Natural    4
+## 139             Red    4
+## 146            Rock    4
+## 185         Supreme    4
+## 186           Sweet    4
+## 13              BBQ    3
+## 22              CCs    3
+## 49             Cobs    3
+## 66              Dip    3
+## 69               El    3
+## 94               Li    3
+## 103            Mild    3
+## 116             Old    3
+## 118           Onion    3
+## 124            Paso    3
+## 129            Popd    3
+## 159      Sensations    3
+## 171             Soy    3
+## 188             Swt    3
+## 196          Tomato    3
+## 197        Tortilla    3
+## 198        Tostitos    3
+## 200        Twisties    3
+## 208      Woolworths    3
+## 3               And    2
+## 6             arlic    2
+## 19              Bur    2
+## 27          Cheetos    2
+## 28         Cheezels    2
+## 35           ChipCo    2
+## 46              Chs    2
+## 70               er    2
+## 74           French    2
+## 78            Honey    2
+## 84             htly    2
+## 100          Medium    2
+## 109           Nacho    2
+## 132          Potato    2
+## 137               r    2
+## 138            rain    2
+## 142             Rin    2
+## 143              rn    2
+## 149               s    2
+## 150               S    2
+## 154          Salted    2
+## 163           Smith    2
+## 169       SourCream    2
+## 178              SR    2
+## 189             Tan    2
+## 191            Thai    2
+## 201        Tyrrells    2
+## 205           Waves    2
+## 210               y    2
+## 2             Aioli    1
+## 5             arden    1
+## 7                Ba    1
+## 8             Bacon    1
+## 9             Balls    1
+## 10         Barbecue    1
+## 11         Barbeque    1
+## 12            Basil    1
+## 14            Belly    1
+## 15               Bi    1
+## 16             Bolo    1
+## 17              Box    1
+## 18           Btroot    1
+## 20        Camembert    1
+## 21           camole    1
+## 23            Chckn    1
+## 24             Ched    1
+## 25           Cheddr    1
+## 30            Chikn    1
+## 31            Chili    1
+## 33      Chimuchurri    1
+## 36         Chipotle    1
+## 39             Chli    1
+## 40            Chlli    1
+## 41            Chnky    1
+## 42              Chp    1
+## 43       ChpsBtroot    1
+## 44         ChpsFeta    1
+## 45          ChpsHny    1
+## 47           Chutny    1
+## 48               Co    1
+## 50          Coconut    1
+## 51           Compny    1
+## 53         Crackers    1
+## 56            Crips    1
+## 58              Crm    1
+## 59              Crn    1
+## 60         Crnchers    1
+## 61           Crnkle    1
+## 63          CutSalt    1
+## 64                D    1
+## 67           Dorito    1
+## 71               Fi    1
+## 72          Flavour    1
+## 73             Frch    1
+## 75     FriedChicken    1
+## 76            Fries    1
+## 77            Herbs    1
+## 79             Hony    1
+## 80              Hot    1
+## 81              Hrb    1
+## 82               ht    1
+## 83               Ht    1
+## 87           Infzns    1
+## 88              inl    1
+## 89         Jalapeno    1
+## 90              Jam    1
+## 91            Jlpno    1
+## 96              Mac    1
+## 97              Man    1
+## 98            Maple    1
+## 99              Med    1
+## 101         Mexican    1
+## 102        Mexicana    1
+## 104      Mozzarella    1
+## 105           Mstrd    1
+## 106         Mystery    1
+## 107         Mzzrlla    1
+## 108               N    1
+## 111             NCC    1
+## 112            nese    1
+## 113              nl    1
+## 114               o    1
+## 115              Of    1
+## 117            Onin    1
+## 119        OnionDip    1
+## 120    OnionStacked    1
+## 121              Or    1
+## 123        Papadums    1
+## 125              Pc    1
+## 126          Pepper    1
+## 127           Pesto    1
+## 128            Plus    1
+## 130            Pork    1
+## 131             Pot    1
+## 133       PotatoMix    1
+## 134           Prawn    1
+## 136           Puffs    1
+## 140             Rib    1
+## 141         Ricotta    1
+## 144          rnWves    1
+## 145           Roast    1
+## 148             Rst    1
+## 153           saltd    1
+## 155           Sauce    1
+## 157         SeaSalt    1
+## 158 Seasonedchicken    1
+## 160         Siracha    1
+## 161            Slow    1
+## 162             Slt    1
+## 165          Smoked    1
+## 166             Sna    1
+## 167           Snbts    1
+## 170        Southern    1
+## 172              Sp    1
+## 173            Spce    1
+## 174            Spcy    1
+## 175           Spicy    1
+## 176          Splash    1
+## 177              Sr    1
+## 179         Stacked    1
+## 180           Steak    1
+## 181           Sthrn    1
+## 182           Strws    1
+## 183           Style    1
+## 184        Sunbites    1
+## 187      SweetChili    1
+## 190           Tasty    1
+## 194           Tmato    1
+## 195             Tom    1
+## 199         Truffle    1
+## 202              Ve    1
+## 203             Vin    1
+## 206             Whl    1
+## 207            Whle    1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We saw that we have &lt;em&gt;whitespace&lt;/em&gt; maximum number of times and the second most occuring word is &lt;em&gt;chips&lt;/em&gt;&lt;/p&gt;
+&lt;div id=&#34;remove-salsa-products&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Remove salsa products&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;changes!&lt;/em&gt;
+There are salsa products in the dataset but we are only interested in the chips
+category, so let’s remove these.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transaction_data[, SALSA := grepl(&amp;quot;salsa&amp;quot;, tolower(PROD_NAME))]
+transaction_data &amp;lt;- transaction_data[SALSA == FALSE, ][, SALSA := NULL]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we can use &lt;code&gt;summary()&lt;/code&gt; to check summary statistics such as mean, min and max
+values for each feature to see if there are any obvious outliers in the data and if
+there are any nulls in any of the columns (&lt;code&gt;NA&#39;s : number of nulls&lt;/code&gt; will appear in
+the output if there are any nulls).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(transaction_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       DATE              STORE_NBR     LYLTY_CARD_NBR        TXN_ID       
+##  Min.   :2018-07-01   Min.   :  1.0   Min.   :   1000   Min.   :      1  
+##  1st Qu.:2018-09-30   1st Qu.: 70.0   1st Qu.:  70015   1st Qu.:  67569  
+##  Median :2018-12-30   Median :130.0   Median : 130367   Median : 135183  
+##  Mean   :2018-12-30   Mean   :135.1   Mean   : 135531   Mean   : 135131  
+##  3rd Qu.:2019-03-31   3rd Qu.:203.0   3rd Qu.: 203084   3rd Qu.: 202654  
+##  Max.   :2019-06-30   Max.   :272.0   Max.   :2373711   Max.   :2415841  
+##     PROD_NBR       PROD_NAME            PROD_QTY         TOT_SALES      
+##  Min.   :  1.00   Length:246742      Min.   :  1.000   Min.   :  1.700  
+##  1st Qu.: 26.00   Class :character   1st Qu.:  2.000   1st Qu.:  5.800  
+##  Median : 53.00   Mode  :character   Median :  2.000   Median :  7.400  
+##  Mean   : 56.35                      Mean   :  1.908   Mean   :  7.321  
+##  3rd Qu.: 87.00                      3rd Qu.:  2.000   3rd Qu.:  8.800  
+##  Max.   :114.00                      Max.   :200.000   Max.   :650.000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are no nulls in the columns but product quantity appears to have an outlier
+which we should investigate further. Let’s investigate further the case where 200
+packets of chips are bought in one transaction.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(dplyr)
+
+prod_qty_200 &amp;lt;- transaction_data %&amp;gt;% filter(PROD_QTY==200)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are two transactions where 200 packets of chips are bought in one transaction
+and both of these transactions were by the same customer.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lets-see-if-the-customer-has-had-other-transactions&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Let’s see if the customer has had other transactions&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;is_it_same_customer &amp;lt;- transaction_data %&amp;gt;% filter(LYLTY_CARD_NBR == 226000) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It looks like this customer has only had the two transactions over the year and is
+not an ordinary retail customer. The customer might be buying chips for commercial purposes instead. We’ll remove this loyalty card number from further analysis.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;removing-this-customer-from-the-list&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Removing this customer from the list&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transaction_data &amp;lt;- transaction_data[!(transaction_data$LYLTY_CARD_NBR == 226000)]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;re-examine-transaction-data&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Re-examine transaction data&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(transaction_data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##       DATE              STORE_NBR     LYLTY_CARD_NBR        TXN_ID       
+##  Min.   :2018-07-01   Min.   :  1.0   Min.   :   1000   Min.   :      1  
+##  1st Qu.:2018-09-30   1st Qu.: 70.0   1st Qu.:  70015   1st Qu.:  67569  
+##  Median :2018-12-30   Median :130.0   Median : 130367   Median : 135182  
+##  Mean   :2018-12-30   Mean   :135.1   Mean   : 135530   Mean   : 135130  
+##  3rd Qu.:2019-03-31   3rd Qu.:203.0   3rd Qu.: 203083   3rd Qu.: 202652  
+##  Max.   :2019-06-30   Max.   :272.0   Max.   :2373711   Max.   :2415841  
+##     PROD_NBR       PROD_NAME            PROD_QTY       TOT_SALES     
+##  Min.   :  1.00   Length:246740      Min.   :1.000   Min.   : 1.700  
+##  1st Qu.: 26.00   Class :character   1st Qu.:2.000   1st Qu.: 5.800  
+##  Median : 53.00   Mode  :character   Median :2.000   Median : 7.400  
+##  Mean   : 56.35                      Mean   :1.906   Mean   : 7.316  
+##  3rd Qu.: 87.00                      3rd Qu.:2.000   3rd Qu.: 8.800  
+##  Max.   :114.00                      Max.   :5.000   Max.   :29.500&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That’s better. Now, let’s look at the number of transaction lines over time to see
+if there are any obvious data issues such as missing data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;count-the-number-of-transactions-by-date&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Count the number of transactions by date&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;countByDate &amp;lt;- count(transaction_data, transaction_data$DATE)
+countByDate&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      transaction_data$DATE   n
+##   1:            2018-07-01 663
+##   2:            2018-07-02 650
+##   3:            2018-07-03 674
+##   4:            2018-07-04 669
+##   5:            2018-07-05 660
+##  ---                          
+## 360:            2019-06-26 657
+## 361:            2019-06-27 669
+## 362:            2019-06-28 673
+## 363:            2019-06-29 703
+## 364:            2019-06-30 704&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;nrow(countByDate)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 364&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(countByDate)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  transaction_data$DATE       n        
+##  Min.   :2018-07-01    Min.   :607.0  
+##  1st Qu.:2018-09-29    1st Qu.:658.0  
+##  Median :2018-12-30    Median :674.0  
+##  Mean   :2018-12-30    Mean   :677.9  
+##  3rd Qu.:2019-03-31    3rd Qu.:694.2  
+##  Max.   :2019-06-30    Max.   :865.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There’s only 364 rows, meaning only 364 dates which indicates a missing date. Let’s
+create a sequence of dates from 1 Jul 2018 to 30 Jun 2019 and use this to create a
+chart of number of transactions over time to find the missing date.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;create-a-sequence-of-dates-and-join-this-the-count-of-transactions-by-date&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Create a sequence of dates and join this the count of transactions by date&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transaction_by_day &amp;lt;- transaction_data[order(DATE),]&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;setting-plot-themes-to-format-graphs&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Setting plot themes to format graphs&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;theme_set(theme_bw())
+theme_update(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plot-transactions-over-time&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Plot transactions over time&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transOverTime &amp;lt;-ggplot(countByDate, aes(x = countByDate$`transaction_data$DATE`, y = countByDate$n)) +
+ geom_line() +
+ labs(x = &amp;quot;Day&amp;quot;, y = &amp;quot;Number of transactions&amp;quot;, title = &amp;quot;Transactions over time&amp;quot;) +
+ scale_x_date(breaks = &amp;quot;1 month&amp;quot;) +
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+transOverTime&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see that there is an increase in purchases in December and a break in late
+December. Let’s zoom in on this.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;filter-to-december-and-look-at-individual-days&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Filter to December and look at individual days&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;filterData &amp;lt;- countByDate[countByDate$`transaction_data$DATE` &amp;gt;= &amp;quot;2018-12-01&amp;quot; &amp;amp; countByDate$`transaction_data$DATE` &amp;lt;= &amp;quot;2018-12-31&amp;quot;]
+
+ggplot(filterData, aes(x = filterData$`transaction_data$DATE`, y = filterData$n)) +
+ geom_line() +
+ labs(x = &amp;quot;Day&amp;quot;, y = &amp;quot;Number of transactions&amp;quot;, title = &amp;quot;Transactions in December&amp;quot;) +
+ scale_x_date(breaks = &amp;quot;1 day&amp;quot;) +
+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see that the increase in sales occurs in the lead-up to Christmas and that
+there are zero sales on Christmas day itself. This is due to shops being closed on
+Christmas day.&lt;/p&gt;
+&lt;p&gt;Now that we are satisfied that the data no longer has outliers, we can move on to
+creating other features such as brand of chips or pack size from PROD_NAME. We will
+start with pack size.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;pack-size&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Pack size&lt;/h4&gt;
+&lt;p&gt;A new column &lt;em&gt;PACK SIZE&lt;/em&gt; added to the data frame &lt;em&gt;transaction_data&lt;/em&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### We can work this out by taking the digits that are in PROD_NAME
+transaction_data[, PACK_SIZE := parse_number(PROD_NAME)]
+
+#### Let&amp;#39;s check if the pack sizes look sensible 
+df_packSizeVsTransactions &amp;lt;- transaction_data[, .N, PACK_SIZE][order(PACK_SIZE)]
+
+df_packSizeVsTransactions&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     PACK_SIZE     N
+##  1:        70  1507
+##  2:        90  3008
+##  3:       110 22387
+##  4:       125  1454
+##  5:       134 25102
+##  6:       135  3257
+##  7:       150 40203
+##  8:       160  2970
+##  9:       165 15297
+## 10:       170 19983
+## 11:       175 66390
+## 12:       180  1468
+## 13:       190  2995
+## 14:       200  4473
+## 15:       210  6272
+## 16:       220  1564
+## 17:       250  3169
+## 18:       270  6285
+## 19:       330 12540
+## 20:       380  6416&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The largest size is 380g and the smallest size is 70g - seems sensible!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lets-plot-a-histogram-of-pack_size-since-we-know-that-it-is-a-categorical-variable-and-not-a-continuous-variable-even-though-it-is-numeric.&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Let’s plot a histogram of PACK_SIZE since we know that it is a categorical variable and not a continuous variable even though it is numeric.&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#ggplot(df_packSizeVsTransactions, aes(x = df_packSizeVsTransactions$PACK_SIZE, y = df_packSizeVsTransactions$N)) +
+# geom_line() +
+ #labs(x = &amp;quot;Pack Sizes&amp;quot;, y = &amp;quot;Number of transactions&amp;quot;, title = &amp;quot;Transactions #over time&amp;quot;) + scale_x_continuous(breaks = seq(70,390,20)) +
+ #theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+hist(transaction_data[, PACK_SIZE])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Pack sizes created look reasonable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;brands&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Brands&lt;/h4&gt;
+&lt;p&gt;Now to create brands, we can use the first word in PROD_NAME to work out the brand
+name…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#Create a column which contains the brand of the product, by extracting it from the product name.
+
+
+transaction_data$BRAND &amp;lt;- gsub(&amp;quot;([A-Za-z]+).*&amp;quot;, &amp;quot;\\1&amp;quot;, transaction_data$PROD_NAME)
+
+transaction_data[, .N, by = BRAND][order(‐N)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          BRAND     N
+##  1:     Kettle 41288
+##  2:     Smiths 27390
+##  3:   Pringles 25102
+##  4:    Doritos 22041
+##  5:      Thins 14075
+##  6:        RRD 11894
+##  7:  Infuzions 11057
+##  8:         WW 10320
+##  9:       Cobs  9693
+## 10:   Tostitos  9471
+## 11:   Twisties  9454
+## 12:   Tyrrells  6442
+## 13:      Grain  6272
+## 14:    Natural  6050
+## 15:   Cheezels  4603
+## 16:        CCs  4551
+## 17:        Red  4427
+## 18:     Dorito  3183
+## 19:     Infzns  3144
+## 20:      Smith  2963
+## 21:    Cheetos  2927
+## 22:      Snbts  1576
+## 23:     Burger  1564
+## 24: Woolworths  1516
+## 25:    GrnWves  1468
+## 26:   Sunbites  1432
+## 27:        NCC  1419
+## 28:     French  1418
+##          BRAND     N&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some of the brand names look like they are of the same brands - such as RED and
+RRD, which are both Red Rock Deli chips. Let’s combine these together.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;clean-brand-names&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Clean brand names&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;transaction_data[BRAND == &amp;quot;RED&amp;quot;, BRAND := &amp;quot;RRD&amp;quot;]
+transaction_data[BRAND == &amp;quot;SNBTS&amp;quot;, BRAND := &amp;quot;SUNBITES&amp;quot;]
+transaction_data[BRAND == &amp;quot;INFZNS&amp;quot;, BRAND := &amp;quot;INFUZIONS&amp;quot;]
+transaction_data[BRAND == &amp;quot;WW&amp;quot;, BRAND := &amp;quot;WOOLWORTHS&amp;quot;]
+transaction_data[BRAND == &amp;quot;SMITH&amp;quot;, BRAND := &amp;quot;SMITHS&amp;quot;]
+transaction_data[BRAND == &amp;quot;NCC&amp;quot;, BRAND := &amp;quot;NATURAL&amp;quot;]
+transaction_data[BRAND == &amp;quot;DORITO&amp;quot;, BRAND := &amp;quot;DORITOS&amp;quot;]
+transaction_data[BRAND == &amp;quot;GRAIN&amp;quot;, BRAND := &amp;quot;GRNWVES&amp;quot;]
+
+
+###Check again
+transaction_data[, .N, by = BRAND][order(BRAND)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##          BRAND     N
+##  1:     Burger  1564
+##  2:        CCs  4551
+##  3:    Cheetos  2927
+##  4:   Cheezels  4603
+##  5:       Cobs  9693
+##  6:     Dorito  3183
+##  7:    Doritos 22041
+##  8:     French  1418
+##  9:      Grain  6272
+## 10:    GrnWves  1468
+## 11:  Infuzions 11057
+## 12:     Infzns  3144
+## 13:     Kettle 41288
+## 14:    NATURAL  1419
+## 15:    Natural  6050
+## 16:   Pringles 25102
+## 17:        RRD 11894
+## 18:        Red  4427
+## 19:      Smith  2963
+## 20:     Smiths 27390
+## 21:      Snbts  1576
+## 22:   Sunbites  1432
+## 23:      Thins 14075
+## 24:   Tostitos  9471
+## 25:   Twisties  9454
+## 26:   Tyrrells  6442
+## 27: WOOLWORTHS 10320
+## 28: Woolworths  1516
+##          BRAND     N&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;examining-customer-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Examining customer data&lt;/h2&gt;
+&lt;p&gt;Now that we are happy with the transaction dataset, let’s have a look at the
+customer dataset.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(purchase_beahviour)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  LYLTY_CARD_NBR                     LIFESTAGE       PREMIUM_CUSTOMER
+##  Min.   :   1000   MIDAGE SINGLES/COUPLES: 7275   Budget    :24470  
+##  1st Qu.:  66202   NEW FAMILIES          : 2549   Mainstream:29245  
+##  Median : 134040   OLDER FAMILIES        : 9780   Premium   :18922  
+##  Mean   : 136186   OLDER SINGLES/COUPLES :14609                     
+##  3rd Qu.: 203375   RETIREES              :14805                     
+##  Max.   :2373711   YOUNG FAMILIES        : 9178                     
+##                    YOUNG SINGLES/COUPLES :14441&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s have a closer look at the LIFESTAGE and PREMIUM_CUSTOMER columns.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### Examining the values of lifestage and premium_customer
+purchase_beahviour[, .N, by = LIFESTAGE][order(‐N)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##                 LIFESTAGE     N
+## 1:               RETIREES 14805
+## 2:  OLDER SINGLES/COUPLES 14609
+## 3:  YOUNG SINGLES/COUPLES 14441
+## 4:         OLDER FAMILIES  9780
+## 5:         YOUNG FAMILIES  9178
+## 6: MIDAGE SINGLES/COUPLES  7275
+## 7:           NEW FAMILIES  2549&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;purchase_beahviour[, .N, by = PREMIUM_CUSTOMER][order(‐N)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##    PREMIUM_CUSTOMER     N
+## 1:       Mainstream 29245
+## 2:           Budget 24470
+## 3:          Premium 18922&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;merge-transaction-data-to-customer-data&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Merge transaction data to customer data&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data &amp;lt;- merge(transaction_data, purchase_beahviour, all.x = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As the number of rows in &lt;code&gt;data&lt;/code&gt; is the same as that of &lt;code&gt;transactionData&lt;/code&gt;, we can be
+sure that no duplicates were created. This is because we created &lt;code&gt;data&lt;/code&gt; by setting
+&lt;code&gt;all.x = TRUE&lt;/code&gt; (in other words, a left join) which means take all the rows in
+&lt;code&gt;transactionData&lt;/code&gt; and find rows with matching values in shared columns and then
+joining the details in these rows to the &lt;code&gt;x&lt;/code&gt; or the first mentioned table.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;lets-also-check-if-some-customers-were-not-matched-on-by-checking-for-nulls.&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Let’s also check if some customers were not matched on by checking for nulls.&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;apply(data, 2, function(x) any(is.na(x)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##   LYLTY_CARD_NBR             DATE        STORE_NBR           TXN_ID 
+##            FALSE            FALSE            FALSE            FALSE 
+##         PROD_NBR        PROD_NAME         PROD_QTY        TOT_SALES 
+##            FALSE            FALSE            FALSE            FALSE 
+##        PACK_SIZE            BRAND        LIFESTAGE PREMIUM_CUSTOMER 
+##            FALSE            FALSE            FALSE            FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Great, there are no nulls! So all our customers in the transaction data has been
+accounted for in the customer dataset.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;for-task-2-we-write-this-dataset-into-a-csv-file&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;For Task 2, we write this dataset into a csv file&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;write.csv(data,&amp;quot;QVI_data.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;** Data exploration is now complete! **&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-analysis-on-customer-segments&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data analysis on customer segments&lt;/h1&gt;
+&lt;p&gt;Now that the data is ready for analysis, we can define some metrics of interest to
+the client:
+- Who spends the most on chips (total sales), describing customers by lifestage and
+how premium their general purchasing behaviour is
+- How many customers are in each segment
+- How many chips are bought per customer by segment
+- What’s the average chip price by customer segment
+We could also ask our data team for more information. Examples are:
+- The customer’s total spend over the period and total spend for each transaction
+to understand what proportion of their grocery spend is on chips
+- Proportion of customers in each customer segment overall to compare against the
+mix of customers who purchase chips
+Let’s start with calculating total sales by LIFESTAGE and PREMIUM_CUSTOMER and
+plotting the split by&lt;/p&gt;
+&lt;div id=&#34;total-sales-by-lifestage-and-premium_customer&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Total sales by LIFESTAGE and PREMIUM_CUSTOMER&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;total_sales &amp;lt;- data %&amp;gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+pf.total_sales &amp;lt;- summarise(total_sales,sales_count=sum(TOT_SALES))
+
+summary(pf.total_sales)
+
+#### Create plot
+p &amp;lt;- ggplot(pf.total_sales) + geom_mosaic(aes(weight = sales_count, x = product(PREMIUM_CUSTOMER, LIFESTAGE),fill = PREMIUM_CUSTOMER)) + labs(x = &amp;quot;Lifestage&amp;quot;, y = &amp;quot;Premium customer flag&amp;quot;, title = &amp;quot;Proportion of sales&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) 
+
+p +geom_text(data = ggplot_build(p)$data[[1]], aes(x = (xmin + xmax)/2 , y = (ymin + ymax)/2, label = as.character(paste(round(.wt/sum(.wt),3)*100, &amp;#39;%&amp;#39;))), inherit.aes = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-27-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Sales are coming mainly from Budget - older families, Mainstream - young
+singles/couples, and Mainstream - retirees&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;number-of-customers-by-lifestage-and-premium_customer&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Number of customers by LIFESTAGE and PREMIUM_CUSTOMER&lt;/h4&gt;
+&lt;p&gt;Let’s see if the higher sales are due to there being more customers who buy chips.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;total_sales &amp;lt;- data %&amp;gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+no_of_customers &amp;lt;- summarise(total_sales,customer_count = length(unique(LYLTY_CARD_NBR))) 
+  
+summary(no_of_customers)
+
+#### Create plot
+p &amp;lt;- ggplot(data = no_of_customers) + geom_mosaic(aes(weight = customer_count, x = product(PREMIUM_CUSTOMER, LIFESTAGE), fill = PREMIUM_CUSTOMER)) + labs(x = &amp;quot;Lifestage&amp;quot;, y = &amp;quot;Premium customer flag&amp;quot;, title = &amp;quot;Proportion of customers&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))+ geom_text(data = ggplot_build(p)$data[[1]], aes(x = (xmin + xmax)/2 , y = (ymin + ymax)/2, label = as.character(paste(round(.wt/sum(.wt),3)*100, &amp;#39;%&amp;#39;))))
+
+
+p&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-28-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There are more Mainstream - young singles/couples and Mainstream - retirees who buy chips. This contributes to there being more sales to these customer segments but this is not a major driver for the Budget - Older families segment.&lt;/p&gt;
+&lt;p&gt;Higher sales may also be driven by more units of chips being bought per customer.&lt;/p&gt;
+&lt;p&gt;Let’s have a look at this next.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;average-number-of-units-per-customer-by-lifestage-and-premium_customer&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Average number of units per customer by LIFESTAGE and PREMIUM_CUSTOMER&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;total_sales_1 &amp;lt;-data %&amp;gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+units &amp;lt;-  summarise(total_sales_1, units_count = (sum(PROD_QTY)/uniqueN(LYLTY_CARD_NBR)))
+
+summary(units)
+
+###create plot
+ggplot(data = units, aes(weight = units_count, x = LIFESTAGE, fill = PREMIUM_CUSTOMER)) + geom_bar(position = position_dodge()) +
+labs(x = &amp;quot;Lifestage&amp;quot;, y = &amp;quot;Avg units per transaction&amp;quot;, title = &amp;quot;Units per customer&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-29-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;check &amp;lt;- units[order(units$units_count, decreasing = T),]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Older families and young families in general buy more chips per customer&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;average-price-per-unit-by-lifestage-and-premium_customer&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Average price per unit by LIFESTAGE and PREMIUM_CUSTOMER&lt;/h4&gt;
+&lt;p&gt;Let’s also investigate the average price per unit chips bought for each customer segment as this is also a driver of total sales.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;total_sales_2 &amp;lt;-data %&amp;gt;% group_by(LIFESTAGE,PREMIUM_CUSTOMER)
+
+pricePerUnit &amp;lt;-  summarise(total_sales_2, price_per_unit = (sum(TOT_SALES)/sum(PROD_QTY)))
+
+####plot
+ggplot(data=pricePerUnit, aes(weight = price_per_unit,x = LIFESTAGE, fill = PREMIUM_CUSTOMER)) + geom_bar(position = position_dodge()) + labs(x = &amp;quot;Lifestage&amp;quot;, y = &amp;quot;Avg price per unit&amp;quot;, title = &amp;quot;Price per unit&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-30-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Mainstream midage and young singles and couples are more willing to pay more per packet of chips compared to their budget and premium counterparts. This may be due to premium shoppers being more likely to buy healthy snacks and when they buy chips, this is mainly for entertainment purposes rather than their own consumption. This is also supported by there being fewer premium midage and young singles and couples buying chips compared to their mainstream counterparts.&lt;/p&gt;
+&lt;p&gt;As the difference in average price per unit isn’t large, we can check if this difference is statistically different.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;perform-an-independent-t-test-between-mainstream-vs-premium-and-budget-midage-and-young-singles-and-couples&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Perform an independent t-test between mainstream vs premium and budget midage and young singles and couples&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# If this p-value is above .05, then there is not a significant difference in test scores.
+
+pricePerUnit &amp;lt;‐ data[, price := TOT_SALES/PROD_QTY]
+
+t.test(data[LIFESTAGE %in% c(&amp;quot;YOUNG SINGLES/COUPLES&amp;quot;, &amp;quot;MIDAGE SINGLES/COUPLES&amp;quot;) &amp;amp; PREMIUM_CUSTOMER == &amp;quot;Mainstream&amp;quot;, price],data[LIFESTAGE %in% c(&amp;quot;YOUNG SINGLES/COUPLES&amp;quot;, &amp;quot;MIDAGE SINGLES/COUPLES&amp;quot;) &amp;amp; PREMIUM_CUSTOMER != &amp;quot;Mainstream&amp;quot;, price], alternative = &amp;quot;greater&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+##  Welch Two Sample t-test
+## 
+## data:  data[LIFESTAGE %in% c(&amp;quot;YOUNG SINGLES/COUPLES&amp;quot;, &amp;quot;MIDAGE SINGLES/COUPLES&amp;quot;) &amp;amp;  and data[LIFESTAGE %in% c(&amp;quot;YOUNG SINGLES/COUPLES&amp;quot;, &amp;quot;MIDAGE SINGLES/COUPLES&amp;quot;) &amp;amp;     PREMIUM_CUSTOMER == &amp;quot;Mainstream&amp;quot;, price] and     PREMIUM_CUSTOMER != &amp;quot;Mainstream&amp;quot;, price]
+## t = 37.624, df = 54791, p-value &amp;lt; 2.2e-16
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.3187234       Inf
+## sample estimates:
+## mean of x mean of y 
+##  4.039786  3.706491&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The t-test results in a p-value &amp;lt; 2.2e-16, i.e. the unit price for mainstream, young and mid-age singles and couples ARE significantly higher than that of budget or premium, young and midage singles and couples.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;deep-dive-into-specific-customer-segments-for-insights&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Deep dive into specific customer segments for insights&lt;/h2&gt;
+&lt;p&gt;We have found quite a few interesting insights that we can dive deeper into.
+We might want to target customer segments that contribute the most to sales to retain them or further increase sales. Let’s look at Mainstream - young singles/couples. For instance, let’s find out if they tend to buy a particular brand of chips.&lt;/p&gt;
+&lt;div id=&#34;deep-dive-into-mainstream-young-singlescouples&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Deep dive into Mainstream, young singles/couples&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#### Deep dive into Mainstream, young singles/couples
+segment1 &amp;lt;- data[LIFESTAGE == &amp;quot;YOUNG SINGLES/COUPLES&amp;quot; &amp;amp; PREMIUM_CUSTOMER == &amp;quot;Mainstream&amp;quot;,]
+other &amp;lt;- data[!(LIFESTAGE == &amp;quot;YOUNG SINGLES/COUPLES&amp;quot; &amp;amp; PREMIUM_CUSTOMER ==&amp;quot;Mainstream&amp;quot;),]
+
+#### Brand affinity compared to the rest of the population
+quantity_segment1 &amp;lt;- segment1[, sum(PROD_QTY)]
+
+quantity_other &amp;lt;- other[, sum(PROD_QTY)]
+
+quantity_segment1_by_brand &amp;lt;- segment1[, .(targetSegment = sum(PROD_QTY)/quantity_segment1), by = BRAND]
+
+quantity_other_by_brand &amp;lt;- other[, .(other = sum(PROD_QTY)/quantity_other), by = BRAND]
+
+brand_proportions &amp;lt;- merge(quantity_segment1_by_brand, quantity_other_by_brand)[, affinityToBrand := targetSegment/other]
+
+brand_proportions[order(‐affinityToBrand)]
+
+ggplot(brand_proportions, aes(brand_proportions$BRAND,brand_proportions$affinityToBrand)) + geom_bar(stat = &amp;quot;identity&amp;quot;,fill = &amp;quot;yellow&amp;quot;) + labs(x = &amp;quot;Brand&amp;quot;, y = &amp;quot;Customers Affinity to Brand&amp;quot;, title = &amp;quot;Favorite brands of Customers&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-08-31-task-1-retail-strategy-and-analytics_files/figure-html/unnamed-chunk-32-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see that:&lt;/p&gt;
+&lt;p&gt;• Mainstream young singles/couples are 23% more likely to purchase Tyrrells chips compared to the
+rest of the population
+• Mainstream young singles/couples are 56% less likely to purchase Burger Rings compared to the rest
+of the population&lt;/p&gt;
+&lt;p&gt;[INSIGHTS]
+Let’s also find out if our target segment tends to buy larger packs of chips.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;preferred-pack-size-compared-to-the-rest-of-the-population&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;Preferred pack size compared to the rest of the population&lt;/h4&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quantity_segment1_by_pack &amp;lt;- segment1[, .(targetSegment = sum(PROD_QTY)/quantity_segment1), by = PACK_SIZE]
+
+quantity_other_by_pack &amp;lt;- other[, .(other = sum(PROD_QTY)/quantity_other), by = PACK_SIZE]
+
+pack_proportions &amp;lt;- merge(quantity_segment1_by_pack, quantity_other_by_pack)[, affinityToPack := targetSegment/other]
+
+pack_proportions[order(‐affinityToPack)]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can see that the preferred &lt;code&gt;PACK_SIZE&lt;/code&gt; is 270g.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data[PACK_SIZE == 270, unique(PROD_NAME)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;Twisties Cheese     270g&amp;quot; &amp;quot;Twisties Chicken270g&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Let’s recap what we’ve found!
+Sales have mainly been due to Budget - older families, Mainstream young singles/couples, and Mainstream - retirees shoppers. We found that the high spend in chips for mainstream young singles/couples and retirees is due to there being more of them than other buyers. Mainstream, midage and young singles and couples are also more likely to pay more per packet of chips. This is indicative of impulse buying behaviour.&lt;/p&gt;
+&lt;p&gt;We’ve also found that Mainstream young singles and couples are 23% more likely to purchase Tyrrells chips compared to the rest of the population. The Category Manager may want to increase the category’s performance by off-locating some Tyrrells and smaller packs of chips in discretionary space near segments where young singles and couples frequent more often to increase visibilty and impulse behaviour.&lt;/p&gt;
+&lt;p&gt;Quantium can help the Category Manager with recommendations of where these segments are and further help them with measuring the impact of the changed placement. We’ll work on measuring the impact of trials in the next task and putting all these together in the third task.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outro&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Outro&lt;/h1&gt;
+&lt;p&gt;Task 1 was basic but crucial. All the basic analysis and visualizations were made here. The general patterns and trends among customers’ choices were explored through visualizations.&lt;/p&gt;
+&lt;p&gt;The solutions to the other tasks will be uploaded soon. Till then, any feedbacks, queries or recommendations are appreciated on any of my &lt;strong&gt;social media handles&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Refer to my &lt;a href=&#34;https://github.com/shrish83/VirtualInternships_InsideSherpa/blob/master/VP1_QuantiumDataAnalytics/task1.Rmd&#34;&gt;Github Profile&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Stay tuned for more tutorials!&lt;br/&gt;
+Thank You!&lt;/p&gt;
+&lt;/div&gt;
+</description> 
     </item>
     
     <item>
