@@ -7,6 +7,8 @@ googleAnalytics = "UA-172540293-1"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 enableRobotsTXT = true
 
+[params.adsense]
+   client = "ca-pub-4041306379715431"
 
 [permalinks]
    posts = "/:year/:month/:slug/"
