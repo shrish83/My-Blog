@@ -45,7 +45,7 @@ bb <- read.csv('datasets/bb_chords.csv')
 head(bb)
 ```
 
-![png](/img/t1.png)
+
 
 <html>
 <body>
@@ -81,8 +81,6 @@ bb_count <- bb %>% count(chord, sort = T)
 # .... YOUR CODE FOR TASK 2 ....
 bb_count[1:20,]
 ```
-
-![png](/img/t2.png)
 
 <table>
 <caption>A tibble: 20 x 2</caption>
@@ -155,7 +153,7 @@ bb_bigram_count <- bb %>% mutate(next_chord = lead(chord), next_title = lead(tit
 bb_bigram_count[1:20, ]
 ```
 
-![png](/img/t3.png)
+
 
 <table>
 <caption>A tibble: 20 x 2</caption>
@@ -225,7 +223,7 @@ bb_30_artists <- bb %>% select(artist, title) %>% unique() %>% count(artist, sor
 bb_30_artists %>% slice(1:30)
 ```
 
-![png](/img/t4.png)
+
 
 <table>
 <caption>A tibble: 30 x 2</caption>
@@ -289,7 +287,6 @@ bb_tagged <- bb %>% inner_join(tags)
 # .... YOUR CODE FOR TASK 7 ....
 bb_tagged
 ```
-![png](/img/t5.png)
 
 <table>
 <caption>A data.frame: 1101 x 10</caption>
