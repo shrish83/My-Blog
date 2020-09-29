@@ -6,7 +6,7 @@
     <description>Recent content in Categories on R Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,165 @@
     <item>
       <title>Posts</title>
       <link>/posts/</link>
-      <pubDate>Sun, 06 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/</guid>
       <description></description> 
+    </item>
+    
+    <item>
+      <title>Wrangling and Visualizing Musical Data - Guided Project</title>
+      <link>/2020/09/wrangling-and-visualizing-musical-data-guided-project/</link>
+      <pubDate>Thu, 24 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/09/wrangling-and-visualizing-musical-data-guided-project/</guid>
+      <description>&lt;p&gt;Hey everyone, This is a guided project on gathering, cleaning and transforming musical data and visualizing it. I somehow got the opportunity to get the access to this project on &lt;a href=&#34;https://www.datacamp.com/&#34;&gt;Data Camp&lt;/a&gt;.
+Right now, it is for premium users as in you cannot access it via free account. But, &lt;a href=&#34;https://www.datacamp.com/&#34;&gt;Data Camp&lt;/a&gt; does time to time gives free access to such projects, well yeah occasionally. 
+You shoud definitely look out for such opportunities on these platforms if you are really serious about enhancing your core skills. But you need not worry, because for this project, I am here to give you complete access to it.&lt;/p&gt;
+&lt;p&gt;Let us get started!&lt;/p&gt;
+&lt;h2 id=&#34;1-introduction&#34;&gt;1. Introduction&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Loading individual Tidyverse packages&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 1 ....&lt;/span&gt;
+&lt;span style=&#34;color:#06287e&#34;&gt;library&lt;/span&gt;(dplyr)
+&lt;span style=&#34;color:#06287e&#34;&gt;library&lt;/span&gt;(readr)
+&lt;span style=&#34;color:#06287e&#34;&gt;library&lt;/span&gt;(ggplot2)
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Reading in the McGill Billboard chord data&lt;/span&gt;
+bb &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;read.csv&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;datasets/bb_chords.csv&amp;#39;&lt;/span&gt;)
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Taking a look at the first rows in bb&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 1 ....&lt;/span&gt;
+&lt;span style=&#34;color:#06287e&#34;&gt;head&lt;/span&gt;(bb)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;2-the-most-common-chords&#34;&gt;2. The most common chords&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Counting the most common chords&lt;/span&gt;
+bb_count &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;count&lt;/span&gt;(chord, sort &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; T)
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the top 20 chords&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 2 ....&lt;/span&gt;
+bb_count[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;,]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t2.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;3-visualizing-the-most-common-chords&#34;&gt;3. Visualizing the most common chords&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a bar plot from bb_count&lt;/span&gt;
+bb_count &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;mutate&lt;/span&gt;(share &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; (n&lt;span style=&#34;color:#666&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#06287e&#34;&gt;sum&lt;/span&gt;(n))&lt;span style=&#34;color:#666&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;100&lt;/span&gt;,
+         chord &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;reorder&lt;/span&gt;(chord,share)) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#06287e&#34;&gt;aes&lt;/span&gt;(x&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;chord, y&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;share, fill&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;chord)) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;geom_col&lt;/span&gt;()&lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;coord_flip&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;xlab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;Common Chords&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ylab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;Frequent Occurence&amp;#34;&lt;/span&gt;) 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/output_7_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;4-chord-bigrams&#34;&gt;4. Chord &amp;ldquo;bigrams&amp;rdquo;&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Wrangling and counting bigrams&lt;/span&gt;
+bb_bigram_count &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;mutate&lt;/span&gt;(next_chord &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;lead&lt;/span&gt;(chord), next_title &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;lead&lt;/span&gt;(title), bigram &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;paste&lt;/span&gt;(chord,next_chord)) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;filter&lt;/span&gt;(title &lt;span style=&#34;color:#666&#34;&gt;==&lt;/span&gt; next_title) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;count&lt;/span&gt;(bigram,sort&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;T)
+    &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 4 ....&lt;/span&gt;
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the first 20 rows of bb_bigram_count&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 4 ....&lt;/span&gt;
+bb_bigram_count[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;, ]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t3.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;5-visualizing-the-most-common-chord-progressions&#34;&gt;5. Visualizing the most common chord progressions&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a column plot from bb_bigram_count&lt;/span&gt;
+bb_bigram_count &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;mutate&lt;/span&gt;(share &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; (n&lt;span style=&#34;color:#666&#34;&gt;/&lt;/span&gt;&lt;span style=&#34;color:#06287e&#34;&gt;sum&lt;/span&gt;(n)) &lt;span style=&#34;color:#666&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;100&lt;/span&gt;,
+         chord &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;  &lt;span style=&#34;color:#06287e&#34;&gt;reorder&lt;/span&gt;(bigram,share)) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+   &lt;span style=&#34;color:#06287e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#06287e&#34;&gt;aes&lt;/span&gt;(x&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;chord, y&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;share, fill&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;chord)) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;geom_col&lt;/span&gt;()&lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;coord_flip&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;xlab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;Common Next_Chords&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ylab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;Frequent Occurence&amp;#34;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/output_13_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;6-finding-the-most-common-artists&#34;&gt;6. Finding the most common artists&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Finding 30 artists with the most songs in the corpus&lt;/span&gt;
+bb_30_artists &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;select&lt;/span&gt;(artist, title) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;unique&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;count&lt;/span&gt;(artist, sort &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; T)
+    &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;#.... YOUR CODE FOR TASK 6 ....&lt;/span&gt;
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying 30 artists with the most songs in the corpus&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;#.... YOUR CODE FOR TASK 6 ....&lt;/span&gt;
+bb_30_artists &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;30&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t4.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;7-tagging-the-corpus&#34;&gt;7. Tagging the corpus&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;tags &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;tibble&lt;/span&gt;(
+  artist &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Abba&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Billy Joel&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Elton John&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Stevie Wonder&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;The Rolling Stones&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;The Beatles&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Eric Clapton&amp;#39;&lt;/span&gt;),
+  instrument &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;c&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;piano&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;piano&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;piano&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;piano&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;guitar&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;guitar&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;guitar&amp;#39;&lt;/span&gt;))
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a new dataframe bb_tagged that includes a new column instrument from tags&lt;/span&gt;
+bb_tagged &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;inner_join&lt;/span&gt;(tags)
+    &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 7 ....&lt;/span&gt;
+    
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the new data frame&lt;/span&gt;
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 7 ....&lt;/span&gt;
+bb_tagged
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t5.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;8-comparing-chords-in-piano-driven-and-guitar-driven-songs&#34;&gt;8. Comparing chords in piano-driven and guitar-driven songs&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# The top 20 most common chords&lt;/span&gt;
+top_20 &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb_count&lt;span style=&#34;color:#666&#34;&gt;$&lt;/span&gt;chord[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;]
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Comparing the frequency of the 20 most common chords in piano- and guitar-driven songs&lt;/span&gt;
+bb_tagged &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;filter&lt;/span&gt;(chord &lt;span style=&#34;color:#666&#34;&gt;%in%&lt;/span&gt; top_20) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;count&lt;/span&gt;(chord, instrument, sort &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; T) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#06287e&#34;&gt;aes&lt;/span&gt;(chord,n, fill &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; chord)) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;geom_bar&lt;/span&gt;(stat &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;identity&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;facet_grid&lt;/span&gt;(&lt;span style=&#34;color:#666&#34;&gt;~&lt;/span&gt;instrument) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;coord_flip&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;xlab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;Common Chords&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ylab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;No. of Occurence&amp;#34;&lt;/span&gt;) 
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/output_22_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;9-comparing-chord-bigrams-in-piano-driven-and-guitar-driven-songs&#34;&gt;9. Comparing chord bigrams in piano-driven and guitar-driven songs&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# The top 20 most common bigrams&lt;/span&gt;
+top_20_bigram &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb_bigram_count&lt;span style=&#34;color:#666&#34;&gt;$&lt;/span&gt;bigram[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;]
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a faceted plot comparing guitar- and piano-driven songs for bigram frequency&lt;/span&gt;
+bb_tagged &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;mutate&lt;/span&gt;(next_chord &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;lead&lt;/span&gt;(chord),
+         next_title &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;lead&lt;/span&gt;(title),
+         bigram &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;paste&lt;/span&gt;(chord, next_chord)) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;filter&lt;/span&gt;(title &lt;span style=&#34;color:#666&#34;&gt;==&lt;/span&gt; next_title) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;count&lt;/span&gt;(bigram, instrument, sort &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#007020;font-weight:bold&#34;&gt;TRUE&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;filter&lt;/span&gt;(bigram &lt;span style=&#34;color:#666&#34;&gt;%in%&lt;/span&gt; top_20_bigram) &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ggplot&lt;/span&gt;(&lt;span style=&#34;color:#06287e&#34;&gt;aes&lt;/span&gt;(bigram, n, fill &lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt; bigram)) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;geom_col&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;facet_grid&lt;/span&gt;(&lt;span style=&#34;color:#666&#34;&gt;~&lt;/span&gt;instrument) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;coord_flip&lt;/span&gt;() &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;ylab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Total bigrams&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;xlab&lt;/span&gt;(&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#39;Bigram&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#666&#34;&gt;+&lt;/span&gt;
+  &lt;span style=&#34;color:#06287e&#34;&gt;theme&lt;/span&gt;(legend.position&lt;span style=&#34;color:#666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#4070a0&#34;&gt;&amp;#34;none&amp;#34;&lt;/span&gt;)
+
+  &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... MODIFIED CODE FROM TASK 4 .... &lt;/span&gt;
+  &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... MODIFIED CODE FROM TASK 8 ....&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/output_25_0.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;10-conclusion&#34;&gt;10. Conclusion&lt;/h2&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Set to TRUE or FALSE to reflect your answer&lt;/span&gt;
+hypothesis_valid &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#007020;font-weight:bold&#34;&gt;TRUE&lt;/span&gt;
+
+&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Set to TRUE or FALSE to reflect your answer&lt;/span&gt;
+more_data_needed &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#007020;font-weight:bold&#34;&gt;TRUE&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;outro&#34;&gt;Outro&lt;/h1&gt;
+&lt;p&gt;This project involves all the basic techniques but are really crucial for data collection and cleaning. All the visualizations were made here.&lt;/p&gt;
+&lt;p&gt;Till then, any feedbacks, queries or recommendations are appreciated on any of my &lt;strong&gt;social media handles&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Refer to my Github Profile for solutions!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Stay tuned for more tutorials!&lt;!-- raw HTML omitted --&gt;
+Thank You!&lt;/p&gt;</description> 
     </item>
     
     <item>

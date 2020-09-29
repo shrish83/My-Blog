@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+{0xc0000b2c60 0xc000499960}
+Wrangling and Visualizing Musical Data - Guided Project
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="Hey everyone, This is a guided project on gathering, cleaning and transforming musical data and visualizing it. I somehow got the opportunity to get the access to this project on Data Camp. Right now, it is for premium users as in you cannot access it via free account. But, Data Camp does time to time gives free access to such projects, well yeah occasionally. You shoud definitely look out for such opportunities on these platforms if you are really serious about enhancing your core skills. But you need not worry, because for this project, I am here to give you complete access to it.
+Let us get started!
+" />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/2020/09/wrangling-and-visualizing-musical-data-guided-project/" />
+
+
+<meta property="og:title" content="Wrangling and Visualizing Musical Data - Guided Project" />
+<meta property="og:description" content="Hey everyone, This is a guided project on gathering, cleaning and transforming musical data and visualizing it. I somehow got the opportunity to get the access to this project on Data Camp.
+Right now, it is for premium users as in you cannot access it via free account. But, Data Camp does time to time gives free access to such projects, well yeah occasionally. 
+You shoud definitely look out for such opportunities on these platforms if you are really serious about enhancing your core skills. But you need not worry, because for this project, I am here to give you complete access to it.
+Let us get started!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/09/wrangling-and-visualizing-musical-data-guided-project/" />
+<meta property="article:published_time" content="2020-09-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-09-24T20:58:47+05:30" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Wrangling and Visualizing Musical Data - Guided Project"/>
+<meta name="twitter:description" content="Hey everyone, This is a guided project on gathering, cleaning and transforming musical data and visualizing it. I somehow got the opportunity to get the access to this project on Data Camp.
+Right now, it is for premium users as in you cannot access it via free account. But, Data Camp does time to time gives free access to such projects, well yeah occasionally. 
+You shoud definitely look out for such opportunities on these platforms if you are really serious about enhancing your core skills. But you need not worry, because for this project, I am here to give you complete access to it.
+Let us get started!"/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          Wrangling and Visualizing Musical Data - Guided Project
+          <div class="sub header">@ Shrishti Vaish · Thursday, Sep 24, 2020 · 4 minute read · Update at Sep 24, 2020</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="/img/chord.png" />
+      
+
+      <article style="margin-top: 2rem;"><p>Hey everyone, This is a guided project on gathering, cleaning and transforming musical data and visualizing it. I somehow got the opportunity to get the access to this project on <a href="https://www.datacamp.com/">Data Camp</a>.
+Right now, it is for premium users as in you cannot access it via free account. But, <a href="https://www.datacamp.com/">Data Camp</a> does time to time gives free access to such projects, well yeah occasionally. 
+You shoud definitely look out for such opportunities on these platforms if you are really serious about enhancing your core skills. But you need not worry, because for this project, I am here to give you complete access to it.</p>
+<p>Let us get started!</p>
+<h2 id="1-introduction">1. Introduction</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Loading individual Tidyverse packages</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 1 ....</span>
+<span style="color:#06287e">library</span>(dplyr)
+<span style="color:#06287e">library</span>(readr)
+<span style="color:#06287e">library</span>(ggplot2)
+
+<span style="color:#60a0b0;font-style:italic"># Reading in the McGill Billboard chord data</span>
+bb <span style="color:#666">&lt;-</span> <span style="color:#06287e">read.csv</span>(<span style="color:#4070a0">&#39;datasets/bb_chords.csv&#39;</span>)
+
+<span style="color:#60a0b0;font-style:italic"># Taking a look at the first rows in bb</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 1 ....</span>
+<span style="color:#06287e">head</span>(bb)
+</code></pre></div><p><img src="/img/t1.png" alt="png"></p>
+<!-- raw HTML omitted -->
+<h2 id="2-the-most-common-chords">2. The most common chords</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Counting the most common chords</span>
+bb_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(chord, sort <span style="color:#666">=</span> T)
+
+<span style="color:#60a0b0;font-style:italic"># Displaying the top 20 chords</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 2 ....</span>
+bb_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>,]
+</code></pre></div><p><img src="/img/t2.png" alt="png"></p>
+<!-- raw HTML omitted -->
+<h2 id="3-visualizing-the-most-common-chords">3. Visualizing the most common chords</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a bar plot from bb_count</span>
+bb_count <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">20</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(share <span style="color:#666">=</span> (n<span style="color:#666">/</span><span style="color:#06287e">sum</span>(n))<span style="color:#666">*</span><span style="color:#40a070">100</span>,
+         chord <span style="color:#666">=</span> <span style="color:#06287e">reorder</span>(chord,share)) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(x<span style="color:#666">=</span>chord, y<span style="color:#666">=</span>share, fill<span style="color:#666">=</span>chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>()<span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;Frequent Occurence&#34;</span>) 
+</code></pre></div><p><img src="/img/output_7_0.png" alt="png"></p>
+<h2 id="4-chord-bigrams">4. Chord &ldquo;bigrams&rdquo;</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Wrangling and counting bigrams</span>
+bb_bigram_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">mutate</span>(next_chord <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(chord), next_title <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(title), bigram <span style="color:#666">=</span> <span style="color:#06287e">paste</span>(chord,next_chord)) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">filter</span>(title <span style="color:#666">==</span> next_title) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(bigram,sort<span style="color:#666">=</span>T)
+    <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 4 ....</span>
+
+<span style="color:#60a0b0;font-style:italic"># Displaying the first 20 rows of bb_bigram_count</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 4 ....</span>
+bb_bigram_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>, ]
+</code></pre></div><p><img src="/img/t3.png" alt="png"></p>
+<!-- raw HTML omitted -->
+<h2 id="5-visualizing-the-most-common-chord-progressions">5. Visualizing the most common chord progressions</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a column plot from bb_bigram_count</span>
+bb_bigram_count <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">20</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(share <span style="color:#666">=</span> (n<span style="color:#666">/</span><span style="color:#06287e">sum</span>(n)) <span style="color:#666">*</span><span style="color:#40a070">100</span>,
+         chord <span style="color:#666">=</span>  <span style="color:#06287e">reorder</span>(bigram,share)) <span style="color:#666">%&gt;%</span>
+   <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(x<span style="color:#666">=</span>chord, y<span style="color:#666">=</span>share, fill<span style="color:#666">=</span>chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>()<span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Next_Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;Frequent Occurence&#34;</span>)
+</code></pre></div><p><img src="/img/output_13_0.png" alt="png"></p>
+<h2 id="6-finding-the-most-common-artists">6. Finding the most common artists</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Finding 30 artists with the most songs in the corpus</span>
+bb_30_artists <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">select</span>(artist, title) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">unique</span>() <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(artist, sort <span style="color:#666">=</span> T)
+    <span style="color:#60a0b0;font-style:italic">#.... YOUR CODE FOR TASK 6 ....</span>
+
+<span style="color:#60a0b0;font-style:italic"># Displaying 30 artists with the most songs in the corpus</span>
+<span style="color:#60a0b0;font-style:italic">#.... YOUR CODE FOR TASK 6 ....</span>
+bb_30_artists <span style="color:#666">%&gt;%</span> <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">30</span>)
+</code></pre></div><p><img src="/img/t4.png" alt="png"></p>
+<!-- raw HTML omitted -->
+<h2 id="7-tagging-the-corpus">7. Tagging the corpus</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R">tags <span style="color:#666">&lt;-</span> <span style="color:#06287e">tibble</span>(
+  artist <span style="color:#666">=</span> <span style="color:#06287e">c</span>(<span style="color:#4070a0">&#39;Abba&#39;</span>, <span style="color:#4070a0">&#39;Billy Joel&#39;</span>, <span style="color:#4070a0">&#39;Elton John&#39;</span>, <span style="color:#4070a0">&#39;Stevie Wonder&#39;</span>, <span style="color:#4070a0">&#39;The Rolling Stones&#39;</span>, <span style="color:#4070a0">&#39;The Beatles&#39;</span>, <span style="color:#4070a0">&#39;Eric Clapton&#39;</span>),
+  instrument <span style="color:#666">=</span> <span style="color:#06287e">c</span>(<span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>))
+
+<span style="color:#60a0b0;font-style:italic"># Creating a new dataframe bb_tagged that includes a new column instrument from tags</span>
+bb_tagged <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">inner_join</span>(tags)
+    <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 7 ....</span>
+    
+<span style="color:#60a0b0;font-style:italic"># Displaying the new data frame</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 7 ....</span>
+bb_tagged
+</code></pre></div><p><img src="/img/t5.png" alt="png"></p>
+<!-- raw HTML omitted -->
+<h2 id="8-comparing-chords-in-piano-driven-and-guitar-driven-songs">8. Comparing chords in piano-driven and guitar-driven songs</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># The top 20 most common chords</span>
+top_20 <span style="color:#666">&lt;-</span> bb_count<span style="color:#666">$</span>chord[1<span style="color:#666">:</span><span style="color:#40a070">20</span>]
+
+<span style="color:#60a0b0;font-style:italic"># Comparing the frequency of the 20 most common chords in piano- and guitar-driven songs</span>
+bb_tagged <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(chord <span style="color:#666">%in%</span> top_20) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">count</span>(chord, instrument, sort <span style="color:#666">=</span> T) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(chord,n, fill <span style="color:#666">=</span> chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_bar</span>(stat <span style="color:#666">=</span> <span style="color:#4070a0">&#34;identity&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">facet_grid</span>(<span style="color:#666">~</span>instrument) <span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;No. of Occurence&#34;</span>) 
+
+</code></pre></div><p><img src="/img/output_22_0.png" alt="png"></p>
+<h2 id="9-comparing-chord-bigrams-in-piano-driven-and-guitar-driven-songs">9. Comparing chord bigrams in piano-driven and guitar-driven songs</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># The top 20 most common bigrams</span>
+top_20_bigram <span style="color:#666">&lt;-</span> bb_bigram_count<span style="color:#666">$</span>bigram[1<span style="color:#666">:</span><span style="color:#40a070">20</span>]
+
+<span style="color:#60a0b0;font-style:italic"># Creating a faceted plot comparing guitar- and piano-driven songs for bigram frequency</span>
+bb_tagged <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(next_chord <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(chord),
+         next_title <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(title),
+         bigram <span style="color:#666">=</span> <span style="color:#06287e">paste</span>(chord, next_chord)) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(title <span style="color:#666">==</span> next_title) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">count</span>(bigram, instrument, sort <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">TRUE</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(bigram <span style="color:#666">%in%</span> top_20_bigram) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(bigram, n, fill <span style="color:#666">=</span> bigram)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">facet_grid</span>(<span style="color:#666">~</span>instrument) <span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#39;Total bigrams&#39;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#39;Bigram&#39;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">theme</span>(legend.position<span style="color:#666">=</span><span style="color:#4070a0">&#34;none&#34;</span>)
+
+  <span style="color:#60a0b0;font-style:italic"># .... MODIFIED CODE FROM TASK 4 .... </span>
+  <span style="color:#60a0b0;font-style:italic"># .... MODIFIED CODE FROM TASK 8 ....</span>
+</code></pre></div><p><img src="/img/output_25_0.png" alt="png"></p>
+<h2 id="10-conclusion">10. Conclusion</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Set to TRUE or FALSE to reflect your answer</span>
+hypothesis_valid <span style="color:#666">&lt;-</span> <span style="color:#007020;font-weight:bold">TRUE</span>
+
+<span style="color:#60a0b0;font-style:italic"># Set to TRUE or FALSE to reflect your answer</span>
+more_data_needed <span style="color:#666">&lt;-</span> <span style="color:#007020;font-weight:bold">TRUE</span>
+</code></pre></div><h1 id="outro">Outro</h1>
+<p>This project involves all the basic techniques but are really crucial for data collection and cleaning. All the visualizations were made here.</p>
+<p>Till then, any feedbacks, queries or recommendations are appreciated on any of my <strong>social media handles</strong>.</p>
+<p><strong>Refer to my Github Profile for solutions!</strong></p>
+<p>Stay tuned for more tutorials!<!-- raw HTML omitted -->
+Thank You!</p></article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+        
+          <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+        
+          <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+        
+          <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+        
+          <a class="ui label" href="/tags/readr" title="readr">readr</a>
+        
+          <a class="ui label" href="/tags/wrangle" title="wrangle">wrangle</a>
+        
+          <a class="ui label" href="/tags/visualization" title="visualization">visualization</a>
+        
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/data-analytics" title="data-analytics">data-analytics</a>
+    
+      <a class="ui label" href="/tags/data.table" title="data.table">data.table</a>
+    
+      <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+    
+      <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+    
+      <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/readr" title="readr">readr</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+    
+      <a class="ui label" href="/tags/visualization" title="visualization">visualization</a>
+    
+      <a class="ui label" href="/tags/wrangle" title="wrangle">wrangle</a>
+    
+      <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/data-manipulation" class="item">data-manipulation</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/projects" class="item">projects</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/wrangling-and-visualizing-musical-data-guided-project/" class="item">Wrangling and Visualizing Musical Data - Guided Project</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/virtual-experience-program-at-quantium" class="item">virtual-experience-program-at-quantium</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/task-1-retail-strategy-and-analytics/" class="item">Task 2 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/08/task-1-retail-strategy-and-analytics/" class="item">Task 1 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class=" instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://shrishtiport89.wixsite.com/shrishtivaish">My Portfolio</a></li>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Case Study</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<p>Hey everyone, I am working on a project, a case study on the <strong>Work Status and Condition of Women during the Pandemic</strong>. This is a project in R for analysis and visualization.
+Kindly fill the <strong><a href="https://forms.gle/s6xQoQnQULJjDcGW8">form</a>.</strong></p>
+<p>The details are provided in the form itself.
+Kindly support and share the link with your connections as well.</p>
+<p>Thank you!</p>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class="large instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-172540293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    
+  </body>
+</html>

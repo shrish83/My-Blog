@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+{0xc0006046c0 0xc000788780}
+
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="1. Introduction # Loading individual Tidyverse packages # .... YOUR CODE FOR TASK 1 .... library(dplyr) library(readr) library(ggplot2) # Reading in the McGill Billboard chord data bb &amp;lt;- read.csv(&amp;#39;datasets/bb_chords.csv&amp;#39;) # Taking a look at the first rows in bb # .... YOUR CODE FOR TASK 1 .... head(bb) # These packages need to be loaded in the first `@tests` cell.  library(testthat) library(IRkernel.testthat) run_tests({ test_that(&amp;#34;Read in data correctly.&amp;#34;, { expect_is(bb, &amp;#34;tbl_df&amp;#34;, info = &amp;#39;You should use read_csv (with an underscore) to read &amp;#34;datasets/bb_chords." />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/1/01/" />
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="1. Introduction # Loading individual Tidyverse packages # .... YOUR CODE FOR TASK 1 .... library(dplyr) library(readr) library(ggplot2) # Reading in the McGill Billboard chord data bb &lt;- read.csv(&#39;datasets/bb_chords.csv&#39;) # Taking a look at the first rows in bb # .... YOUR CODE FOR TASK 1 .... head(bb) # These packages need to be loaded in the first `@tests` cell.  library(testthat) library(IRkernel.testthat) run_tests({ test_that(&#34;Read in data correctly.&#34;, { expect_is(bb, &#34;tbl_df&#34;, info = &#39;You should use read_csv (with an underscore) to read &#34;datasets/bb_chords." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/1/01/" />
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="1. Introduction # Loading individual Tidyverse packages # .... YOUR CODE FOR TASK 1 .... library(dplyr) library(readr) library(ggplot2) # Reading in the McGill Billboard chord data bb &lt;- read.csv(&#39;datasets/bb_chords.csv&#39;) # Taking a look at the first rows in bb # .... YOUR CODE FOR TASK 1 .... head(bb) # These packages need to be loaded in the first `@tests` cell.  library(testthat) library(IRkernel.testthat) run_tests({ test_that(&#34;Read in data correctly.&#34;, { expect_is(bb, &#34;tbl_df&#34;, info = &#39;You should use read_csv (with an underscore) to read &#34;datasets/bb_chords."/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          
+          <div class="sub header">@ Shrishti Vaish · Monday, Jan 1, 0001 · 5 minute read · Update at Jan 1, 0001</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="" />
+      
+
+      <article style="margin-top: 2rem;"><h2 id="1-introduction">1. Introduction</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Loading individual Tidyverse packages</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 1 ....</span>
+<span style="color:#06287e">library</span>(dplyr)
+<span style="color:#06287e">library</span>(readr)
+<span style="color:#06287e">library</span>(ggplot2)
+
+<span style="color:#60a0b0;font-style:italic"># Reading in the McGill Billboard chord data</span>
+bb <span style="color:#666">&lt;-</span> <span style="color:#06287e">read.csv</span>(<span style="color:#4070a0">&#39;datasets/bb_chords.csv&#39;</span>)
+
+<span style="color:#60a0b0;font-style:italic"># Taking a look at the first rows in bb</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 1 ....</span>
+<span style="color:#06287e">head</span>(bb)
+</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># These packages need to be loaded in the first `@tests` cell. </span>
+<span style="color:#06287e">library</span>(testthat) 
+<span style="color:#06287e">library</span>(IRkernel.testthat)
+
+<span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;Read in data correctly.&#34;</span>, {
+        <span style="color:#06287e">expect_is</span>(bb, <span style="color:#4070a0">&#34;tbl_df&#34;</span>, 
+            info <span style="color:#666">=</span> <span style="color:#4070a0">&#39;You should use read_csv (with an underscore) to read &#34;datasets/bb_chords.csv&#34; into bb&#39;</span>)
+    })
+    
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;Read in data correctly.&#34;</span>, {
+        bb_correct <span style="color:#666">&lt;-</span> <span style="color:#06287e">read_csv</span>(<span style="color:#4070a0">&#39;datasets/bb_chords.csv&#39;</span>)
+        <span style="color:#06287e">expect_equivalent</span>(bb, bb_correct, 
+            info <span style="color:#666">=</span> <span style="color:#4070a0">&#39;bb should contain the data in &#34;datasets/bb_chords.csv&#34;&#39;</span>)
+    })
+})
+</code></pre></div><pre><code>Attaching package: 'testthat'
+
+The following object is masked from 'package:dplyr':
+
+    matches
+
+
+
+
+
+
+
+
+0/2 tests passed
+&gt; fail :: Read in data correctly.
+`bb` inherits from `data.frame` not `tbl_df`.
+You should use read_csv (with an underscore) to read &quot;datasets/bb_chords.csv&quot; into bb
+ 
+---
+&gt; fail :: Read in data correctly.
+`bb` not equivalent to `bb_correct`.
+Component &quot;chord&quot;: 'current' is not a factor
+Component &quot;root_integer&quot;: 'current' is not a factor
+Component &quot;root_roman&quot;: 'current' is not a factor
+Component &quot;quality&quot;: 'current' is not a factor
+Component &quot;title_compressed&quot;: 'current' is not a factor
+Component &quot;artist_compressed&quot;: 'current' is not a factor
+Component &quot;title&quot;: 'current' is not a factor
+Component &quot;artist&quot;: 'current' is not a factor
+bb should contain the data in &quot;datasets/bb_chords.csv&quot;
+ 
+---
+</code></pre>
+<h2 id="2-the-most-common-chords">2. The most common chords</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Counting the most common chords</span>
+bb_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(chord, sort <span style="color:#666">=</span> T)
+
+<span style="color:#60a0b0;font-style:italic"># Displaying the top 20 chords</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 2 ....</span>
+bb_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>,]
+</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_count is correct&#34;</span>, {
+        correct_bb_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span>
+          <span style="color:#06287e">count</span>(chord, sort <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">TRUE</span>)
+        <span style="color:#06287e">expect_equivalent</span>(bb_count, correct_bb_count, 
+            info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;bb_count should contain the count of each type of chord.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="3-visualizing-the-most-common-chords">3. Visualizing the most common chords</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a bar plot from bb_count</span>
+bb_count <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">20</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(share <span style="color:#666">=</span> (n<span style="color:#666">/</span><span style="color:#06287e">sum</span>(n))<span style="color:#666">*</span><span style="color:#40a070">100</span>,
+         chord <span style="color:#666">=</span> <span style="color:#06287e">reorder</span>(chord,share)) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(x<span style="color:#666">=</span>chord, y<span style="color:#666">=</span>share, fill<span style="color:#666">=</span>chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>()<span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;Frequent Occurence&#34;</span>) 
+</code></pre></div><p><img src="output_7_0.png" alt="png"></p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_count has some data in it&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(<span style="color:#06287e">length</span>(bb_count) <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Looks like you&#39;re missing data in `bb_count`.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="4-chord-bigrams">4. Chord &ldquo;bigrams&rdquo;</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Wrangling and counting bigrams</span>
+bb_bigram_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">mutate</span>(next_chord <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(chord), next_title <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(title), bigram <span style="color:#666">=</span> <span style="color:#06287e">paste</span>(chord,next_chord)) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">filter</span>(title <span style="color:#666">==</span> next_title) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(bigram,sort<span style="color:#666">=</span>T)
+    <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 4 ....</span>
+
+<span style="color:#60a0b0;font-style:italic"># Displaying the first 20 rows of bb_bigram_count</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 4 ....</span>
+bb_bigram_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>, ]
+</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_bigram_count is correct&#34;</span>, {
+      correct_bb_bigram_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span>
+      <span style="color:#06287e">mutate</span>(next_chord <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(chord),
+             next_title <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(title),
+             bigram <span style="color:#666">=</span> <span style="color:#06287e">paste</span>(chord, next_chord)) <span style="color:#666">%&gt;%</span>
+      <span style="color:#06287e">filter</span>(title <span style="color:#666">==</span> next_title) <span style="color:#666">%&gt;%</span>
+      <span style="color:#06287e">count</span>(bigram, sort <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">TRUE</span>)
+    <span style="color:#06287e">expect_equivalent</span>(bb_bigram_count, correct_bb_bigram_count, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;`bb_bigram_count` should contain the count of each type of bigram. Don&#39;t forget to sort by bigram frequency!&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="5-visualizing-the-most-common-chord-progressions">5. Visualizing the most common chord progressions</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a column plot from bb_bigram_count</span>
+bb_bigram_count <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">20</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(share <span style="color:#666">=</span> (n<span style="color:#666">/</span><span style="color:#06287e">sum</span>(n)) <span style="color:#666">*</span><span style="color:#40a070">100</span>,
+         chord <span style="color:#666">=</span>  <span style="color:#06287e">reorder</span>(bigram,share)) <span style="color:#666">%&gt;%</span>
+   <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(x<span style="color:#666">=</span>chord, y<span style="color:#666">=</span>share, fill<span style="color:#666">=</span>chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>()<span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Next_Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;Frequent Occurence&#34;</span>)
+</code></pre></div><p><img src="output_13_0.png" alt="png"></p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_bigram_count has some data in it&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(<span style="color:#06287e">length</span>(bb_bigram_count) <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Looks like you&#39;re missing data in `bb_bigram_count`.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="6-finding-the-most-common-artists">6. Finding the most common artists</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Finding 30 artists with the most songs in the corpus</span>
+bb_30_artists <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">select</span>(artist, title) <span style="color:#666">%&gt;%</span> <span style="color:#06287e">unique</span>() <span style="color:#666">%&gt;%</span> <span style="color:#06287e">count</span>(artist, sort <span style="color:#666">=</span> T)
+    <span style="color:#60a0b0;font-style:italic">#.... YOUR CODE FOR TASK 6 ....</span>
+
+<span style="color:#60a0b0;font-style:italic"># Displaying 30 artists with the most songs in the corpus</span>
+<span style="color:#60a0b0;font-style:italic">#.... YOUR CODE FOR TASK 6 ....</span>
+bb_30_artists <span style="color:#666">%&gt;%</span> <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">30</span>)
+</code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb artists counted and sorted&#34;</span>, {
+      correct_bb_30_artists <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span>
+        <span style="color:#06287e">select</span>(artist, title) <span style="color:#666">%&gt;%</span>
+        <span style="color:#06287e">unique</span>() <span style="color:#666">%&gt;%</span>
+        <span style="color:#06287e">count</span>(artist, sort <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">TRUE</span>)
+    <span style="color:#06287e">expect_equivalent</span>(bb_30_artists, correct_bb_30_artists, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;`bb_30_artists` should contain the number of soungs (not chords) by each artist in the corpus. Don&#39;t forget to sort!&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="7-tagging-the-corpus">7. Tagging the corpus</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R">tags <span style="color:#666">&lt;-</span> <span style="color:#06287e">tibble</span>(
+  artist <span style="color:#666">=</span> <span style="color:#06287e">c</span>(<span style="color:#4070a0">&#39;Abba&#39;</span>, <span style="color:#4070a0">&#39;Billy Joel&#39;</span>, <span style="color:#4070a0">&#39;Elton John&#39;</span>, <span style="color:#4070a0">&#39;Stevie Wonder&#39;</span>, <span style="color:#4070a0">&#39;The Rolling Stones&#39;</span>, <span style="color:#4070a0">&#39;The Beatles&#39;</span>, <span style="color:#4070a0">&#39;Eric Clapton&#39;</span>),
+  instrument <span style="color:#666">=</span> <span style="color:#06287e">c</span>(<span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;piano&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>, <span style="color:#4070a0">&#39;guitar&#39;</span>))
+
+<span style="color:#60a0b0;font-style:italic"># Creating a new dataframe bb_tagged that includes a new column instrument from tags</span>
+bb_tagged <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span> <span style="color:#06287e">inner_join</span>(tags)
+    <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 7 ....</span>
+    
+<span style="color:#60a0b0;font-style:italic"># Displaying the new data frame</span>
+<span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 7 ....</span>
+bb_tagged
+</code></pre></div><pre><code>Joining, by = &quot;artist&quot;
+Warning message:
+&quot;Column `artist` joining factor and character vector, coercing into character vector&quot;
+</code></pre>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb artists counted and sorted&#34;</span>, {
+      correct_bb_tagged <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;%</span>
+        <span style="color:#06287e">inner_join</span>(tags)
+    <span style="color:#06287e">expect_equivalent</span>(bb_tagged, correct_bb_tagged, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;`bb_tagged` should be a successful join of `bb` and `tags` that only contains records cointained in both dataframes.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="8-comparing-chords-in-piano-driven-and-guitar-driven-songs">8. Comparing chords in piano-driven and guitar-driven songs</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># The top 20 most common chords</span>
+top_20 <span style="color:#666">&lt;-</span> bb_count<span style="color:#666">$</span>chord[1<span style="color:#666">:</span><span style="color:#40a070">20</span>]
+
+<span style="color:#60a0b0;font-style:italic"># Comparing the frequency of the 20 most common chords in piano- and guitar-driven songs</span>
+bb_tagged <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(chord <span style="color:#666">%in%</span> top_20) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">count</span>(chord, instrument, sort <span style="color:#666">=</span> T) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(chord,n, fill <span style="color:#666">=</span> chord)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_bar</span>(stat <span style="color:#666">=</span> <span style="color:#4070a0">&#34;identity&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">facet_grid</span>(<span style="color:#666">~</span>instrument) <span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#34;Common Chords&#34;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#34;No. of Occurence&#34;</span>) 
+
+</code></pre></div><p><img src="output_22_0.png" alt="png"></p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_tagged has some data in it&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(<span style="color:#06287e">length</span>(bb_tagged) <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Looks like you&#39;re missing data in `bb_tagged`.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="9-comparing-chord-bigrams-in-piano-driven-and-guitar-driven-songs">9. Comparing chord bigrams in piano-driven and guitar-driven songs</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># The top 20 most common bigrams</span>
+top_20_bigram <span style="color:#666">&lt;-</span> bb_bigram_count<span style="color:#666">$</span>bigram[1<span style="color:#666">:</span><span style="color:#40a070">20</span>]
+
+<span style="color:#60a0b0;font-style:italic"># Creating a faceted plot comparing guitar- and piano-driven songs for bigram frequency</span>
+bb_tagged <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">mutate</span>(next_chord <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(chord),
+         next_title <span style="color:#666">=</span> <span style="color:#06287e">lead</span>(title),
+         bigram <span style="color:#666">=</span> <span style="color:#06287e">paste</span>(chord, next_chord)) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(title <span style="color:#666">==</span> next_title) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">count</span>(bigram, instrument, sort <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">TRUE</span>) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">filter</span>(bigram <span style="color:#666">%in%</span> top_20_bigram) <span style="color:#666">%&gt;%</span>
+  <span style="color:#06287e">ggplot</span>(<span style="color:#06287e">aes</span>(bigram, n, fill <span style="color:#666">=</span> bigram)) <span style="color:#666">+</span>
+  <span style="color:#06287e">geom_col</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">facet_grid</span>(<span style="color:#666">~</span>instrument) <span style="color:#666">+</span>
+  <span style="color:#06287e">coord_flip</span>() <span style="color:#666">+</span>
+  <span style="color:#06287e">ylab</span>(<span style="color:#4070a0">&#39;Total bigrams&#39;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">xlab</span>(<span style="color:#4070a0">&#39;Bigram&#39;</span>) <span style="color:#666">+</span>
+  <span style="color:#06287e">theme</span>(legend.position<span style="color:#666">=</span><span style="color:#4070a0">&#34;none&#34;</span>)
+
+  <span style="color:#60a0b0;font-style:italic"># .... MODIFIED CODE FROM TASK 4 .... </span>
+  <span style="color:#60a0b0;font-style:italic"># .... MODIFIED CODE FROM TASK 8 ....</span>
+</code></pre></div><p><img src="output_25_0.png" alt="png"></p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;bb_bigram_count has some data in it&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(<span style="color:#06287e">length</span>(bb_bigram_count) <span style="color:#666">&gt;</span> <span style="color:#40a070">0</span>, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Looks like you&#39;re missing data in `bb_bigram_count`.&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>1/1 tests passed
+</code></pre>
+<h2 id="10-conclusion">10. Conclusion</h2>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Set to TRUE or FALSE to reflect your answer</span>
+hypothesis_valid <span style="color:#666">&lt;-</span> <span style="color:#007020;font-weight:bold">TRUE</span>
+
+<span style="color:#60a0b0;font-style:italic"># Set to TRUE or FALSE to reflect your answer</span>
+more_data_needed <span style="color:#666">&lt;-</span> <span style="color:#007020;font-weight:bold">TRUE</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#06287e">run_tests</span>({
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;hypothesis is true&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(hypothesis_valid, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Are you sure the hypothesis isn&#39;t valid?!&#34;</span>)
+    })
+    <span style="color:#06287e">test_that</span>(<span style="color:#4070a0">&#34;more_data_needed is true&#34;</span>, {
+    <span style="color:#06287e">expect_true</span>(more_data_needed, 
+        info <span style="color:#666">=</span> <span style="color:#4070a0">&#34;Are you sure we don&#39;t need more data?!&#34;</span>)
+    })
+})
+</code></pre></div><pre><code>2/2 tests passed
+</code></pre>
+</article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+          <a class="ui label">No Tags</a>
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/data-analytics" title="data-analytics">data-analytics</a>
+    
+      <a class="ui label" href="/tags/data.table" title="data.table">data.table</a>
+    
+      <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+    
+      <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+    
+      <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/readr" title="readr">readr</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+    
+      <a class="ui label" href="/tags/visualization" title="visualization">visualization</a>
+    
+      <a class="ui label" href="/tags/wrangle" title="wrangle">wrangle</a>
+    
+      <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/data-manipulation" class="item">data-manipulation</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/projects" class="item">projects</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/wrangling-and-visualizing-musical-data-guided-project/" class="item">Wrangling and Visualizing Musical Data - Guided Project</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/virtual-experience-program-at-quantium" class="item">virtual-experience-program-at-quantium</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/task-1-retail-strategy-and-analytics/" class="item">Task 2 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/08/task-1-retail-strategy-and-analytics/" class="item">Task 1 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class=" instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://shrishtiport89.wixsite.com/shrishtivaish">My Portfolio</a></li>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Case Study</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<p>Hey everyone, I am working on a project, a case study on the <strong>Work Status and Condition of Women during the Pandemic</strong>. This is a project in R for analysis and visualization.
+Kindly fill the <strong><a href="https://forms.gle/s6xQoQnQULJjDcGW8">form</a>.</strong></p>
+<p>The details are provided in the form itself.
+Kindly support and share the link with your connections as well.</p>
+<p>Thank you!</p>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class="large instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-172540293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    
+  </body>
+</html>
