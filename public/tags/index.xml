@@ -6,7 +6,7 @@
     <description>Recent content in Tags on R Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 24 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Dec 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,171 @@
     <item>
       <title>Posts</title>
       <link>/posts/</link>
-      <pubDate>Thu, 24 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 21 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/</guid>
       <description></description> 
+    </item>
+    
+    <item>
+      <title>SuperStore Retail Analysis</title>
+      <link>/2020/12/superstore-retail-analysis/</link>
+      <pubDate>Mon, 21 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/12/superstore-retail-analysis/</guid>
+      <description>
+
+
+&lt;p&gt;Hey everyone, This is an EDA project analyzing super store data set and visualizing it.
+The objective of this project is to analyze and identify trends and patterns in the current retail sales and identify which sector of the market is under loss and which sector is making huge profits.
+Every sector offers discounts on sales, but, do they collect profits as needed on the discounts they offer?
+Which shipment class boosts the sales of which category?&lt;/p&gt;
+&lt;p&gt;This tutorial will guide you through the process of retrieving answers to all these questions.&lt;/p&gt;
+&lt;p&gt;Let us get started!&lt;/p&gt;
+&lt;div id=&#34;loading-packages&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Loading Packages&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;rm(list=ls())
+library(ggplot2)
+library(tidyverse)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reading-dataset&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Reading dataset&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df &amp;lt;- read.csv(&amp;quot;SampleSuperstore.csv&amp;quot;)
+
+str(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &amp;#39;data.frame&amp;#39;:    9994 obs. of  13 variables:
+##  $ Ship.Mode   : Factor w/ 4 levels &amp;quot;First Class&amp;quot;,..: 3 3 3 4 4 4 4 4 4 4 ...
+##  $ Segment     : Factor w/ 3 levels &amp;quot;Consumer&amp;quot;,&amp;quot;Corporate&amp;quot;,..: 1 1 2 1 1 1 1 1 1 1 ...
+##  $ Country     : Factor w/ 1 level &amp;quot;United States&amp;quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ City        : Factor w/ 531 levels &amp;quot;Aberdeen&amp;quot;,&amp;quot;Abilene&amp;quot;,..: 195 195 267 154 154 267 267 267 267 267 ...
+##  $ State       : Factor w/ 49 levels &amp;quot;Alabama&amp;quot;,&amp;quot;Arizona&amp;quot;,..: 16 16 4 9 9 4 4 4 4 4 ...
+##  $ Postal.Code : int  42420 42420 90036 33311 33311 90032 90032 90032 90032 90032 ...
+##  $ Region      : Factor w/ 4 levels &amp;quot;Central&amp;quot;,&amp;quot;East&amp;quot;,..: 3 3 4 3 3 4 4 4 4 4 ...
+##  $ Category    : Factor w/ 3 levels &amp;quot;Furniture&amp;quot;,&amp;quot;Office Supplies&amp;quot;,..: 1 1 2 1 2 1 2 3 2 2 ...
+##  $ Sub.Category: Factor w/ 17 levels &amp;quot;Accessories&amp;quot;,..: 5 6 11 17 15 10 3 14 4 2 ...
+##  $ Sales       : num  262 731.9 14.6 957.6 22.4 ...
+##  $ Quantity    : int  2 3 2 5 2 7 4 6 3 5 ...
+##  $ Discount    : num  0 0 0 0.45 0.2 0 0 0.2 0.2 0 ...
+##  $ Profit      : num  41.91 219.58 6.87 -383.03 2.52 ...&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##           Ship.Mode           Segment              Country    
+##  First Class   :1538   Consumer   :5191   United States:9994  
+##  Same Day      : 543   Corporate  :3020                       
+##  Second Class  :1945   Home Office:1783                       
+##  Standard Class:5968                                          
+##                                                               
+##                                                               
+##                                                               
+##             City               State       Postal.Code        Region    
+##  New York City: 915   California  :2001   Min.   : 1040   Central:2323  
+##  Los Angeles  : 747   New York    :1128   1st Qu.:23223   East   :2848  
+##  Philadelphia : 537   Texas       : 985   Median :56431   South  :1620  
+##  San Francisco: 510   Pennsylvania: 587   Mean   :55190   West   :3203  
+##  Seattle      : 428   Washington  : 506   3rd Qu.:90008                 
+##  Houston      : 377   Illinois    : 492   Max.   :99301                 
+##  (Other)      :6480   (Other)     :4295                                 
+##             Category         Sub.Category      Sales              Quantity    
+##  Furniture      :2121   Binders    :1523   Min.   :    0.444   Min.   : 1.00  
+##  Office Supplies:6026   Paper      :1370   1st Qu.:   17.280   1st Qu.: 2.00  
+##  Technology     :1847   Furnishings: 957   Median :   54.490   Median : 3.00  
+##                         Phones     : 889   Mean   :  229.858   Mean   : 3.79  
+##                         Storage    : 846   3rd Qu.:  209.940   3rd Qu.: 5.00  
+##                         Art        : 796   Max.   :22638.480   Max.   :14.00  
+##                         (Other)    :3613                                      
+##     Discount          Profit         
+##  Min.   :0.0000   Min.   :-6599.978  
+##  1st Qu.:0.0000   1st Qu.:    1.729  
+##  Median :0.2000   Median :    8.666  
+##  Mean   :0.1562   Mean   :   28.657  
+##  3rd Qu.:0.2000   3rd Qu.:   29.364  
+##  Max.   :0.8000   Max.   : 8399.976  
+## &lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-preparation-and-cleaning&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Data preparation and Cleaning&lt;/h1&gt;
+&lt;p&gt;Checking for abnormalities:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#any null values?
+is.null(df)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#any duplicacy?
+dfnew &amp;lt;- df %&amp;gt;% distinct() ##yes, duplicates were removed&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We see that there is an outlier in the Sales feature, an unusual hike. Let’s replace it with the mean of sales.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;maxSales &amp;lt;- max(dfnew$Sales)
+dfnew$Sales &amp;lt;- replace(dfnew$Sales, dfnew$Sales==maxSales,mean(dfnew$Sales))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;removing-country-and-postal-codes-feature&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Removing country and Postal Codes feature&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dfnew &amp;lt;- dfnew %&amp;gt;% select(-c(Country, Postal.Code))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;visualization&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Visualization&lt;/h1&gt;
+&lt;p&gt;Let’s analyze patterns in our cleaned data&lt;/p&gt;
+&lt;div id=&#34;sales-vs-quantity&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Sales vs Quantity&lt;/h3&gt;
+&lt;div id=&#34;in-the-below-graph-we-see-the-following-pattern-that-most-of-the-sales-have-been-triggered-by-the-standard-class-of-shipment-mode.&#34; class=&#34;section level5&#34;&gt;
+&lt;h5&gt;In the below graph, we see the following pattern that most of the sales have been triggered by the standard class of shipment mode.&lt;/h5&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = dfnew, aes(x = Quantity, y = Sales, fill = Ship.Mode) )+ geom_bar(stat = &amp;quot;identity&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sales-vs-profit&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Sales vs Profit&lt;/h3&gt;
+&lt;p&gt;And hence, obviously we see more profits/loss have been availed from the standard shipment class. But, there are not higher range profits seen this feature.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(data = dfnew, aes(x = Sales, y = Profit, color = Ship.Mode)) + geom_point()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sales-vs-discount&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Sales vs Discount&lt;/h3&gt;
+&lt;p&gt;Let us see how Sales are affected if discounts are offered.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_point(data = dfnew, aes(x = Discount, y = Sales, color = Ship.Mode)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;em&gt;It is evident from the above graph that discounts attract more sales. But, discounts attract mostly the Standard Class shipment. Same day shipment mode receive the least disount offers.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;profits-vs-discount&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Profits vs Discount&lt;/h3&gt;
+&lt;p&gt;Let’s see whether profits have been triggered if discounts have been redeemed.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_bar(data = dfnew, aes(x = Discount, y = Profit, fill = Ship.Mode), stat = &amp;quot;identity&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Yes, we see clearly, the more discounts have been offered and redeemed, the lesser profits the segments have achieved.
+Products with no discounts show high range of profits but as the discount range increases, we only see more and more loss with hardly any profit.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Let us see if this is the case with other segments&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_bar(data = dfnew, aes(x = Sub.Category, y = Profit, fill = Region), stat = &amp;quot;identity&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;strong&gt;We see that more losses have been incurred by the &lt;em&gt;Binders&lt;/em&gt; industry mainly in the Central region and &lt;em&gt;Machines&lt;/em&gt; and * Tables * industry.&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;now&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Now,&lt;/h3&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_bar(data = dfnew, aes(x = Category, y = Sales, fill = Region), stat = &amp;quot;identity&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;
+&lt;strong&gt;More Sales have been incurred by the technology category, then Furniture and office supplies. Mostly sales have been made from the West and East regions&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_bar(data = dfnew, aes(x = Category, y = Profit, fill = Region), stat = &amp;quot;identity&amp;quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The furniture category incurrs more losses than losses in the technology and Office Supplies category.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Since, Sales also vary from low to high in this category so is are profits.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot() + geom_point(data = dfnew, aes(x = Sales, y = Profit, color = Category)) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;we-have-now-witnessed-from-the-above-graphs-that-the-sales-to-profit-ratio-is-same-in-every-category-no-matter-how-they-are-clubbed.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;We have now witnessed from the above graphs that the Sales to Profit ratio is same in every category, no matter how they are clubbed.&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;div id=&#34;recommended-solutions-key-insights&#34; class=&#34;section level4&#34;&gt;
+&lt;h4&gt;&lt;strong&gt;Recommended Solutions/ Key Insights&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;em&gt;Same day shipment if receives more discounts can trigger sales/profits.&lt;/em&gt;
+&lt;em&gt;Discounts should be based on the Sales and should not increase a particular range otherwise unnecessary disounts with low sales can witness huge losses&lt;/em&gt;
+&lt;em&gt;Binders and Machines industry should be focused upon more so as to strengthen these weakened industry areas.&lt;/em&gt;
+&lt;em&gt;Office Supplies and the Furniture industries do not seem to boom in the Central Region.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outro&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Outro&lt;/h2&gt;
+&lt;p&gt;So, this is it. We chose a simple, small dataset to start with and learnt how to manipulate data using a few simple functions.&lt;/p&gt;
+&lt;p&gt;Stay tuned for more tutorials!&lt;br/&gt;
+Thank You!&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description> 
     </item>
     
     <item>
@@ -44,8 +205,7 @@ bb &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Taking a look at the first rows in bb&lt;/span&gt;
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 1 ....&lt;/span&gt;
 &lt;span style=&#34;color:#06287e&#34;&gt;head&lt;/span&gt;(bb)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t1.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;2-the-most-common-chords&#34;&gt;2. The most common chords&lt;/h2&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Counting the most common chords&lt;/span&gt;
@@ -54,8 +214,7 @@ bb_count &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;sp
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the top 20 chords&lt;/span&gt;
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 2 ....&lt;/span&gt;
 bb_count[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;,]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t2.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;3-visualizing-the-most-common-chords&#34;&gt;3. Visualizing the most common chords&lt;/h2&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a bar plot from bb_count&lt;/span&gt;
@@ -78,8 +237,7 @@ bb_bigram_count &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the first 20 rows of bb_bigram_count&lt;/span&gt;
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 4 ....&lt;/span&gt;
 bb_bigram_count[1&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;20&lt;/span&gt;, ]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t3.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;5-visualizing-the-most-common-chord-progressions&#34;&gt;5. Visualizing the most common chord progressions&lt;/h2&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Creating a column plot from bb_bigram_count&lt;/span&gt;
@@ -102,8 +260,7 @@ bb_30_artists &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying 30 artists with the most songs in the corpus&lt;/span&gt;
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;#.... YOUR CODE FOR TASK 6 ....&lt;/span&gt;
 bb_30_artists &lt;span style=&#34;color:#666&#34;&gt;%&amp;gt;%&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;slice&lt;/span&gt;(&lt;span style=&#34;color:#40a070&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#666&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#40a070&#34;&gt;30&lt;/span&gt;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t4.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;7-tagging-the-corpus&#34;&gt;7. Tagging the corpus&lt;/h2&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;tags &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; &lt;span style=&#34;color:#06287e&#34;&gt;tibble&lt;/span&gt;(
@@ -117,8 +274,7 @@ bb_tagged &lt;span style=&#34;color:#666&#34;&gt;&amp;lt;-&lt;/span&gt; bb &lt;s
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# Displaying the new data frame&lt;/span&gt;
 &lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# .... YOUR CODE FOR TASK 7 ....&lt;/span&gt;
 bb_tagged
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;/img/t5.png&#34; alt=&#34;png&#34;&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;8-comparing-chords-in-piano-driven-and-guitar-driven-songs&#34;&gt;8. Comparing chords in piano-driven and guitar-driven songs&lt;/h2&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-R&#34; data-lang=&#34;R&#34;&gt;&lt;span style=&#34;color:#60a0b0;font-style:italic&#34;&gt;# The top 20 most common chords&lt;/span&gt;

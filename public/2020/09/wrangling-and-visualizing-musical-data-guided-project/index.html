@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-{0xc0000b2c60 0xc000499960}
+{0xc0007a8fc0 0xc000832be0}
 Wrangling and Visualizing Musical Data - Guided Project
  | R Blogs</title>
 
@@ -111,8 +111,7 @@ bb <span style="color:#666">&lt;-</span> <span style="color:#06287e">read.csv</s
 <span style="color:#60a0b0;font-style:italic"># Taking a look at the first rows in bb</span>
 <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 1 ....</span>
 <span style="color:#06287e">head</span>(bb)
-</code></pre></div><p><img src="/img/t1.png" alt="png"></p>
-<!-- raw HTML omitted -->
+</code></pre></div><!-- raw HTML omitted -->
 <h2 id="2-the-most-common-chords">2. The most common chords</h2>
 <!-- raw HTML omitted -->
 <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Counting the most common chords</span>
@@ -121,8 +120,7 @@ bb_count <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt;
 <span style="color:#60a0b0;font-style:italic"># Displaying the top 20 chords</span>
 <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 2 ....</span>
 bb_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>,]
-</code></pre></div><p><img src="/img/t2.png" alt="png"></p>
-<!-- raw HTML omitted -->
+</code></pre></div><!-- raw HTML omitted -->
 <h2 id="3-visualizing-the-most-common-chords">3. Visualizing the most common chords</h2>
 <!-- raw HTML omitted -->
 <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a bar plot from bb_count</span>
@@ -145,8 +143,7 @@ bb_bigram_count <span style="color:#666">&lt;-</span> bb <span style="color:#666
 <span style="color:#60a0b0;font-style:italic"># Displaying the first 20 rows of bb_bigram_count</span>
 <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 4 ....</span>
 bb_bigram_count[1<span style="color:#666">:</span><span style="color:#40a070">20</span>, ]
-</code></pre></div><p><img src="/img/t3.png" alt="png"></p>
-<!-- raw HTML omitted -->
+</code></pre></div><!-- raw HTML omitted -->
 <h2 id="5-visualizing-the-most-common-chord-progressions">5. Visualizing the most common chord progressions</h2>
 <!-- raw HTML omitted -->
 <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># Creating a column plot from bb_bigram_count</span>
@@ -169,8 +166,7 @@ bb_30_artists <span style="color:#666">&lt;-</span> bb <span style="color:#666">
 <span style="color:#60a0b0;font-style:italic"># Displaying 30 artists with the most songs in the corpus</span>
 <span style="color:#60a0b0;font-style:italic">#.... YOUR CODE FOR TASK 6 ....</span>
 bb_30_artists <span style="color:#666">%&gt;%</span> <span style="color:#06287e">slice</span>(<span style="color:#40a070">1</span><span style="color:#666">:</span><span style="color:#40a070">30</span>)
-</code></pre></div><p><img src="/img/t4.png" alt="png"></p>
-<!-- raw HTML omitted -->
+</code></pre></div><!-- raw HTML omitted -->
 <h2 id="7-tagging-the-corpus">7. Tagging the corpus</h2>
 <!-- raw HTML omitted -->
 <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R">tags <span style="color:#666">&lt;-</span> <span style="color:#06287e">tibble</span>(
@@ -184,8 +180,7 @@ bb_tagged <span style="color:#666">&lt;-</span> bb <span style="color:#666">%&gt
 <span style="color:#60a0b0;font-style:italic"># Displaying the new data frame</span>
 <span style="color:#60a0b0;font-style:italic"># .... YOUR CODE FOR TASK 7 ....</span>
 bb_tagged
-</code></pre></div><p><img src="/img/t5.png" alt="png"></p>
-<!-- raw HTML omitted -->
+</code></pre></div><!-- raw HTML omitted -->
 <h2 id="8-comparing-chords-in-piano-driven-and-guitar-driven-songs">8. Comparing chords in piano-driven and guitar-driven songs</h2>
 <!-- raw HTML omitted -->
 <div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-R" data-lang="R"><span style="color:#60a0b0;font-style:italic"># The top 20 most common chords</span>
@@ -342,6 +337,22 @@ Thank You!</p></article>
             <div class="item">
               <div class="content">
                 <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/eda" class="item">eda</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/12/superstore-retail-analysis/" class="item">SuperStore Retail Analysis</a>
               </div>
             </div>
           

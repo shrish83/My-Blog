@@ -4,21 +4,46 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/dplyr/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
+    <loc>/categories/eda/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/ggplot2/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2020/12/superstore-retail-analysis/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/tidyverse/</loc>
+    <lastmod>2020-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dplyr/</loc>
     <lastmod>2020-09-24T20:58:47+05:30</lastmod>
   </url>
   
@@ -28,22 +53,7 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/readr/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2020-09-24T20:58:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/tidyverse/</loc>
     <lastmod>2020-09-24T20:58:47+05:30</lastmod>
   </url>
   

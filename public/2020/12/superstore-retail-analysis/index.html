@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+{0xc0007a8fc0 0xc000832be0}
+SuperStore Retail Analysis
+ | R Blogs</title>
+
+    
+  <link href="/fav.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+
+  
+  <meta name="author" content="Shrishti Vaish" />
+  <meta name="description" content="Hey everyone, This is an EDA project analyzing super store data set and visualizing it.The objective of this project is to analyze and identify trends and patterns in the current retail sales and identify which sector of the market is under loss and which sector is making huge profits.Every sector offers discounts on sales, but, do they collect profits as needed on the discounts they offer?Which shipment class boosts the sales of which category?" />
+
+
+
+<meta name="generator" content="Hugo 0.73.0" />
+
+<link rel="canonical" href="/2020/12/superstore-retail-analysis/" />
+
+
+<meta property="og:title" content="SuperStore Retail Analysis" />
+<meta property="og:description" content="Hey everyone, This is an EDA project analyzing super store data set and visualizing it.The objective of this project is to analyze and identify trends and patterns in the current retail sales and identify which sector of the market is under loss and which sector is making huge profits.Every sector offers discounts on sales, but, do they collect profits as needed on the discounts they offer?Which shipment class boosts the sales of which category?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020/12/superstore-retail-analysis/" />
+<meta property="article:published_time" content="2020-12-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-12-21T00:00:00+00:00" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SuperStore Retail Analysis"/>
+<meta name="twitter:description" content="Hey everyone, This is an EDA project analyzing super store data set and visualizing it.The objective of this project is to analyze and identify trends and patterns in the current retail sales and identify which sector of the market is under loss and which sector is making huge profits.Every sector offers discounts on sales, but, do they collect profits as needed on the discounts they offer?Which shipment class boosts the sales of which category?"/>
+
+
+<link rel="stylesheet" href="/css/github-markdown.css" />
+<link rel="stylesheet" href="/css/semantic.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+
+
+
+
+  </head>
+
+  
+  <body style="background-image: url(/img/cover.png);">
+  
+    <div class="flip-container">
+      <div class="flipper">
+        <section class="front">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          
+<div class="ui centered relaxed grid dream-grid">
+  <div class="sixteen wide mobile sixteen wide tablet twelve wide computer column markdown-body dream-single">
+
+    <section class="ui top attached segment" id="dream-save-post-as-img">
+      <header style="margin-top: 0 !important;">
+        <h2 class="ui header">
+          SuperStore Retail Analysis
+          <div class="sub header">@ Shrishti Vaish · Monday, Dec 21, 2020 · 6 minute read · Update at Dec 21, 2020</div>
+        </h2>
+      </header>
+
+      
+        <img class="ui image" style="margin-top: 2rem;" src="/img/0001.jpg" />
+      
+
+      <article style="margin-top: 2rem;">
+
+
+<p>Hey everyone, This is an EDA project analyzing super store data set and visualizing it.
+The objective of this project is to analyze and identify trends and patterns in the current retail sales and identify which sector of the market is under loss and which sector is making huge profits.
+Every sector offers discounts on sales, but, do they collect profits as needed on the discounts they offer?
+Which shipment class boosts the sales of which category?</p>
+<p>This tutorial will guide you through the process of retrieving answers to all these questions.</p>
+<p>Let us get started!</p>
+<div id="loading-packages" class="section level1">
+<h1>Loading Packages</h1>
+<pre class="r"><code>rm(list=ls())
+library(ggplot2)
+library(tidyverse)</code></pre>
+</div>
+<div id="reading-dataset" class="section level1">
+<h1>Reading dataset</h1>
+<pre class="r"><code>df &lt;- read.csv(&quot;SampleSuperstore.csv&quot;)
+
+str(df)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    9994 obs. of  13 variables:
+##  $ Ship.Mode   : Factor w/ 4 levels &quot;First Class&quot;,..: 3 3 3 4 4 4 4 4 4 4 ...
+##  $ Segment     : Factor w/ 3 levels &quot;Consumer&quot;,&quot;Corporate&quot;,..: 1 1 2 1 1 1 1 1 1 1 ...
+##  $ Country     : Factor w/ 1 level &quot;United States&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ City        : Factor w/ 531 levels &quot;Aberdeen&quot;,&quot;Abilene&quot;,..: 195 195 267 154 154 267 267 267 267 267 ...
+##  $ State       : Factor w/ 49 levels &quot;Alabama&quot;,&quot;Arizona&quot;,..: 16 16 4 9 9 4 4 4 4 4 ...
+##  $ Postal.Code : int  42420 42420 90036 33311 33311 90032 90032 90032 90032 90032 ...
+##  $ Region      : Factor w/ 4 levels &quot;Central&quot;,&quot;East&quot;,..: 3 3 4 3 3 4 4 4 4 4 ...
+##  $ Category    : Factor w/ 3 levels &quot;Furniture&quot;,&quot;Office Supplies&quot;,..: 1 1 2 1 2 1 2 3 2 2 ...
+##  $ Sub.Category: Factor w/ 17 levels &quot;Accessories&quot;,..: 5 6 11 17 15 10 3 14 4 2 ...
+##  $ Sales       : num  262 731.9 14.6 957.6 22.4 ...
+##  $ Quantity    : int  2 3 2 5 2 7 4 6 3 5 ...
+##  $ Discount    : num  0 0 0 0.45 0.2 0 0 0.2 0.2 0 ...
+##  $ Profit      : num  41.91 219.58 6.87 -383.03 2.52 ...</code></pre>
+<pre class="r"><code>summary(df)</code></pre>
+<pre><code>##           Ship.Mode           Segment              Country    
+##  First Class   :1538   Consumer   :5191   United States:9994  
+##  Same Day      : 543   Corporate  :3020                       
+##  Second Class  :1945   Home Office:1783                       
+##  Standard Class:5968                                          
+##                                                               
+##                                                               
+##                                                               
+##             City               State       Postal.Code        Region    
+##  New York City: 915   California  :2001   Min.   : 1040   Central:2323  
+##  Los Angeles  : 747   New York    :1128   1st Qu.:23223   East   :2848  
+##  Philadelphia : 537   Texas       : 985   Median :56431   South  :1620  
+##  San Francisco: 510   Pennsylvania: 587   Mean   :55190   West   :3203  
+##  Seattle      : 428   Washington  : 506   3rd Qu.:90008                 
+##  Houston      : 377   Illinois    : 492   Max.   :99301                 
+##  (Other)      :6480   (Other)     :4295                                 
+##             Category         Sub.Category      Sales              Quantity    
+##  Furniture      :2121   Binders    :1523   Min.   :    0.444   Min.   : 1.00  
+##  Office Supplies:6026   Paper      :1370   1st Qu.:   17.280   1st Qu.: 2.00  
+##  Technology     :1847   Furnishings: 957   Median :   54.490   Median : 3.00  
+##                         Phones     : 889   Mean   :  229.858   Mean   : 3.79  
+##                         Storage    : 846   3rd Qu.:  209.940   3rd Qu.: 5.00  
+##                         Art        : 796   Max.   :22638.480   Max.   :14.00  
+##                         (Other)    :3613                                      
+##     Discount          Profit         
+##  Min.   :0.0000   Min.   :-6599.978  
+##  1st Qu.:0.0000   1st Qu.:    1.729  
+##  Median :0.2000   Median :    8.666  
+##  Mean   :0.1562   Mean   :   28.657  
+##  3rd Qu.:0.2000   3rd Qu.:   29.364  
+##  Max.   :0.8000   Max.   : 8399.976  
+## </code></pre>
+</div>
+<div id="data-preparation-and-cleaning" class="section level1">
+<h1>Data preparation and Cleaning</h1>
+<p>Checking for abnormalities:</p>
+<pre class="r"><code>#any null values?
+is.null(df)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>#any duplicacy?
+dfnew &lt;- df %&gt;% distinct() ##yes, duplicates were removed</code></pre>
+<p>We see that there is an outlier in the Sales feature, an unusual hike. Let’s replace it with the mean of sales.</p>
+<pre class="r"><code>maxSales &lt;- max(dfnew$Sales)
+dfnew$Sales &lt;- replace(dfnew$Sales, dfnew$Sales==maxSales,mean(dfnew$Sales))</code></pre>
+</div>
+<div id="removing-country-and-postal-codes-feature" class="section level1">
+<h1>Removing country and Postal Codes feature</h1>
+<pre class="r"><code>dfnew &lt;- dfnew %&gt;% select(-c(Country, Postal.Code))</code></pre>
+</div>
+<div id="visualization" class="section level1">
+<h1>Visualization</h1>
+<p>Let’s analyze patterns in our cleaned data</p>
+<div id="sales-vs-quantity" class="section level3">
+<h3>Sales vs Quantity</h3>
+<div id="in-the-below-graph-we-see-the-following-pattern-that-most-of-the-sales-have-been-triggered-by-the-standard-class-of-shipment-mode." class="section level5">
+<h5>In the below graph, we see the following pattern that most of the sales have been triggered by the standard class of shipment mode.</h5>
+<pre class="r"><code>ggplot(data = dfnew, aes(x = Quantity, y = Sales, fill = Ship.Mode) )+ geom_bar(stat = &quot;identity&quot;) </code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+</div>
+<div id="sales-vs-profit" class="section level3">
+<h3>Sales vs Profit</h3>
+<p>And hence, obviously we see more profits/loss have been availed from the standard shipment class. But, there are not higher range profits seen this feature.</p>
+<pre class="r"><code>ggplot(data = dfnew, aes(x = Sales, y = Profit, color = Ship.Mode)) + geom_point()</code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="sales-vs-discount" class="section level3">
+<h3>Sales vs Discount</h3>
+<p>Let us see how Sales are affected if discounts are offered.</p>
+<pre class="r"><code>ggplot() + geom_point(data = dfnew, aes(x = Discount, y = Sales, color = Ship.Mode)) </code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<em>It is evident from the above graph that discounts attract more sales. But, discounts attract mostly the Standard Class shipment. Same day shipment mode receive the least disount offers.</em></p>
+</div>
+<div id="profits-vs-discount" class="section level3">
+<h3>Profits vs Discount</h3>
+<p>Let’s see whether profits have been triggered if discounts have been redeemed.</p>
+<pre class="r"><code>ggplot() + geom_bar(data = dfnew, aes(x = Discount, y = Profit, fill = Ship.Mode), stat = &quot;identity&quot;) </code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Yes, we see clearly, the more discounts have been offered and redeemed, the lesser profits the segments have achieved.
+Products with no discounts show high range of profits but as the discount range increases, we only see more and more loss with hardly any profit.</p>
+<p><strong>Let us see if this is the case with other segments</strong></p>
+<pre class="r"><code>ggplot() + geom_bar(data = dfnew, aes(x = Sub.Category, y = Profit, fill = Region), stat = &quot;identity&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))</code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<strong>We see that more losses have been incurred by the <em>Binders</em> industry mainly in the Central region and <em>Machines</em> and * Tables * industry.</strong></p>
+</div>
+<div id="now" class="section level3">
+<h3>Now,</h3>
+<pre class="r"><code>ggplot() + geom_bar(data = dfnew, aes(x = Category, y = Sales, fill = Region), stat = &quot;identity&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))</code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<strong>More Sales have been incurred by the technology category, then Furniture and office supplies. Mostly sales have been made from the West and East regions</strong></p>
+<pre class="r"><code>ggplot() + geom_bar(data = dfnew, aes(x = Category, y = Profit, fill = Region), stat = &quot;identity&quot;) + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))</code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><strong>The furniture category incurrs more losses than losses in the technology and Office Supplies category.</strong></p>
+<p>Since, Sales also vary from low to high in this category so is are profits.</p>
+<pre class="r"><code>ggplot() + geom_point(data = dfnew, aes(x = Sales, y = Profit, color = Category)) </code></pre>
+<p><img src="/posts/2020-12-21-superStore-retail-analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="we-have-now-witnessed-from-the-above-graphs-that-the-sales-to-profit-ratio-is-same-in-every-category-no-matter-how-they-are-clubbed." class="section level3">
+<h3>We have now witnessed from the above graphs that the Sales to Profit ratio is same in every category, no matter how they are clubbed.</h3>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<div id="recommended-solutions-key-insights" class="section level4">
+<h4><strong>Recommended Solutions/ Key Insights</strong></h4>
+<p><em>Same day shipment if receives more discounts can trigger sales/profits.</em>
+<em>Discounts should be based on the Sales and should not increase a particular range otherwise unnecessary disounts with low sales can witness huge losses</em>
+<em>Binders and Machines industry should be focused upon more so as to strengthen these weakened industry areas.</em>
+<em>Office Supplies and the Furniture industries do not seem to boom in the Central Region.</em></p>
+</div>
+</div>
+<div id="outro" class="section level2">
+<h2>Outro</h2>
+<p>So, this is it. We chose a simple, small dataset to start with and learnt how to manipulate data using a few simple functions.</p>
+<p>Stay tuned for more tutorials!<br/>
+Thank You!</p>
+</div>
+</div>
+</article>
+    </section>
+
+    <footer class="ui attached segment dream-tags">
+      
+        
+          <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+        
+          <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+        
+      
+      <div
+        class="ui label"
+        style="float: right; cursor: pointer;"
+        onclick="savePostAsImg()">
+        <i class="save icon"></i>Save as image
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+  <div class="sixteen wide mobile sixteen wide tablet four wide computer column">
+    <article class="dream-header">
+  <section class="ui top attached center aligned segment">
+    <div class="ui small circular image">
+      
+    </div>
+
+    <h1 class="ui medium header">Shrishti Vaish&#39;s blog<div class="sub header" style="margin-top: 0.5rem;"></div>
+    </h1>
+
+    <div class="ui horizontal list">
+      
+      <a class="item" href="/posts">
+        <i class="archive icon" title="Archives"></i>
+      </a>
+      
+      <a class="item" href="/tags">
+        <i class="tags icon" title="All Tags"></i>
+      </a>
+      <a class="item" href="/categories">
+        <i class="th list icon" title="All Categories"></i>
+      </a>
+    </div>
+  </section>
+
+  
+  <section class="ui attached center aligned segment dream-tags">
+    
+      <a class="ui label" href="/tags/data-analytics" title="data-analytics">data-analytics</a>
+    
+      <a class="ui label" href="/tags/data.table" title="data.table">data.table</a>
+    
+      <a class="ui label" href="/tags/dplyr" title="dplyr">dplyr</a>
+    
+      <a class="ui label" href="/tags/ggplot2" title="ggplot2">ggplot2</a>
+    
+      <a class="ui label" href="/tags/manipulation" title="manipulation">manipulation</a>
+    
+      <a class="ui label" href="/tags/r" title="r">r</a>
+    
+      <a class="ui label" href="/tags/readr" title="readr">readr</a>
+    
+      <a class="ui label" href="/tags/rvest" title="rvest">rvest</a>
+    
+      <a class="ui label" href="/tags/tidyverse" title="tidyverse">tidyverse</a>
+    
+      <a class="ui label" href="/tags/visualization" title="visualization">visualization</a>
+    
+      <a class="ui label" href="/tags/wrangle" title="wrangle">wrangle</a>
+    
+      <a class="ui label" href="/tags/wrangling" title="wrangling">wrangling</a>
+    
+      <a class="ui label" href="/tags/xml2" title="xml2">xml2</a>
+    
+  </section>
+  
+
+  
+  <section class="ui attached segment dream-categories">
+    <div class="ui accordion">
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/data-manipulation" class="item">data-manipulation</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tidyverse-series-dplyr-episode-1/" class="item">Tidyverse Series - dplyr - Episode 1</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/eda" class="item">eda</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/12/superstore-retail-analysis/" class="item">SuperStore Retail Analysis</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/projects" class="item">projects</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/wrangling-and-visualizing-musical-data-guided-project/" class="item">Wrangling and Visualizing Musical Data - Guided Project</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/virtual-experience-program-at-quantium" class="item">virtual-experience-program-at-quantium</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/09/task-1-retail-strategy-and-analytics/" class="item">Task 2 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/08/task-1-retail-strategy-and-analytics/" class="item">Task 1 - Retail Strategy and Analytics</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+        <div class="title">
+          <i class="dropdown icon"></i>
+          <a href="/categories/web-scraping" class="item">web-scraping</a>
+        </div>
+        <div class="content">
+          <div class="ui list">
+          
+            <div class="item">
+              <div class="content">
+                <a href="/2020/07/tutorial-web-scraping-of-multipe-pages-using-r/" class="item">Tutorial: Web Scraping of Multiple Pages using R</a>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      
+    </div>
+  </section>
+  
+
+  <section class="ui attached segment header-socials">
+    <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class=" rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class=" mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class=" twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class=" instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class=" linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class=" github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+  </section>
+
+  <section class="ui bottom attached center aligned segment">
+    
+      <p>© 2020 R Blogs</p>
+    
+
+    <p>Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> with theme <a href="https://github.com/g1eny0ung/hugo-theme-dream" target="_blank">Dream</a>.</p>
+  </section>
+</article>
+
+  </div>
+</div>
+
+        </section>
+        <section class="back">
+          
+<nav class="ui secondary menu dream-menu">
+
+  <div class="item">
+    <i class="large link bullseye icon dream-flip-toggle" title="Flip it!"></i>
+  </div>
+  <div class="item">
+    <i class="large link home icon" title="Home" onclick="window.location.href = '\/'"></i>
+  </div>
+  <div class="item">
+    <i class="large link icon theme-switch" onclick="themeSwitch()"></i>
+  </div>
+</nav>
+
+          <div class="ui centered relaxed grid dream-grid dream-back">
+  
+  
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">About Me</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          <p>Hey Folks!
+I&rsquo;m Shrishti Vaish and I&rsquo;m delighted that you visited my page.
+Currently pursuing Bachelors in Computer Science with Honours from the University of Delhi, India. During my final year at college, I had developed keen interest in Data Science knowing its worth and demand in the coming future.</p>
+<p>No better tool that I can find other than R is for statistical analysis. I use R extensively for any of my data science projects.</p>
+<p>Well, I am new to blogging and will be posting about a lot of it.</p>
+<p>Thank You!</p>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Blogroll</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<ul>
+<li><a href="https://shrishtiport89.wixsite.com/shrishtivaish">My Portfolio</a></li>
+<li><a href="https://www.r-bloggers.com/">R Bloggers</a></li>
+</ul>
+
+        </div>
+      </article>
+    </section>
+  
+    <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+      <article>
+        <div class="ui top attached segment">
+          <h3 class="ui header">Case Study</h3>
+        </div>
+        <div class="ui attached segment markdown-body">
+          
+
+
+<p>Hey everyone, I am working on a project, a case study on the <strong>Work Status and Condition of Women during the Pandemic</strong>. This is a project in R for analysis and visualization.
+Kindly fill the <strong><a href="https://forms.gle/s6xQoQnQULJjDcGW8">form</a>.</strong></p>
+<p>The details are provided in the form itself.
+Kindly support and share the link with your connections as well.</p>
+<p>Thank you!</p>
+
+        </div>
+      </article>
+    </section>
+  
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    <article>
+      <div class="ui top attached segment">
+        <h3 class="ui header">Social Links</h3>
+      </div>
+      <div class="ui attached segment">
+        <nav class="ui secondary menu dream-menu dream-socials">
+    
+      <div class="item">
+        <a href="/index.xml">
+          <i class="large rss square icon" title="RSS"></i>
+        </a>
+      </div>
+    
+    
+      <div class="item">
+        <a href="mailto:shrishtiport89@gmail.com">
+          <i class="large mail icon" title="Email"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://twitter.com/ShrishtiVaish" target="_blank">
+          <i class="large twitter icon" title="Twitter"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+      <div class="item">
+        <a href="https://instagram.com/rblogs_ShrishtiVaish" target="_blank">
+          <i class="large instagram icon" title="Instagram"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://www.linkedin.com/in/shrishti-vaish" target="_blank">
+          <i class="large linkedin icon" title="Linkedin"></i>
+        </a>
+      </div>
+    
+  
+    
+      <div class="item">
+        <a href="https://github.com/shrish83" target="_blank">
+          <i class="large github icon" title="GitHub"></i>
+        </a>
+      </div>
+    
+  
+    
+  
+    
+  </nav>
+      </div>
+    </article>
+  </section>
+
+  <section class="sixteen wide mobile eight wide tablet four wide computer column dream-column">
+    
+  </section>
+
+  
+    
+  
+</div>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+<script src="/js/semantic.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/header.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/theme.js"></script>
+
+    
+<script src="/js/html2canvas.min.js"></script>
+
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-172540293-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    
+  </body>
+</html>
