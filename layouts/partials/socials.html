@@ -70,7 +70,9 @@
       </div>
     {{ end }}
     
-    <div>
-  <p><strong><a href="https://tinyletter.com/{{ .Site.Params.NewsletterSignup }}">Subscribe via my Newsletter or Rss feed</a></strong></p>
+    {{ if .Site.Params.NewsletterSignup}}
+    <div class="item">
+  <p><strong><a href="https://tinyletter.com/{{ .Site.Params.NewsletterSignup }}" target="_blank">Subscribe</a></strong></p>
 </div>
+{{ end }}
   </nav>

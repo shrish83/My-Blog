@@ -24,7 +24,7 @@ enableRobotsTXT = true
 
 
 [params]
-enableSearch = true
+#enableSearch = true
 backgroundImage = "/img/cover.png"
 author = "Shrishti Vaish"
 
@@ -42,8 +42,8 @@ siteStartYear = 2020
 
 favicon = "/fav.ico"
 
-[outputs]
-  home = ["HTML", "RSS", "JSON"]
+#[outputs]
+ # home = ["HTML", "RSS", "JSON"]
 
 #options
 showSummaryCoverInPost = true
