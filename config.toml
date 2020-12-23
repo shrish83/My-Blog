@@ -24,6 +24,7 @@ enableRobotsTXT = true
 
 
 [params]
+enableSearch = true
 backgroundImage = "/img/cover.png"
 author = "Shrishti Vaish"
 
@@ -34,11 +35,15 @@ twitter = "ShrishtiVaish"
 instagram = "rblogs_ShrishtiVaish"
 github = "shrish83"
 linkedin = "shrishti-vaish"
+NewsletterSignup = "https://tinyletter.com/shrish"
 
 
 siteStartYear = 2020
 
 favicon = "/fav.ico"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 #options
 showSummaryCoverInPost = true
