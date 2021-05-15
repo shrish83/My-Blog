@@ -1,5 +1,5 @@
 theme = "hugo-theme-dream"
-baseurl = "https://shrishtivaish-rblogs.xyz/"
+baseurl = "https://shrishtivaish-rblogs.netlify.app/"
 languageCode = "en-us"
 defaultContentLanguage = "en"
 title = "R Blogs"
