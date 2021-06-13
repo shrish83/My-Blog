@@ -3,6 +3,7 @@ baseurl = "https://shrishtivaish-rblogs.netlify.app/"
 languageCode = "en-us"
 defaultContentLanguage = "en"
 title = "R Blogs"
+disqusShortname = "shrishtivaish-rblogs"
 googleAnalytics = "UA-172540293-1"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 enableRobotsTXT = true
